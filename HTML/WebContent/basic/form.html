@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!-- method 속성은 get과 post가 있습니다.
+get - 주소표시줄에 사용자가 입력한 내용이 그대로 드러납니다. 256~4096까지만 전송가능
+post - 대부분사용하는 방식으로 주소표시줄에는 드러나지 않습니다 .
+입력내용의 길이에 제한을 받지 않습니다. -->
+<form action = "처리페이지 주소" name = "nform" method = "post">
+text : <input type= "text" name ="firstName"> <br>
+password : <input type = "password" name = "password"> <br>
+radio : <input type = "radio" name ="gener"> 남
+<input type="radio" name ="gener"> 여 <br>
+checkbox : <input type="checkbox">여행<input type="checkbox">독서
+<input type ="checkbox"> 등산<br>
+ file : <input type= "file"> <br>
+<select>
+	<option>선택하세요</option>
+	<option>초등학생</option>
+	<option>중학생</option>
+	<option>고등학생</option>
+	<option>대학생</option>
+	<option>성인</option>
+
+</select>
+
+<textarea rows="10" cols="50">
+</textarea>
+
+<input type="submit" value="작성">
+<!-- 화면에 입력한 데이터를 form에 지정한 페이지로 이동할때 사용 -->
+<input type="reset" value="재작성">
+<!-- 사용자가 화면에 입력한 데이터를 초기화할때사용  -->
+<input type ="button" value="클릭" onclick="alert('밥 고고');">
+<!-- button은 원래는 아무 액션이 없습니다. 
+액션을 사용자가 직접 스크립트 문법을 통해서 지정 -->
+<label for="id"> 아이디입력	<br>
+<input type="text" id="id">
+</label>
+주문개수 : <input type="range" min="1" max="5"  value="1">개 <br>
+
+<p>당신이 가장 좋아하는 생각은 무엇인가요</p>
+<label>선호 색상 <input type ="color" value="white"></label>
+<!--  color은 사용자가 색깔을 선택할 수 있는 상자 입니다. -->
+
+날짜를 선택하세요<input type="date" id="start">
+<input type="date" id="end">
+<input type="image" src="../images/1.jpg" alt="전송">
+<!-- type="image"로 지정하면 submit 버튼대신 저승 이미지를 넣을 수 있습니다. -->
+</form>
+</body>
+</html>

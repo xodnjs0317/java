@@ -1,0 +1,726 @@
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.PointGiftButton=eg.Class({_$element:null,_bLoadingPointGift:false,_oPointGiftButtonConf:null,_URL:{POINT_GIFT_ANSWER_RESERVE_AJAX:"/ajax/gift/point/types/answer/reserve/url.nhn"},_ERROR_LAYER:{INVALID_USER:{TITLE:"\uc0ac\uc6a9\ud560 \uc218 \uc5c6\ub294 \uacc4\uc815\uc785\ub2c8\ub2e4.",
+NCLICK_CODE:"ptxa.failpg",CLASS:"_invalidUser"},DEFAULT:{TITLE:"\ud3ec\uc778\ud2b8\uac10\uc0ac \uc2e4\ud328",NCLICK_CODE:"ptxa.failtemp",CLASS:"_defaultFail"}},construct:function(popupWidth,popupHeight){this._setElement();
+this._setEvent();this._oPointGiftButtonConf["width"]=popupWidth;this._oPointGiftButtonConf["height"]=popupHeight;$(window).on("unload",this.destroy.bind(this))},
+_setElement:function(){this._$element={};this._oPointGiftButtonConf={};this._$element["aPointAnswerGiftButton"]=$("a._pointGiftButton");this._$element["pointGiftFailLayer"]=$.getSingle("._pointGiftFailLayer");
+this._$element["aPointGiftFailLayerCloseBtn"]=$.getSingle("a._close",this._$element["pointGiftFailLayer"]);this._$element["body"]=$.getSingle("body");this._$element["answerList"]=$.getSingle("._answerList");
+this._$element["selectAnswerGuidePointGiftLayer"]=$.getSingle("._selectAnswerGuidePointGiftLayer");this._$element["todayHideSelectAnswerGuidePointGiftLayer"]=$("#pointGiftSelectLayerHideTodayChk")},
+_setEvent:function(){if(this._$element["aPointAnswerGiftButton"])this._$element["aPointAnswerGiftButton"].on("click",this._onClickPointAnswerGiftButton.bind(this));if(this._$element["aPointGiftFailLayerCloseBtn"])this._$element["aPointGiftFailLayerCloseBtn"].on("click",
+this._onClickPointGiftFailLayerCloseButton.bind(this));if(this._$element["selectAnswerGuidePointGiftLayer"])this._$element["selectAnswerGuidePointGiftLayer"].on("click",this._onClickSelectAnswerGuidePointGiftLayer.bind(this))},
+_onClickPointAnswerGiftButton:function(oEvent){oEvent.stopPropagation();oEvent.preventDefault();this._isPointGiftAvaliable(oEvent);this._requestPointGift($(oEvent.target))},
+setPointAnswerGiftButton:function(){this._$element["aPointAnswerGiftButton"]=$("a._pointGiftButton");if(this._$element["aPointAnswerGiftButton"])this._$element["aPointAnswerGiftButton"].on("click",this._onClickPointAnswerGiftButton.bind(this))},
+showSelectAnswerGuidePointGiftLayer:function(nBestAnswerNo){if(!this._$element["selectAnswerGuidePointGiftLayer"])return;var oPointAnswerGiftButton=this._$element["selectAnswerGuidePointGiftLayer"].find("a._pointGiftButton");
+if(!this._isExistButton(nBestAnswerNo))return;$(oPointAnswerGiftButton).attr("data-answer-no",nBestAnswerNo);if(!naver.kin.pc.common.isExpiredLayerClosedTime("selectAnswerGuidePointGiftLayer",24*60*60))return;
+this._$element["selectAnswerGuidePointGiftLayer"].show()},
+_isExistButton:function(nBestAnswerNo){var aPointGiftButton=this._$element["answerList"].find("a._pointGiftButton");for(var i=0;i<aPointGiftButton.length;i++)if($(aPointGiftButton[i]).attr("data-answer-no")==
+nBestAnswerNo)return true;return false},
+_onClickSelectAnswerGuidePointGiftLayer:function(oEvent){this._isPointGiftAvaliable(oEvent);var $el=$(oEvent.target);var $elParent=$el.parent();if($el.hasClass("_close")||$elParent.hasClass("_close")){var oTodayHideInput=
+this._$element["todayHideSelectAnswerGuidePointGiftLayer"];if(oTodayHideInput&&oTodayHideInput.is(":checked"))naver.kin.pc.common.saveLayerClosedTime("selectAnswerGuidePointGiftLayer");this._$element["selectAnswerGuidePointGiftLayer"].hide()}if($el.hasClass("_pointGift"))this._requestPointGift($el);
+else if($elParent.hasClass("_pointGift"))this._requestPointGift($elParent)},
+_isPointGiftAvaliable:function(oEvent){if(naver.kin.pc.common.checkRos())return false;if(naver.kin.pc.common.checkLoginAndRedirectToLoginForm(location.href))return false;if(!oEvent)return false;if(this._bLoadingPointGift)return false},
+_requestPointGift:function($el){var sDirId=$el.attr("data-dir-id");var sDocId=$el.attr("data-doc-id");var sAnswerNo=$el.attr("data-answer-no");var oParam={dirId:sDirId,docId:sDocId,answerNo:sAnswerNo};
+var oOption={method:"GET",timeout:5E3,data:oParam,dataType:"json",beforeSend:function(){this._bLoadingPointGift=true}.bind(this),
+complete:function(){this._bLoadingPointGift=false}.bind(this),
+success:this._onSuccessPointGiftReserve.bind(this),error:function(qXHR,textStatus,errorThrown){if(textStatus==="timeout")return alert(naver.kin.pc.common.MESSAGE.TIMEOUT);alert(naver.kin.pc.common.MESSAGE.ERROR)}};
+$.ajax(this._URL.POINT_GIFT_ANSWER_RESERVE_AJAX,oOption)},
+_onSuccessPointGiftReserve:function(response){if(response.npayReservedUrl&&response.npayReservedUrl!==""){var win=window.open(response.npayReservedUrl,"_blank","scrollbars\x3dyes ,width\x3d"+this._oPointGiftButtonConf.width+
+",height\x3d"+this._oPointGiftButtonConf.height+",left\x3d"+this._getPopupLeft(this._oPointGiftButtonConf.width)+",top\x3d"+this._getPopupTop(this._oPointGiftButtonConf.height));if(win===null||typeof win==
+"undefined")alert("\ud31d\uc5c5 \ucc28\ub2e8\uc744 \ud574\uc81c\ud558\uc5ec \uc8fc\uc2dc\uae30 \ubc14\ub78d\ub2c8\ub2e4.\n\ud31d\uc5c5\uc774 \ucc28\ub2e8\ub418\uc5b4 \uc788\uc73c\uba74 \ubaa8\ub4e0 \uc11c\ube44\uc2a4\ub97c \uc62c\ubc14\ub85c \uc774\uc6a9\ud558\uc2e4 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.");
+return}this._showPointGiftFailLayer(response)},
+_showPointGiftFailLayer:function(response){this._$element["pointGiftFailLayer"].show();this._$element["body"].addClass("body_hidden");var oErrorLayerConf=this._ERROR_LAYER.DEFAULT;if(response.errorCode==
+10004){oErrorLayerConf=this._ERROR_LAYER.INVALID_USER;this._$element["pointGiftFailLayer"].addClass(oErrorLayerConf.CLASS)}var elTitle=this._$element["pointGiftFailLayer"].find("string._title");if(elTitle)elTitle.html(oErrorLayerConf.TITLE);
+var elText=this._$element["pointGiftFailLayer"].find("p._contents");if(elText)elText.html(response.userMessage)},
+_onClickPointGiftFailLayerCloseButton:function(oEvent){this._$element["pointGiftFailLayer"].hide();this._$element["body"].removeClass("body_hidden");var nClicksCode=this._ERROR_LAYER.DEFAULT.NCLICK_CODE;
+if(this._$element["pointGiftFailLayer"].hasClass(this._ERROR_LAYER.INVALID_USER.CLASS)){this._$element["pointGiftFailLayer"].removeClass(this._ERROR_LAYER.INVALID_USER.CLASS);nClicksCode=this._ERROR_LAYER.INVALID_USER.NCLICK_CODE}naver.kin.pc.common.nClicks(nClicksCode,
+"","",oEvent)},
+_getPopupLeft:function(nLayerWidth){return(window.innerWidth-nLayerWidth)/2},
+_getPopupTop:function(nLayerHeight){return(window.innerHeight-nLayerHeight)/2},
+destroy:function(){if(this._$element["aPointAnswerGiftButton"]!=null)this._$element["aPointAnswerGiftButton"].off("click");if(this._$element["aPointGiftFailLayerCloseBtn"]!=null)this._$element["aPointGiftFailLayerCloseBtn"].off("click");
+if(this._$element["onClickSelectAnswerGuidePointGiftLayer"]!=null)this._$element["onClickSelectAnswerGuidePointGiftLayer"].off("click");this._$element=this._bLoadingPointGift=this._oPointGiftButtonConf=
+this._URL=this._ERROR_LAYER=null}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.PointGiftButtonToolTip=eg.Class({_$element:null,_oLocalStorage:naver.kin.pc.common.LocalStorage,_CLOSED_STRING:"closed",construct:function(){this._initializeOnLoad()},
+_initializeOnLoad:function(){this._setElement();this._setEvent();if(this._isTooltipClosed())this._hideTooltip();else this._showTooltip()},
+_setElement:function(){this._$element={};this._$element["toolTipArea"]=$("._pointGiftTooltip").first();this._$element["toolTipCloseButton"]=$("button._pointGiftTooltipClose")},
+_setEvent:function(){if(this._$element["toolTipCloseButton"])this._$element["toolTipCloseButton"].on("click",this._closeTooltip.bind(this))},
+refresh:function(){this.destroy();this._initializeOnLoad()},
+_isTooltipClosed:function(){var sClosed=this._oLocalStorage.getItem(this._oLocalStorage.KEY.PCWEB_DETAIL_POINT_GIFT_TOOTIP_CLOSED);if(!sClosed)return false;return this._CLOSED_STRING===sClosed},
+_showTooltip:function(){if(this._$element["toolTipArea"]){this._$element["toolTipArea"].attr("aria-expanded","true");this._$element["toolTipArea"].show()}},
+_closeTooltip:function(){this._cleanAndAddCloseList();this._hideTooltip()},
+_cleanAndAddCloseList:function(){if(!this._oLocalStorage.isSupportLocalStorage())return;this._oLocalStorage.setItem(this._oLocalStorage.KEY.PCWEB_DETAIL_POINT_GIFT_TOOTIP_CLOSED,this._CLOSED_STRING)},
+_hideTooltip:function(){if(this._$element["toolTipArea"]){this._$element["toolTipArea"].attr("aria-expanded","false");this._$element["toolTipArea"].hide()}},
+destroy:function(){this._$element["toolTipCloseButton"].off();this._$element=null}});
+var oDetailAjaxProcessingStatus={SELECT_ANSWER:false};function imgAutoResize(imgName){try{naver.kin.pc.common.resizeImage(imgName)}catch(e){}}
+function imgOriginalView(imgName){try{var oImage=window.document.images[imgName];if(oImage&&oImage.src){var a=$(oImage).parent();var isAnchorTag=/^a$/i.test(a.prop("tagName").toLowerCase());if(!isAnchorTag)naver.kin.pc.common.viewImage(imgName)}}catch(e){}}
+function imgError(imgName){try{naver.kin.pc.common.notfoundImage(imgName)}catch(e){}}
+function showAnswerArea(url){if(naver.kin.pc.common.checkRos())return;if(!naver.isLogin){location.href="https://nid.naver.com/nidlogin.login?mode\x3dform\x26url\x3d"+encodeURIComponent(location.href);return}try{var oEditor=
+document.getElementById("answerWriteButton");oEditor.style.display="none";var sHtml='\x3ciframe id\x3d"editor" name\x3d"editor" class\x3d"ifr_qna" src\x3d"'+url+'" title\x3d"\ub2f5\ubcc0\ud558\uae30 \uc601\uc5ed" width\x3d"800"\n'+
+'height\x3d"0" frameborder\x3d"no" scrolling\x3d"no" marginwidth\x3d"0" marginheight\x3d"0"\x3e\x3c/iframe\x3e';document.getElementById("answerWriteArea").innerHTML=sHtml}catch(e){}}
+function likeReactionCallback(oCustomEvent,nDirId,nDocId){if(!oCustomEvent||oCustomEvent.actionEvent!=="add")return;$.ajax({url:"/ajax/likeAnswerCallbackAjax.nhn",method:"POST",timeout:5E3,data:{contentsId:oCustomEvent.contentsId,
+actionEvent:oCustomEvent.actionEvent,reactionType:oCustomEvent.reactionType,dirId:nDirId,docId:nDocId,answerNo:oCustomEvent.answerNo,isTodayQuestion:"N"},dataType:"JSON",success:function(oResponse){var bShowLikeLayer=
+checkAndShowLikeEventLayer(oResponse.isLikeEventLayer);if(!bShowLikeLayer)bShowLikeLayer=checkAndShowLikeReactionLayer(oResponse.reactionType);if(!bShowLikeLayer)naver.kin.pc.common.Bingo.checkAndShowBingoCompleteLayer(oResponse)},
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}})}
+function checkAndShowLikeEventLayer(bIsLikeEventLayer){if(!bIsLikeEventLayer)return false;if(typeof window.oLikeLayer==="undefined")return false;window.oLikeLayer.setReaction(false,false,false);window.oLikeLayer.showLayer();
+return true}
+function checkAndShowLikeReactionLayer(sLikeReactionType){var oLocalStorage=naver.kin.pc.common.LocalStorage;if(oLocalStorage.isSupportLocalStorage()==false)return;var bIsLikeReaction=false;var bIsUsefulReaction=
+false;var bIsHahaReaction=false;var sLocalStorageKey="";if(sLikeReactionType==="like"){sLocalStorageKey=oLocalStorage.KEY.PCWEB_LIKE_LIKE_LAYER_CLOSED;bIsLikeReaction=true}else if(sLikeReactionType==="useful"){sLocalStorageKey=
+oLocalStorage.KEY.PCWEB_LIKE_USEFUL_LAYER_CLOSED;bIsUsefulReaction=true}else if(sLikeReactionType==="haha"){sLocalStorageKey=oLocalStorage.KEY.PCWEB_LIKE_HAHA_LAYER_CLOSED;bIsHahaReaction=true}else return false;
+var sItem=oLocalStorage.getItem(sLocalStorageKey);if(sItem)return false;if(typeof window.oLikeLayer==="undefined")return false;window.oLikeLayer.setReaction(bIsLikeReaction,bIsUsefulReaction,bIsHahaReaction);
+window.oLikeLayer.showLayer();oLocalStorage.setItem(sLocalStorageKey,"Y");return true}
+function selectAnswer(nDirId,nDocId,nAnswerNo){if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();return false}if(oDetailAjaxProcessingStatus.SELECT_ANSWER){alert(naver.kin.pc.common.MESSAGE.WAIT_FOR_PROCESSING);
+return false}$.ajax({url:"/ajax/detail/selectAnswer.nhn",method:"POST",timeout:5E3,data:{dirId:nDirId,docId:nDocId,answerNo:nAnswerNo},beforeSend:function(){oDetailAjaxProcessingStatus.SELECT_ANSWER=true}.bind(this),
+complete:function(){oDetailAjaxProcessingStatus.SELECT_ANSWER=false}.bind(this),
+success:function(oResponse){if(oResponse&&oResponse.isSuccess)try{document.location.reload()}catch(e){}else alert(oResponse?oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})}
+function changeRssFlag(nDirId,nDocId,nAnswerNo,sRssFlag){if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();return false}if(!nDirId||!nDocId||nAnswerNo<
+0||!sRssFlag)return false;$.ajax({url:"/ajax/detail/rssPermit.nhn",method:"POST",timeout:1E3,data:{dirId:nDirId,docId:nDocId,answerNo:nAnswerNo,type:sRssFlag},success:function(sRssFlag,oResponse){if(oResponse&&
+oResponse.isSuccess){alert(sRssFlag==="N"?"\uc678\ubd80\uac80\uc0c9\uc774 \ud5c8\uc6a9\ub418\uc5c8\uc2b5\ub2c8\ub2e4.":"\uc678\ubd80\uac80\uc0c9\uc774 \ube44\ud5c8\uc6a9\ub418\uc5c8\uc2b5\ub2c8\ub2e4.");
+document.location.reload()}else alert(oResponse?oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this,sRssFlag),
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})}
+function showCloseAnswererId(nDirId,nDocId,nAnswerNo){if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();return false}if(!nDirId||!nDocId||!nAnswerNo)return false;
+var $elBody=$.getSingle("body");var $elCloseAnswererIdLayer=$.getSingle("div._closeAnswererIdLayer",$elBody);var $elCloseAnswererIdButton=$.getSingle("a._closeAnswererIdButton",$elCloseAnswererIdLayer);
+$elBody.addClass("body_hidden");$elCloseAnswererIdLayer.show();$elCloseAnswererIdButton.data("dirId",nDirId);$elCloseAnswererIdButton.data("docId",nDocId);$elCloseAnswererIdButton.data("answerNo",nAnswerNo)}
+function closeAnswererId($elCloseAnswererIdButton){if(!$elCloseAnswererIdButton.existElements())return false;if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();
+return false}var nDirId=$elCloseAnswererIdButton.data("dirId");var nDocId=$elCloseAnswererIdButton.data("docId");var nAnswerNo=$elCloseAnswererIdButton.data("answerNo");if(!nDirId||!nDocId||!nAnswerNo)return false;
+$.ajax({url:"/ajax/detail/closeAnswererId.nhn",method:"POST",timeout:1E3,data:{dirId:nDirId,docId:nDocId,answerNo:nAnswerNo},success:function(oResponse){if(oResponse&&oResponse.isSuccess)try{document.location.reload()}catch(e){}else alert(oResponse?
+oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})}
+function deleteAnswer(nDirId,nDocId,nAnswerNo){if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();return false}$.ajax({url:"/ajax/detail/deleteAnswer.nhn",
+method:"POST",timeout:5E3,data:{dirId:nDirId,docId:nDocId,answerNo:nAnswerNo},success:function(oResponse){if(oResponse&&oResponse.isSuccess)try{document.location.reload()}catch(e){}else alert(oResponse?
+oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})}
+function reportAnswer(nDirId,nDocId,nAnswerNo,sMdu){if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();return false}if(nAnswerNo==0){var sUrl="/popup/reportQuestionPopUp.nhn?dirId\x3d"+
+nDirId+"\x26docId\x3d"+nDocId+(sMdu?"\x26mdu\x3d"+sMdu:"");naver.kin.pc.common.popup(sUrl,"reportQuestion",{width:530,height:520,top:1,left:1})}else{var sUrl="/popup/reportAnswerPopUp.nhn?dirId\x3d"+nDirId+
+"\x26docId\x3d"+nDocId+"\x26answerNo\x3d"+nAnswerNo+(sMdu?"\x26mdu\x3d"+sMdu:"");naver.kin.pc.common.popup(sUrl,"reportAnswer",{width:530,height:520,top:1,left:1})}}
+function additionalQuestion($elAdditionalQuestionButton){if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();return false}if(!$elAdditionalQuestionButton||
+!$elAdditionalQuestionButton.existElements())return false;var nParentAnswerNo=$elAdditionalQuestionButton.data("answerNo");if(!nParentAnswerNo||nParentAnswerNo<1)return false;var $elAnswer=$elAdditionalQuestionButton.closest("div._answer");
+if(!$elAnswer.existElements())return false;var $elAdditionalQnaListArea=$.getSingle("div._additionalQnaList",$elAnswer);if(!$elAdditionalQnaListArea.existElements())return false;var $elCommentListArea=
+$.getSingle("div._commentListArea",$elAnswer);if($elCommentListArea.existElements())$.getSingle("div._commentListArea",$elAnswer).hide();var bIsActivatedButton=$elAdditionalQuestionButton.hasClass("is_active");
+$elAnswer.find("._answerBottom").find(".is_active").removeClass("is_active");if($elAdditionalQnaListArea.html())if(bIsActivatedButton)$elAdditionalQnaListArea.hide();else $elAdditionalQnaListArea.show();
+else $(document).trigger($.Event("initAdditionalQuestionWriteFormEvent",{parentAnswerNo:nParentAnswerNo}));$elAdditionalQuestionButton.toggleClass("is_active",!bIsActivatedButton);naver.kin.pc.common.toggleAriaExpanded($elAdditionalQuestionButton,
+$elAdditionalQnaListArea)}
+function saveToNdrive($elSaveToNdriveButton){if(!$elSaveToNdriveButton||!$elSaveToNdriveButton.existElements())return false;$.ajax({url:"/ajax/downloadNdrive.nhn",method:"POST",timeout:5E3,data:{dirId:$elSaveToNdriveButton.data("dirId"),
+docId:$elSaveToNdriveButton.data("docId"),answerNo:$elSaveToNdriveButton.data("answerNo"),fileNo:$elSaveToNdriveButton.data("fileNo"),fileName:$elSaveToNdriveButton.data("fileName")},success:function(oResponse){if(!oResponse||
+!oResponse.result)return false;var sResource=encodeURIComponent(JSON.stringify({name:decodeURIComponent(oResponse.fileName),size:oResponse.result.fileSize,downloadUrl:oResponse.result.url}));var sWindowOption=
+"scrollbars\x3dno,toolbar\x3dno,location\x3dno,resizable\x3dno,status\x3dno,menubar\x3dno,width\x3d306,height\x3d352";try{var oWindow=window.open((oResponse.ndriveDomain||"https://cloud.naver.com")+"/saveFile.nhn?service\x3dkin\x26resource\x3d"+
+sResource,"saveFileToDrive",sWindowOption);if(oWindow)oWindow.focus()}catch(e){}}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})}
+function scrapAnswer($elScrapAnswerButton){if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();return false}if(!$elScrapAnswerButton||!$elScrapAnswerButton.existElements())return false;
+var sMdu=$elScrapAnswerButton.data("mdu");var sAnswerToken=$elScrapAnswerButton.data("answerToken");var sSuccessUrl=$elScrapAnswerButton.data("successUrl");if(!sMdu||!sAnswerToken||!sSuccessUrl)return false;
+$.ajax({url:"/kini/scrapAnswerAjax.nhn",method:"POST",timeout:1E4,data:{mdu:sMdu,answerToken:sAnswerToken},success:function(oResponse){if(oResponse&&oResponse.isSuccess)try{location.href=sSuccessUrl}catch(e){}else alert(oResponse?
+oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})}
+function loadModifyAnswerFrame(nDirId,nDocId,nAnswerNo,sMdu,nEditorVersion,bSmartEditorOneAvailable){if(naver.kin.pc.common.checkRos())return false;if(nEditorVersion>0)if(bSmartEditorOneAvailable)$(document).trigger($.Event("modifyAnswerEvent",
+{answerNo:nAnswerNo}));else alert("\uc5d0\ub514\ud130 \uc810\uac80\uc911\uc73c\ub85c \ud574\ub2f9 \ub2f5\ubcc0\uc740 \ud604\uc7ac \uc218\uc815\uc774 \ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.\n\uc810\uac80 \uc644\ub8cc \ud6c4 \uc218\uc815\ud574\uc8fc\uc138\uc694.");
+else{var $elAnswer=$("#answer_"+nAnswerNo);if(!$elAnswer.existElements())return false;$elAnswer.find("iframe").attr("src","");setTimeout(function(){var elIframe=document.createElement("iframe");elIframe.id=
+"editor";elIframe.name="editor";elIframe.className="ifr_qna";elIframe.src="/qna/detail/answerModifyFrame.nhn?dirId\x3d"+nDirId+"\x26docId\x3d"+nDocId+"\x26answerNo\x3d"+nAnswerNo+(sMdu?"\x26mdu\x3d"+sMdu:
+"");elIframe.title="\ub2f5\ubcc0 \uc218\uc815\ud558\uae30";elIframe.width="800px";elIframe.height="0px";elIframe.frameBorder="no";elIframe.scrolling="no";elIframe.marginWidth="0";elIframe.marginHeight=
+"100";elIframe.style.marginBottom="10px";if(nAnswerNo!==1)elIframe.style.marginTop="10px";$elAnswer.replaceWith(elIframe)},0)}}
+function AnswerZzim(bZzim,dirId,docId){if(naver.kin.pc.common.checkRos())return false;$.ajax({url:"/ajax/expertiseOccupy.nhn",method:"POST",data:{occupyFlag:bZzim?true:false,dirId:dirId,docId:docId},success:function(oResponse){var nResultCode=
+oResponse.result[0].resultCode;if(bZzim===true)if(nResultCode>0){alert("\uc774 \uc9c8\ubb38\uc744 \ucc1c \ud558\uc600\uc2b5\ub2c8\ub2e4.");document.location.reload()}else if(nResultCode==-1)alert("\uc774\ubbf8 \ucc1c\ud55c \uc9c8\ubb38\uc785\ub2c8\ub2e4.");
+else if(nResultCode==-3)$("#au_zzim_layer").style.display="block";else if(nResultCode==-4)alert("\uc815\uc0c1\uc801\uc778 '\ucc1c\ud558\uae30' \uacbd\ub85c\uac00 \uc544\ub2d9\ub2c8\ub2e4.\n\ud504\ub85c\ud544\uc758 \ubc30\ub2ec\ub41c \uc9c8\ubb38\uc5d0\uc11c '\ucc1c\ud558\uae30'\ub97c \uc2e4\ud589\ud574\uc8fc\uc138\uc694.");
+else if(nResultCode==-5)$("#au_zzim_daily_layer").style.display="block";else if(nResultCode==-6)alert("\ucc1c\ud558\uae30\uac00 \ubd88\uac00\ub2a5\ud569\ub2c8\ub2e4. \uc0c8\ub85c\uace0\uce68 \ud6c4 \uc9c8\ubb38\uc758 \uc0c1\ud0dc\ub97c \ud655\uc778\ud574\uc8fc\uc138\uc694.");
+else alert("\uc77c\uc2dc\uc801\uc778 \uc624\ub958\ub85c \uc9c8\ubb38 \ucc1c\ud558\uae30\uc5d0 \uc2e4\ud328\ud558\uc600\uc2b5\ub2c8\ub2e4.\n\uc7a0\uc2dc \ud6c4\uc5d0 \ub2e4\uc2dc \uc2dc\ub3c4\ud574\uc8fc\uc138\uc694.");
+else if(nResultCode>0){alert("\uc774 \uc9c8\ubb38\uc774 \ucc1c \ud574\uc81c\ub418\uc5c8\uc2b5\ub2c8\ub2e4.");document.location.reload()}else alert("\uc77c\uc2dc\uc801\uc778 \uc624\ub958\ub85c \uc9c8\ubb38 \ucc1c \ud574\uc81c \ud558\uae30\uc5d0 \uc2e4\ud328\ud558\uc600\uc2b5\ub2c8\ub2e4.\n\uc7a0\uc2dc \ud6c4\uc5d0 \ub2e4\uc2dc \uc2dc\ub3c4\ud574\uc8fc\uc138\uc694.")}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})}
+function expertAnswerDel(){var removeForm=$("#au_answer_del_zzim_form");naver.kin.pc.common.popup("","clearQuestionWindow",{width:393,height:320});removeForm.attr("target","clearQuestionWindow");removeForm.attr("action",
+"/myinfo/expert/clearQuestionForm.nhn");removeForm.submit()}
+;
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.Comment=eg.Class({_$element:null,_$template:null,_oOption:null,_bIsProcessing:false,_oPwFilter:null,_oInputEventTimeout:null,_oAjax:null,_oAjaxStatus:null,_oAdditionalQnaListAjax:null,
+_COUNT_PER_PAGE:5,_PAGE_PER_SCREEN:10,_TEXTAREA_PLACEHOLDER:"\uac1c\uc778\uc815\ubcf4\ub97c \uacf5\uc720 \ubc0f \uc694\uccad\ud558\uac70\ub098, \uba85\uc608 \ud6fc\uc190, \ubb34\ub2e8 \uad11\uace0, \ubd88\ubc95 \uc815\ubcf4 \uc720\ud3ec\uc2dc \ubaa8\ub2c8\ud130\ub9c1 \ud6c4 \uc0ad\uc81c\ub420 \uc218 \uc788\uc73c\uba70, \uc774\uc5d0 \ub300\ud55c \ubbfc\ud615\uc0ac\uc0c1 \ucc45\uc784\uc740 \uac8c\uc2dc\uc790\uc5d0\uac8c \uc788\uc2b5\ub2c8\ub2e4.",
+_MESSAGE:{WAIT_FOR_PROCESSING:"\uc9c4\ud589\uc911\uc778 \uc791\uc5c5\uc774 \uc788\uc2b5\ub2c8\ub2e4. \uc7a0\uc2dc\ud6c4 \ub2e4\uc2dc \uc2dc\ub3c4\ud574\uc8fc\uc138\uc694.",WAIT_FOR_LOADING:"\ud398\uc774\uc9c0\ub97c \ub85c\ub529\uc911\uc785\ub2c8\ub2e4. \uc7a0\uc2dc\ud6c4 \ub2e4\uc2dc \uc2dc\ub3c4\ud574\uc8fc\uc138\uc694.",
+FAIL_BY_UNKNOWN_REASON:"\uc608\uae30\uce58 \uc54a\uc740 \uc624\ub958\ub85c \uc791\uc5c5\uc5d0 \uc2e4\ud328\ud558\uc600\uc2b5\ub2c8\ub2e4. \uc7a0\uc2dc\ud6c4 \ub2e4\uc2dc \uc2dc\ub3c4\ud574\uc8fc\uc138\uc694.",
+INVALID_PARAMETER:"\uc720\ud6a8\ud558\uc9c0 \uc54a\uc740 \ud30c\ub77c\ubbf8\ud130\uc785\ub2c8\ub2e4.",DELETE_COMMENT_CONFIRM:"\ub313\uae00\uc744 \uc0ad\uc81c\ud558\uc2dc\uaca0\uc2b5\ub2c8\uae4c?",EMPTY_CONTENTS:"\ub313\uae00\uc774 \uc785\ub825\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4.",
+CHECK_LOGIN:"\ub85c\uadf8\uc778 \ud6c4 \uc774\uc6a9\ud558\uc2e4 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",TARGET_COMMENT_ALERT:"\uc548\ub4dc\ub85c\uc774\ub4dc \uc9c0\uc2ddiN\uc571\uc5d0\uc11c\ub9cc \uc0ac\uc6a9 \uac00\ub2a5\ud55c \uae30\ub2a5\uc785\ub2c8\ub2e4.",
+ADDITIONAL_QUESTION_COMFIRM:"\ub2f5\ubcc0\uc790\uc5d0\uac8c \ucd94\uac00\ub85c \uc9c8\ubb38\ud558\uace0 \uc2f6\uc73c\uc2e0\uac00\uc694?\n\ud655\uc778\uc744 \ub204\ub974\uba74 \ucd94\uac00\uc9c8\ubb38 \uc4f0\uae30\ud654\uba74\uc73c\ub85c \uc5f0\uacb0\ub429\ub2c8\ub2e4."},
+_URL:{COMMENT_LIST_AJAX:"/ajax/detail/commentListAjax.nhn",DELETE_COMMENT_AJAX:"/ajax/detail/commentDeleteAjax.nhn",REGISTER_COMMENT_AJAX:"/ajax/detail/commentRegisterAjax.nhn",REPORT_COMMENT_AJAX:"/ajax/reportComment.nhn"},
+construct:function(htOption){this._oOption=htOption||{};this._oAjax={};$(document).on("initCommentListAreaEvent",this._initCommentListAreaEvent.bind(this));$(document).on("addCommentButtonClickEvent",this._initCommentButtonaEvent.bind(this));
+$(document).ready(this._onDocumentReady.bind(this))},
+_initCommentListAreaEvent:function(oCustomEvent){if(!oCustomEvent)return;var $elCommentListArea=oCustomEvent.commentListArea;if(!$elCommentListArea||!$elCommentListArea.existElements())return;if($elCommentListArea.children().length>
+0){$elCommentListArea.show();this._getCommentListAjax($elCommentListArea,1);return}this._initCommentList($elCommentListArea)},
+_initCommentButtonaEvent:function(oCustomEvent){if(!oCustomEvent)return;var aWelCommentButtonList=oCustomEvent.commentButtonList;if(!aWelCommentButtonList||aWelCommentButtonList.length<1)return;for(var i=
+0,len=aWelCommentButtonList.length;i<len;i++){var $elCommentButton=aWelCommentButtonList[i];if($elCommentButton&&$elCommentButton.existElements())$elCommentButton.on("click",this._onClickCommentBtn.bind(this))}},
+_onDocumentReady:function(){this._setElement();this._setEvent();this._initAjaxStatus();if(this._$element["initOpenCommentBtn"].existElements())this._toggleCommentListArea(this._$element["initOpenCommentBtn"])},
+_setElement:function(){this._$element={};this._$element["loadingIndicator"]=$("#loadingIndicator");this._$element["commentBtnList"]=$("._commentBtn");this._$element["initOpenCommentBtn"]=this._$element["commentBtnList"].filter(function(index,
+el){return $(el).hasClass("_initOpen")});
+this._$element["PWLayerArea"]=$("#prohibited_words_layer_area");this._$template={};this._$template["commentListAreaTpl"]=doT.template($("#commentListAreaTpl").html());this._$template["commentListTpl"]=
+doT.template($("#commentListTpl").html());this._$template["commentListPagingTpl"]=doT.template($("#commentListPagingTpl").html());this._$template["PWLayer"]=doT.template($("#prohibited_words_layer_tpl").html())},
+_setEvent:function(){if(this._$element["commentBtnList"].existElements())this._$element["commentBtnList"].on("click",this._onClickCommentBtn.bind(this));if(this._$element["PWLayerArea"].existElements())this._$element["PWLayerArea"].on("click",
+this._onClickPWLayer.bind(this))},
+_initAjaxStatus:function(){this._oAjaxStatus={};for(var sKey in this._URL)if(this._URL.hasOwnProperty(sKey)){var sCurrentUrl=this._URL[sKey];this._oAjaxStatus[sCurrentUrl]={isProcessing:false,request:null}}},
+_onClickCommentBtn:function(oEvent){oEvent.preventDefault();var $el=$(oEvent.currentTarget);this._toggleCommentListArea($el)},
+_toggleCommentListArea:function($el){var $elParent=$el.closest("._contentWrap");if(!$elParent.existElements())return;var $elCommentListArea=$.getSingle("._commentListArea",$elParent);if(!$elCommentListArea.existElements())return;
+var $elAdditionalQuestionButton=$.getSingle("button._additionalQuestionBtn",$elParent);if($elAdditionalQuestionButton.existElements())$.getSingle("div._additionalQnaList",$elParent).hide();var bIsNeedToCheckAdditionalQuestion=
+!$el.hasClass("is_active")&&$elAdditionalQuestionButton.existElements()&&!$elAdditionalQuestionButton.hasClass("is_active");var bIsActivatedButton=$el.hasClass("is_active");if($elCommentListArea.data("answerNo")!=
+0)$elParent.find("._answerBottom").find(".is_active").removeClass("is_active");if(bIsNeedToCheckAdditionalQuestion&&confirm(this._MESSAGE.ADDITIONAL_QUESTION_COMFIRM))this._initAdditionalQuestionArea($elParent);
+else{if($elCommentListArea.html()){if(bIsActivatedButton)$elCommentListArea.hide();else $elCommentListArea.show();$(document).trigger($.Event("changeFixedSmartEditorHeaderBoundaryEvent"))}else this._initCommentList($elCommentListArea);
+$el.toggleClass("is_active",!bIsActivatedButton);naver.kin.pc.common.toggleAriaActiveDescendant($el.parent(),$el.get(0).id);naver.kin.pc.common.toggleAriaSelected($el.get(0));naver.kin.pc.common.toggleAriaExpanded($el.get(0),
+$elCommentListArea)}},
+_initAdditionalQuestionArea:function($elAnswer){if(!$elAnswer||!$elAnswer.existElements())return;var $elAdditionalQuestionButton=$.getSingle("button._additionalQuestionBtn",$elAnswer);if(!$elAdditionalQuestionButton.existElements())return;
+var nParentAnswerNo=$elAdditionalQuestionButton.data("answerNo");if(!nParentAnswerNo||nParentAnswerNo<1)return;var $elAdditionalQnaListArea=$.getSingle("div._additionalQnaList",$elAnswer);if(!$elAdditionalQnaListArea.existElements())return;
+var $elCommentButton=$.getSingle("button._commentBtn",$elAnswer);if($elCommentButton.existElements()){$.getSingle("div._commentListArea",$elAnswer).hide();$elCommentButton.attr("aria-expanded","false")}var bIsActivatedButton=
+$elAdditionalQuestionButton.hasClass("is_active");$elAnswer.find("._answerBottom").find(".is_active").removeClass("is_active");if($elAdditionalQnaListArea.html())if(bIsActivatedButton)$elAdditionalQnaListArea.hide();
+else{$elAdditionalQnaListArea.show();$elAdditionalQuestionButton.attr("aria-expanded","true")}else $(document).trigger($.Event("initAdditionalQuestionWriteFormEvent",{parentAnswerNo:nParentAnswerNo}));
+$elAdditionalQuestionButton.toggleClass("is_active",!bIsActivatedButton);naver.kin.pc.common.toggleAriaExpanded($elAdditionalQuestionButton,$elAdditionalQnaListArea)},
+_initCommentList:function($elCommentListArea){if(!this._$element||!this._$template){alert(this._MESSAGE.WAIT_FOR_LOADING);return}if(!$elCommentListArea.existElements()){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);
+return}$elCommentListArea.html(this._$template["commentListAreaTpl"]({"placeholder":this._TEXTAREA_PLACEHOLDER,"isArticleOpen":this._oOption.isArticleOpen}));$elCommentListArea.show();this._setEventForCommentList($elCommentListArea);
+this._getCommentListAjax($elCommentListArea,1)},
+_setEventForCommentList:function($elCommentListArea){if(!$elCommentListArea.existElements())return;$elCommentListArea.on("click",this._onClickCommentListArea.bind(this));var oTextArea=$elCommentListArea.find("textarea");
+if(!oTextArea.existElements())return;oTextArea.on("input",this._onInputTextArea.bind(this));oTextArea.on("keyup",this._onInputTextArea.bind(this));oTextArea.on("focus",this._onFocusTextArea.bind(this));
+oTextArea.on("blur",this._onBlurTextArea.bind(this))},
+_onInputTextArea:function(oEvent){if(this._oInputEventTimeout)clearTimeout(this._oInputEventTimeout);var $elTextArea=oEvent.target;this._oInputEventTimeout=setTimeout(this._refreshCurrentCharCount.bind(this,
+$elTextArea),10)},
+_onFocusTextArea:function(oEvent){if(!naver.isLogin){$(oEvent.target).blur();if(confirm(this._MESSAGE.CHECK_LOGIN))naver.kin.pc.common.checkLoginAndRedirectToLoginForm();return}var $elTextArea=$(oEvent.target);
+if($elTextArea.val()===this._TEXTAREA_PLACEHOLDER)$elTextArea.val("");$elTextArea.removeClass("placeholder")},
+_onBlurTextArea:function(oEvent){var $elTextArea=$(oEvent.target);if(!$.trim($elTextArea.val()))this._resetTextArea($elTextArea)},
+_refreshCurrentCharCount:function(elTextArea){if(!elTextArea||/textarea/i.test(elTextArea.tagName)===false)return;var $elCurrentCharCount=$.getSingle("span._currentCharCount",elTextArea.parentNode.parentNode);
+if(!$elCurrentCharCount.existElements())return;var nTextLength=(elTextArea.value||"").length;$elCurrentCharCount.text(nTextLength+"");this._oInputEventTimeout=null},
+_getCommentListAjax:function($elCommentListArea,nPage){if(!$elCommentListArea.existElements()){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);return}if($elCommentListArea.hasClass("_commentListArea")===false){var $elParent=
+$elCommentListArea.closest("._commentListArea");if(!$elParent.existElements()){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);return}$elCommentListArea=$elParent.get(0)}var nAnswerNo=parseInt($elCommentListArea.data("answerNo"),
+10)||0;if(!this._oAjax[this._URL.COMMENT_LIST_AJAX])this._oAjax[this._URL.COMMENT_LIST_AJAX]={};if(!this._oAjaxStatus[this._URL.COMMENT_LIST_AJAX][nAnswerNo])this._oAjaxStatus[this._URL.COMMENT_LIST_AJAX][nAnswerNo]=
+{isProcessing:false,request:null};if(this._oAjaxStatus[this._URL.COMMENT_LIST_AJAX][nAnswerNo].isProcessing)this._oAjax[this._URL.COMMENT_LIST_AJAX][nAnswerNo].abort();var oAjaxParam={answerNo:nAnswerNo,
+count:this._COUNT_PER_PAGE,dirId:this._oOption.dirId||0,docId:this._oOption.docId||0,page:nPage||1};this._oAjax[this._URL.COMMENT_LIST_AJAX][nAnswerNo]=$.ajax({url:this._URL.COMMENT_LIST_AJAX,method:"get",
+timeout:5E3,data:oAjaxParam,beforeSend:function(){this._oAjaxStatus[this._URL.COMMENT_LIST_AJAX][nAnswerNo].isProcessing=true}.bind(this),
+complete:function(){this._oAjaxStatus[this._URL.COMMENT_LIST_AJAX][nAnswerNo].isProcessing=false}.bind(this),
+success:this._onSucceedInCommentListAjax.bind(this,$elCommentListArea,nPage),error:function(jqXHR,textStatus,errorThrown){if(this._oAjax[this._URL.COMMENT_LIST_AJAX][nAnswerNo]){this._oAjax[this._URL.COMMENT_LIST_AJAX][nAnswerNo].abort();
+this._oAjax[this._URL.COMMENT_LIST_AJAX][nAnswerNo]=null}if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})},
+_onSucceedInCommentListAjax:function($elCommentListArea,nPage,oResponse){if(oResponse&&oResponse.isSuccess){var $elCommentList=$.getSingle("div._commentList",$elCommentListArea);if(!$elCommentList.existElements()){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);
+return}var oResult=oResponse.result;if(oResult){var sThanksMessage=decodeURIComponent($elCommentListArea.data("thanksMessage")||"");$elCommentList.html(this._$template["commentListTpl"]({"currentPage":nPage,
+"thanksMessage":sThanksMessage,"list":this._getProcessedCommentList(oResult.commentList)}));var nTotalCount=oResult.totalCnt||0;var $elPagingArea=$.getSingle("div._pagingArea",$elCommentListArea);this._refreshPagingArea($elPagingArea,
+nTotalCount,nPage);this._refreshCommentCount($elCommentListArea,nTotalCount);$(document).trigger($.Event("changeFixedSmartEditorHeaderBoundaryEvent"))}}else{var sErrorMsg=oResponse&&oResponse.errorMsg||
+this._MESSAGE.FAIL_BY_UNKNOWN_REASON;alert(sErrorMsg)}},
+_getProcessedCommentList:function(aCommentList){if(!aCommentList)return aCommentList;for(var i=0,len=aCommentList.length;i<len;i++){var oCurrentComment=aCommentList[i];oCurrentComment.isDeletable=oCurrentComment.loginUserEqualCommentUser===
+true;oCurrentComment.isReportable=oCurrentComment.loginUserEqualCommentUser===false&&(!oCurrentComment.sticker||oCurrentComment===false)}return aCommentList},
+_refreshPagingArea:function($elPagingArea,nTotalCount,nPage){if(!$elPagingArea.existElements()||!nTotalCount||!nPage){$elPagingArea.html("");$elPagingArea.hide();return}var nFirstPageOfScreen=Math.floor((nPage-
+1)/this._PAGE_PER_SCREEN)*this._PAGE_PER_SCREEN+1;var nLastPage=Math.ceil(nTotalCount/this._COUNT_PER_PAGE);var nLastPageOfScreen=Math.min(nFirstPageOfScreen+this._PAGE_PER_SCREEN-1,nLastPage);if(nFirstPageOfScreen>
+nLastPageOfScreen){$elPagingArea.html("");$elPagingArea.hide();return}var aPageList=[];for(var i=nFirstPageOfScreen;i<=nLastPageOfScreen;i++)aPageList.push(i);$elPagingArea.html(this._$template["commentListPagingTpl"]({currentPage:nPage,
+pageList:aPageList,showPrevPageBtn:nFirstPageOfScreen>this._PAGE_PER_SCREEN,prevPage:nFirstPageOfScreen-1,showNextPageBtn:nLastPage>nLastPageOfScreen,nextPage:nLastPageOfScreen+1}));$elPagingArea.show()},
+_refreshCommentCount:function($elCommentListArea,nTotalCount){if(!$elCommentListArea.existElements()||naver.kin.pc.common.isNumber(nTotalCount)===false)return;var sThanksMessage=decodeURIComponent($elCommentListArea.data("thanksMessage")||
+"");if(sThanksMessage)nTotalCount++;var nAnswerNo=parseInt($elCommentListArea.data("answerNo"),10)||0;var $elCommentBtn=$("#cmtstr_"+nAnswerNo);if($elCommentBtn.existElements()){var $elCommentCount=$.getSingle("em._commentCnt",
+$elCommentBtn);if($elCommentCount.existElements())if(nTotalCount<1)if(nAnswerNo>0)$elCommentBtn.html('\x3ci class\x3d"icon icon_compose_opinion" aria-hidden\x3d"true"\x3e\x3c/i\x3e\x3cspan class\x3d"button_compose_text _commentText"\x3e\ub313\uae00\x3c/span\x3e');
+else{$elCommentCount.html("");$elCommentCount.hide()}else{var sTotalCount="";if(nTotalCount>=1E3)sTotalCount+="999+";else if(nTotalCount>0)sTotalCount+=nTotalCount;$elCommentCount.html(sTotalCount);$elCommentCount.show()}else if(!$elCommentCount.existElements())if(nTotalCount>
+0){var sTotalCount="";if(nTotalCount>=1E3)sTotalCount+="999+";else if(nTotalCount>0)sTotalCount+=nTotalCount;$elCommentBtn.html('\x3ci class\x3d"icon icon_compose_opinion" aria-hidden\x3d"true"\x3e\x3c/i\x3e\x3cem class\x3d"button_compose_count _commentCnt"\x3e'+
+sTotalCount+"\x3c/em\x3e")}}},
+_onClickCommentListArea:function(oEvent){var $elClicked=$(oEvent.target);if(/^(a|button)$/i.test($elClicked.get(0).tagName)===false){var $elParents=$elClicked.parents().map(function(){if(/^(a|button)$/i.test(this.tagName))return $(this)});
+if(!$elParents.existElements()){oEvent.preventDefault();oEvent.stopPropagation();return}$elClicked=$elParents.get(0)}var $elCommentListArea=$(oEvent.currentTarget);if($elClicked.hasClass("_pagingBtn")){var nPage=
+$elClicked.data("page")||0;this._getCommentListAjax($elCommentListArea,nPage);oEvent.preventDefault();oEvent.stopPropagation()}else if($elClicked.hasClass("_reportBtn")){var nCommentNo=$elClicked.data("commentNo");
+this._checkCommentReportableAjax($elCommentListArea,nCommentNo);oEvent.preventDefault();oEvent.stopPropagation()}else if($elClicked.hasClass("_deleteBtn")){if(confirm(this._MESSAGE.DELETE_COMMENT_CONFIRM)){var nCommentNo=
+$elClicked.data("commentNo");var nPage=$elClicked.data("page")||0;this._deleteCommentAjax($elCommentListArea,nCommentNo,nPage)}oEvent.preventDefault();oEvent.stopPropagation()}else if($elClicked.hasClass("_registerCommentBtn")){oEvent.preventDefault();
+oEvent.stopPropagation();this._requestPwFilterForComment($elCommentListArea)}else if($elClicked.hasClass("_targetCommentWriter")){alert(this._MESSAGE.TARGET_COMMENT_ALERT);oEvent.preventDefault();oEvent.stopPropagation()}},
+_checkCommentReportableAjax:function($elCommentListArea,nCommentNo){if(!naver.isLogin){if(confirm(this._MESSAGE.CHECK_LOGIN))naver.kin.pc.common.checkLoginAndRedirectToLoginForm();return}if(naver.kin.pc.common.checkRos())return false;
+if(!$elCommentListArea.existElements()){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);return}if(this._oAjaxStatus[this._URL.REPORT_COMMENT_AJAX].isProcessing){alert(this._MESSAGE.WAIT_FOR_PROCESSING);return}var sSvc=
+this._oOption.svc||"KIN";var oAjaxParam={svc:sSvc,dirId:this._oOption.dirId||0,docId:this._oOption.docId||0,commentNo:nCommentNo||0};if(sSvc==="KIN"){var nAnswerNo=parseInt($elCommentListArea.data("answerNo"),
+10)||0;oAjaxParam.answerNo=nAnswerNo}this._oAjax[this._URL.REPORT_COMMENT_AJAX]=$.ajax({url:this._URL.REPORT_COMMENT_AJAX,data:oAjaxParam,method:"post",beforeSend:function(){this._oAjaxStatus[this._URL.REPORT_COMMENT_AJAX].isProcessing=
+true}.bind(this),
+complete:function(){this._oAjaxStatus[this._URL.REPORT_COMMENT_AJAX].isProcessing=false}.bind(this),
+success:function($elCommentListArea,nCommentNo,oResponse){if(oResponse&&oResponse.isSuccess){var sSvc=this._oOption.svc||"KIN";var sPopupUrl="/popup/reportCommentPopup.nhn?svc\x3d"+sSvc+"\x26dirId\x3d"+
+(this._oOption.dirId||0)+"\x26docId\x3d"+(this._oOption.docId||0)+"\x26commentNo\x3d"+nCommentNo;if(sSvc==="KIN"){var nAnswerNo=parseInt($elCommentListArea.data("answerNo"),10)||0;sPopupUrl+="\x26answerNo\x3d"+
+nAnswerNo}naver.kin.pc.common.popup(sPopupUrl,"reportComment",{width:526,height:550})}else alert(oResponse&&oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR)}.bind(this,$elCommentListArea,nCommentNo),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+timeout:3E3})},
+_deleteCommentAjax:function($elCommentListArea,nCommentNo,nPage){if(!naver.isLogin){if(confirm(this._MESSAGE.CHECK_LOGIN))naver.kin.pc.common.checkLoginAndRedirectToLoginForm();return}if(naver.kin.pc.common.checkRos())return false;
+if(!$elCommentListArea.existElements()){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);return}if(this._oAjaxStatus[this._URL.DELETE_COMMENT_AJAX].isProcessing){alert(this._MESSAGE.WAIT_FOR_PROCESSING);return}var oAjaxParam=
+{answerNo:parseInt($elCommentListArea.data("answerNo"),10)||0,dirId:this._oOption.dirId||0,docId:this._oOption.docId||0,commentNo:nCommentNo||0};this._oAjax[this._URL.DELETE_COMMENT_AJAX]=$.ajax({url:this._URL.DELETE_COMMENT_AJAX+
+"?"+$.param(oAjaxParam),method:"post",beforeSend:function(){this._oAjaxStatus[this._URL.DELETE_COMMENT_AJAX].isProcessing=true}.bind(this),
+complete:function(){this._oAjaxStatus[this._URL.DELETE_COMMENT_AJAX].isProcessing=false}.bind(this),
+success:this._getCommentListAjax.bind(this,$elCommentListArea,nPage),error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+timeout:3E3})},
+_requestPwFilterForComment:function($elCommentListArea){if(!$elCommentListArea.existElements()){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);return}if(!naver.kin.pc.PWFilter){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);
+return}if(this._bIsProcessing===true){alert(this._MESSAGE.WAIT_FOR_PROCESSING);return}var oTextArea=$.getSingle("textarea",$elCommentListArea);if(!oTextArea.existElements())return;var sUnescapedContents=
+oTextArea.val();oTextArea.text(sUnescapedContents);var sContents=oTextArea.html()||"";if(sContents===this._TEXTAREA_PLACEHOLDER){alert(this._MESSAGE.EMPTY_CONTENTS);return}this._startRegisterProcessing();
+this._oPwFilter=new naver.kin.pc.PWFilter({"contents":sContents,"id":"commentText","submitFunction":this._registerCommentAjax.bind(this,sContents,$elCommentListArea),"containProhibitedWordsFunction":this._onContainsPwCallback.bind(this,
+$elCommentListArea),"errorCallbackFunction":this._onErrorPwCallback.bind(this)});this._oPwFilter.process()},
+_startRegisterProcessing:function(){this._bIsProcessing=true;this._$element["loadingIndicator"].show()},
+_finishRegisterProcessing:function(){this._bIsProcessing=false;this._$element["loadingIndicator"].hide();if(this._oPwFilter)this._oPwFilter=null},
+_registerCommentAjax:function(sContents,$elCommentListArea){this._finishRegisterProcessing();if(!naver.isLogin){if(confirm(this._MESSAGE.CHECK_LOGIN))naver.kin.pc.common.checkLoginAndRedirectToLoginForm();
+return}if(naver.kin.pc.common.checkRos())return false;if(!sContents||!$elCommentListArea.existElements()){alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON);return}if(this._oAjaxStatus[this._URL.REGISTER_COMMENT_AJAX].isProcessing){alert(this._MESSAGE.WAIT_FOR_PROCESSING);
+return}var oAjaxParam={answerNo:parseInt($elCommentListArea.data("answerNo"),10)||0,dirId:this._oOption.dirId||0,docId:this._oOption.docId||0,contents:sContents,mdu:this._oOption.mdu||""};this._oAjax[this._URL.REGISTER_COMMENT_AJAX]=
+$.ajax({url:this._URL.REGISTER_COMMENT_AJAX,data:oAjaxParam,method:"post",timeout:7E3,beforeSend:function(){this._oAjaxStatus[this._URL.REGISTER_COMMENT_AJAX].isProcessing=true}.bind(this),
+complete:function(){this._oAjaxStatus[this._URL.REGISTER_COMMENT_AJAX].isProcessing=false}.bind(this),
+success:this._onSucceedInCommentRegisterAjax.bind(this,$elCommentListArea),error:function(jqXHR,textStatus,errorThrown){if(!this._oAjax[this._URL.REGISTER_COMMENT_AJAX]){this._oAjax[this._URL.REGISTER_COMMENT_AJAX].abort();
+this._oAjax[this._URL.REGISTER_COMMENT_AJAX]=null}if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})},
+_onSucceedInCommentRegisterAjax:function($elCommentListArea,oResponse){if(oResponse&&oResponse.isSuccess){this._resetTextArea($elCommentListArea);this._getCommentListAjax($elCommentListArea,1,oResponse)}else if(oResponse.errorMsg)alert(oResponse.errorMsg);
+else alert(naver.kin.pc.common.MESSAGE.ERROR)},
+_resetTextArea:function($elTextArea){if(!$elTextArea.existElements())return;if(/^textarea$/i.test($elTextArea.get(0).tagName)===false)$elTextArea=$.getSingle("textarea",$elTextArea);if($elTextArea){$elTextArea.val(this._TEXTAREA_PLACEHOLDER);
+$elTextArea.text(this._TEXTAREA_PLACEHOLDER);$elTextArea.addClass("placeholder");var $elCurrentCharCount=$.getSingle("span._currentCharCount",$elTextArea.parent().parent());if($elCurrentCharCount)$elCurrentCharCount.text("0")}},
+_onContainsPwCallback:function($elCommentListArea,aProhibitedWords){this._finishRegisterProcessing();if(!aProhibitedWords||aProhibitedWords.length<1)return;setTimeout(function($elCommentListArea,aProhibitedWords){this._showPWLayer($elCommentListArea,
+aProhibitedWords)}.bind(this,$elCommentListArea,aProhibitedWords),300)},
+_showPWLayer:function($elCommentListArea,aProhibitedWords){if(!aProhibitedWords||aProhibitedWords.length<1||!this._$template["PWLayer"]||!this._$element["PWLayerArea"].existElements())return;var sProhibitedWords=
+aProhibitedWords.join(", ");this._$element["PWLayerArea"].html(this._$template["PWLayer"]({"prohibitedWords":sProhibitedWords}));if(!this._$element["PWLayerArea"].is(":visible"))this._$element["PWLayerArea"].show();
+this._adjustPositionOfPWLayer()},
+_adjustPositionOfPWLayer:function(){if(!this._$element["PWLayerArea"].existElements())return;var $elAdjustPosition=$("._adjustPosition",this._$element["PWLayerArea"]);if($elAdjustPosition.existElements())$elAdjustPosition.css({top:window.pageYOffset+
+(document.documentElement.clientHeight-$elAdjustPosition.height())/2+"px",left:(document.documentElement.clientWidth-$elAdjustPosition.width())/2+"px"})},
+_hidePWLayer:function(){if(!this._$element["PWLayerArea"].existElements())return;this._$element["PWLayerArea"].html("");if(this._$element["PWLayerArea"].is("visible"))this._$element["PWLayerArea"].hide()},
+_onClickPWLayer:function(oEvent){var $el=$(oEvent.target);if(/^img$/i.test($el.get(0).tagName))$el=$el.parent();if(!/^(?:a|button)$/i.test($el.get(0).tagName)){oEvent.preventDefault();oEvent.stopPropagation();
+return}if($el.hasClass("_closeBtn")||$el.hasClass("_submitBtn"))this._hidePWLayer();oEvent.preventDefault();oEvent.stopPropagation()},
+_onErrorPwCallback:function(){this._finishRegisterProcessing();alert(this._MESSAGE.FAIL_BY_UNKNOWN_REASON)}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.QuestionBottom=eg.Class({_oOption:null,_$element:null,_bIsAjaxProcessing:false,_bDividedQuestion:false,_nDirId:0,_nDocId:0,_nAnswerNo:0,_sRssFlag:null,_sOpenFlag:null,_sArticleOpenYn:null,
+METOO_WWONDER_BUTTON_ID:"metooWonderBtn",QUESTION_MENU_BUTTON_ID:"questionMenuBtn",_URL:{EXTERNAL_AGREE_AJAX_URL:"/ajax/detail/rssPermit.nhn",MODIFY_QUESTION_URL:"/qna/questionModify.nhn",DELETE_QUESTION_URL:"/qna/deleteQuestion.nhn",
+CLOSE_QUESTION_URL:"/popup/closeQuestionClose.nhn",CLOSE_USER_ID_URL:"/ajax/detail/closeQuestionerId.nhn",USER_BLOCK_URL:"/ajax/detail/blockUserAjax.nhn",ARTICLE_OPEN_AJAX_URL:"/ajax/detail/articleOpenAjax.nhn",
+ARTICLE_CLOSE_AJAX_URL:"/ajax/detail/articleCloseAjax.nhn",METOO_WONDER_REGISTER_AJAX:"/ajax/detail/metooWonderRegisterAjax.nhn",METOO_WONDER_CANCEL_AJAX:"/ajax/detail/metooWonderCancelAjax.nhn"},_MESSAGE:{PLEASE_LOGIN:"\ub85c\uadf8\uc778 \ud6c4 \uc774\uc6a9\ud574\uc8fc\uc2dc\uae30 \ubc14\ub78d\ub2c8\ub2e4.",
+AJAX_PROCESSING:"\uc791\uc5c5\uc774 \uc9c4\ud589\uc911\uc785\ub2c8\ub2e4. \uc7a0\uc2dc\ub9cc \uae30\ub2e4\ub824\uc8fc\uc138\uc694.",NO_QUESTION_DATA:"\uc9c8\ubb38\uc5d0 \ub300\ud55c \uc815\ubcf4\ub97c \uac00\uc838\uc624\uc9c0 \ubabb\ud588\uc2b5\ub2c8\ub2e4. \ud398\uc774\uc9c0\ub97c \uc0c8\ub85c\uace0\uce68 \ud574\uc8fc\uc138\uc694.",
+DIVIDED_QUESTION_MODIFY_CONFIRM:"\ub098\ub208 \uc9c8\ubb38\uc744 \uc218\uc815\ud558\uba74 \ub098\ub208 \uc9c8\ubb38\uc5d0\uc11c \uc81c\uc678\ub429\ub2c8\ub2e4. \uc9c4\ud589\ud558\uc2dc\uaca0\uc2b5\ub2c8\uae4c?",
+DELETE_QUESTION_CONFIRM:"\uc0ad\uc81c\ub41c \uc9c8\ubb38\uc740 \ubcf5\uad6c\ud560\uc218 \uc5c6\uc73c\uba70\n\ubc1b\uc740 \ub0b4\uacf5 5\uc810\uc774 \ud68c\uc218\ub429\ub2c8\ub2e4.\n\uc0ad\uc81c\ud558\uc2dc\uaca0\uc2b5\ub2c8\uae4c?",
+CLOSE_QUESTION_SUCCESS:"\uc9c8\ubb38\uc774 \ub9c8\uac10\ub418\uc5c8\uc2b5\ub2c8\ub2e4.\n\ub354\uc774\uc0c1 \ub2f5\ubcc0\uc774 \ub4f1\ub85d\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",CANCEL_METOO_WONDER:"\uc774 \uc9c8\ubb38\uc5d0 \ub300\ud55c \ub2f5\ubcc0 \uc18c\uc2dd\uc744 \ubc1b\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.\n\ud504\ub85c\ud544 \ubaa9\ub85d\uc5d0\uc11c\ub3c4 \ud568\uaed8 \uc0ad\uc81c\ub429\ub2c8\ub2e4.",
+EXTERNAL_AGREE_AJAX_SUCCESS:"\uc678\ubd80\uac80\uc0c9\uc774 \ud5c8\uc6a9\ub418\uc5c8\uc2b5\ub2c8\ub2e4.",EXTERNAL_NOT_AGREE_AJAX_SUCCESS:"\uc678\ubd80\uac80\uc0c9\uc774 \ube44\ud5c8\uc6a9\ub418\uc5c8\uc2b5\ub2c8\ub2e4."},
+construct:function(htOption){this._oOption=htOption||{};this._bDividedQuestion=this._oOption.dividedQuestion;this._nDirId=this._oOption.dirId;this._nDocId=this._oOption.docId;this._nAnswerNo=this._oOption.answerNo;
+this._sRssFlag=this._oOption.rssFlag;this._sOpenFlag=this._oOption.openFlag;this._setElement();this._setEvent();if(!this._$element["questionMenuLayer"].find("a").existElements())this._$element["questionMenuBtn"].hide()},
+_setElement:function(){this._$element={};this._$element["body"]=$(document.body);this._$element["profileArea"]=$("div._profileArea");this._$element["profileTooltip"]=$("div._profileTooltip");this._$element["questionInfoArea"]=
+$("div._questionInfoArea");this._$element["metooWonderBtn"]=$("#metooWonderBtn");this._$element["metooWonderCnt"]=$.getSingle("em._metooWonderCnt",this._$element["metooWonderBtn"]);this._$element["metooWonderLayer"]=
+$("div._metooWonderLayer");this._$element["metooWonderLayerCloseBtn"]=$("a._metooWonderLayerCloseBtn");this._$element["questionMenuBtn"]=$("#questionMenuBtn");this._$element["questionMenuLayer"]=$("div._questionMenuLayer");
+this._$element["openNicknameBtn"]=$("a._openNicknameBtn");this._$element["modifyQuestionBtn"]=$("a._modifyQuestionBtn");this._$element["deleteQuestionBtn"]=$("a._deleteQuestionBtn");this._$element["articleOpenCloseBtn"]=
+$("a._articleOpenCloseBtn");this._$element["closeQuestionBtn"]=$("a._closeQuestionBtn");this._$element["detailDimmedLayer"]=$("#detailQuestionDimmedLayer");this._$element["articleOpenLayer"]=$.getSingle("div._articleOpenLayer",
+this._$element["detailDimmedLayer"]);this._$element["articleCloseLayer"]=$.getSingle("div._articleCloseLayer",this._$element["detailDimmedLayer"]);this._$element["openNicknameLayer"]=$.getSingle("div._openNicknameLayer",
+this._$element["detailDimmedLayer"]);this._$element["checkList"]=$.getSingle("ul._checkList",this._$element["detailDimmedLayer"]);this._$element["inputCheckbox"]=$("input._checkGuide",this._$element["detailDimmedLayer"]);
+this._$element["layerFirstElement"]=$("a._firstElement",this._$element["detailDimmedLayer"]);this._$element["layerLastElement"]=$("a._lastElement",this._$element["detailDimmedLayer"]);this._$element["closeUserIdCheck"]=
+$("input._closeUserIdCheck",this._$element["detailDimmedLayer"])},
+_setEvent:function(){if(this._$element["profileArea"].existElements()){this._$element["profileArea"].on("mouseenter",function(){this._$element["profileTooltip"].show()}.bind(this));
+this._$element["profileArea"].on("mouseleave",function(){this._$element["profileTooltip"].hide()}.bind(this));
+if(this._$element["profileTooltip"].is(":visible"))$(document).on("click",function(oEvent){this._$element["profileTooltip"].hide()}.bind(this))}if(this._$element["metooWonderBtn"].existElements()&&!this._$element["metooWonderBtn"].hasClass("_disable"))this._$element["metooWonderBtn"].on("click",
+this._onClickMetooWonderBtn.bind(this));
+if(this._$element["metooWonderLayerCloseBtn"].existElements())this._$element["metooWonderLayerCloseBtn"].on("click",this._hideClosestPopupLayer.bind(this));if(this._$element["questionMenuBtn"].existElements())this._$element["questionMenuBtn"].on("click",
+this._onClickQuestionMenuBtn.bind(this));if(this._$element["openNicknameBtn"].existElements())this._$element["openNicknameBtn"].on("click",this._onClickOpenNicknameBtn.bind(this));if(this._$element["modifyQuestionBtn"].existElements())this._$element["modifyQuestionBtn"].on("click",
+this._onClickModifyQuestionBtn.bind(this));if(this._$element["deleteQuestionBtn"].existElements())this._$element["deleteQuestionBtn"].on("click",this._onClickDeleteQuestionBtn.bind(this));if(this._$element["articleOpenCloseBtn"].existElements())this._$element["articleOpenCloseBtn"].on("click",
+this._onClickArticleOpenCloseBtn.bind(this));if(this._$element["closeQuestionBtn"].existElements())this._$element["closeQuestionBtn"].on("click",this._onClickCloseQuestionBtn.bind(this));if(this._$element["articleOpenCloseBtn"].existElements()&&
+this._$element["articleOpenLayer"].existElements()&&this._$element["detailDimmedLayer"].existElements()){this._$element["articleOpenLayer"].on("click",this._onClickArticleOpenLayer.bind(this));this._$element["articleCloseLayer"].on("click",
+this._onClickArticleCloseLayer.bind(this));this._$element["checkList"].on("click",this._onClickCheckGuideButton.bind(this));this._$element["inputCheckbox"].on("keydown",this._onKeydownCheckGuideInput.bind(this));
+this._$element["layerFirstElement"].on("keydown",this._onKeydownFirstLastElement.bind(this));this._$element["layerLastElement"].on("keydown",this._onKeydownFirstLastElement.bind(this))}if(this._$element["openNicknameLayer"].existElements()&&
+this._$element["detailDimmedLayer"].existElements())this._$element["openNicknameLayer"].on("click",this._onClickOpenNicknameLayer.bind(this))},
+isLogin:function(){if(!naver.isLogin){naver.kin.pc.common.openLoginPopup();return false}else return true},
+_hideClosestPopupLayer:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();var $el=$(oEvent.currentTarget);$el.closest("div._popupLayer").hide();var $toggleButton=$el.closest("button._togglePopupButton");
+$toggleButton.focus();$toggleButton.attr("aria-pressed","false")},
+_onClickMetooWonderBtn:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();var $el=$(oEvent.currentTarget);if(this._$element["metooWonderLayer"].is(":visible")){this._$element["metooWonderLayer"].hide();
+$el.attr("aria-pressed","false");return false}if(naver.kin.pc.common.checkRos())return false;if(!naver.isLogin){alert(this._MESSAGE.PLEASE_LOGIN);return false}var sState=this._getMetooWonderState();if(sState===
+"already"){if(confirm(this._MESSAGE.CANCEL_METOO_WONDER))this._onCancelMetooWonder()}else if(sState==="enabled")this._onRegisterMetooWonder()},
+_getMetooWonderState:function(){var state=null;if(!this._$element["metooWonderBtn"].existElements())return state;if(this._$element["metooWonderBtn"].hasClass("_disable"))state="disabled";else if(this._$element["metooWonderBtn"].hasClass("_check"))state=
+"already";else state="enabled";return state},
+_onRegisterMetooWonder:function(){var oParam={dirId:this._nDirId,docId:this._nDocId};var oOption={url:this._URL.METOO_WONDER_REGISTER_AJAX,data:oParam,method:"post",timeout:1E3,success:function(oResponse){if(oResponse&&
+oResponse.isSuccess){var oJson=oResponse.result;if(this._$element["metooWonderBtn"].existElements()){this._$element["metooWonderBtn"].addClass("_check");this._$element["metooWonderBtn"].addClass("is_active");
+this._$element["metooWonderBtn"].attr("aria-pressed","false")}if(this._$element["metooWonderCnt"].existElements())if(oJson.metooWonderCnt>0){var nMetooWonderCnt=oJson.metooWonderCnt<1E3?oJson.metooWonderCnt:
+"999+";this._$element["metooWonderCnt"].html(nMetooWonderCnt)}else this._$element["metooWonderCnt"].html("");if(this._$element["metooWonderLayer"].existElements()){this._$element["metooWonderLayer"].show();
+this._$element["metooWonderLayer"].focus()}}else alert(oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)};
+$.ajax(oOption)},
+_onCancelMetooWonder:function(){var oParam={dirId:this._nDirId,docId:this._nDocId};var oOption={url:this._URL.METOO_WONDER_CANCEL_AJAX,data:oParam,method:"post",timeout:5E3,success:function(oResponse){if(oResponse&&
+oResponse.isSuccess){var oJson=oResponse.result;if(this._$element["metooWonderBtn"].existElements()){this._$element["metooWonderBtn"].removeClass("_check");this._$element["metooWonderBtn"].removeClass("is_active")}if(this._$element["metooWonderCnt"].existElements())if(oJson.metooWonderCnt>
+0){var nMetooWonderCnt=oJson.metooWonderCnt<1E3?oJson.metooWonderCnt:"999+";this._$element["metooWonderCnt"].html(nMetooWonderCnt)}else this._$element["metooWonderCnt"].html("")}else alert(oResponse.errorMsg||
+naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)};
+$.ajax(oOption)},
+_onClickQuestionMenuBtn:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();if(!this._$element["questionMenuLayer"].is(":visible")){this._$element["questionInfoArea"].attr("aria-activedescendant",
+this.QUESTION_MENU_BUTTON_ID);this._$element["questionMenuBtn"].attr("aria-expanded",true);this._$element["questionMenuBtn"].addClass("is_active");this._$element["questionMenuLayer"].removeAttr("aria-hidden");
+this._$element["questionMenuLayer"].show()}else{this._$element["questionInfoArea"].removeAttr("aria-activedescendant");this._$element["questionMenuBtn"].attr("aria-expanded",false);this._$element["questionMenuBtn"].removeClass("is_active");
+this._$element["questionMenuLayer"].attr("aria-hidden",true);this._$element["questionMenuLayer"].hide()}},
+_onClickOpenNicknameBtn:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();this._showDimmedLayer(this._$element["openNicknameLayer"])},
+_onClickModifyQuestionBtn:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();if(this._bIsAjaxProcessing===true){alert(this._MESSAGE.AJAX_PROCESSING);return false}if(naver.kin.pc.common.checkRos())return false;
+if(!naver.isLogin){alert(this._MESSAGE.PLEASE_LOGIN);return false}if(this._bDividedQuestion&&!confirm(this._MESSAGE.DIVIDED_QUESTION_MODIFY_CONFIRM))return false;var $targetElement=$(oEvent.currentTarget);
+var sMdu=$targetElement.data("mdu");location.href=this._URL.MODIFY_QUESTION_URL+"?dirId\x3d"+this._nDirId+"\x26docId\x3d"+this._nDocId+"\x26mdu\x3d"+sMdu},
+_onClickDeleteQuestionBtn:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();if(this._bIsAjaxProcessing===true){alert(this._MESSAGE.AJAX_PROCESSING);return false}if(naver.kin.pc.common.checkRos())return false;
+if(!naver.isLogin){alert(this._MESSAGE.PLEASE_LOGIN);return false}if(!confirm(this._MESSAGE.DELETE_QUESTION_CONFIRM))return false;var oParam={dirId:this._nDirId,docId:this._nDocId};this._requestPostForm(oParam,
+this._URL.DELETE_QUESTION_URL)},
+_onClickArticleOpenCloseBtn:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();if(this._bIsAjaxProcessing===true){alert(this._MESSAGE.AJAX_PROCESSING);return false}if(naver.kin.pc.common.checkRos())return false;
+if(!naver.isLogin){alert(this._MESSAGE.PLEASE_LOGIN);return false}if(this._bDividedQuestion&&!confirm(this._MESSAGE.DIVIDED_QUESTION_MODIFY_CONFIRM))return false;if(this._$element["detailDimmedLayer"].existElements())if(this._$element["articleOpenCloseBtn"].hasClass("_close")){this._showDimmedLayer(this._$element["articleCloseLayer"]);
+$.getSingle("input._firstElement",this._$element["articleCloseLayer"]).focus()}else{this._showDimmedLayer(this._$element["articleOpenLayer"]);$.getSingle("input._firstElement",this._$element["articleOpenLayer"]).focus()}},
+_onClickCloseQuestionBtn:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();if(this._bIsAjaxProcessing===true){alert(this._MESSAGE.AJAX_PROCESSING);return false}if(naver.kin.pc.common.checkRos())return false;
+if(!naver.isLogin){alert(this._MESSAGE.PLEASE_LOGIN);return false}var oParam={"dirId":this._nDirId,"docId":this._nDocId};var oOption={url:this._URL.CLOSE_QUESTION_URL,data:oParam,method:"post",timeout:1E3,
+beforeSend:function(){this._bIsAjaxProcessing=true}.bind(this),
+complete:function(){this._bIsAjaxProcessing=false}.bind(this),
+success:function(oResponse){alert(this._MESSAGE.CLOSE_QUESTION_SUCCESS);location.reload()}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}};
+$.ajax(oOption)},
+_onKeydownCheckGuideInput:function(oEvent){var el=oEvent.target;if(!el){oEvent.preventDefault();oEvent.stopPropagation();return}if(oEvent.keyCode===13||oEvent.keyCode===32){oEvent.stopPropagation();oEvent.preventDefault();
+oEvent.target=$.getSingle("._check",$(oEvent.target).parent());this._onClickCheckGuideButton(oEvent)}},
+_onKeydownFirstLastElement:function(oEvent){var el=oEvent.target;if(!el){oEvent.preventDefault();oEvent.stopPropagation();return}var $el=$(el);var oKey=oEvent.key();var nKeyCode=oKey.keyCode;if($el.hasClass("_firstElement")&&
+oKey.shift&&nKeyCode===9)if(this._$element["articleOpenLayer"].is(":visible")){$.getSingle("._lastElement",this._$element["articleOpenLayer"]).focus();oEvent.preventDefault();oEvent.stopPropagation()}else{if(this._$element["articleCloseLayer"].is(":visible")){$.getSingle("._lastElement",
+this._$element["articleCloseLayer"]).focus();oEvent.preventDefault();oEvent.stopPropagation()}}else if($el.hasClass("_lastElement")&&!oKey.shift&&nKeyCode===9)if(this._$element["articleOpenLayer"].is(":visible")){$.getSingle("._firstElement",
+this._$element["articleOpenLayer"]).focus();oEvent.preventDefault();oEvent.stopPropagation()}else if(this._$element["articleCloseLayer"].is(":visible")){$.getSingle("._firstElement",this._$element["articleCloseLayer"]).focus();
+oEvent.preventDefault();oEvent.stopPropagation()}},
+_onClickCheckGuideButton:function(oEvent){var $el;if(/label/i.test(oEvent.target.tagName))$el=$.getSingle("._check",oEvent.target);else $el=$(oEvent.target);if($el.hasClass("_check")){var $elParent=$el.parent();
+$elParent.toggleClass("checked");var bChecked=$elParent.hasClass("checked");var aChild=$elParent.children("._checkGuide");if(aChild.length>0)aChild.prop("checked",bChecked);else{var $elInput=$elParent.prev();
+if(/^input$/.test($elInput.get(0).tagName.toLowerCase())){$elInput.prop("checked",bChecked);naver.kin.pc.common.toggleAriaChecked($elInput)}}}},
+_onClickArticleOpenLayer:function(oEvent){if(naver.kin.pc.common.checkRos()){oEvent.preventDefault();oEvent.stopPropagation();return false}var $el=$(oEvent.target);if($el.prop("tagName").toLowerCase()!==
+"a")$el=$el.closest("a");if($el.hasClass("_articleOpenBtn")){var nDirId=$el.data("dirId");var nDocId=$el.data("docId");var oParam={dirId:nDirId,docId:nDocId};this._requestPostAjax(oParam,this._URL.ARTICLE_OPEN_AJAX_URL)}else if($el.hasClass("_layerCloseBtn")){this._closeDetailDimmedLayer();
+oEvent.preventDefault()}oEvent.preventDefault();oEvent.stopPropagation();return},
+_onClickArticleCloseLayer:function(oEvent){if(naver.kin.pc.common.checkRos()){oEvent.preventDefault();oEvent.stopPropagation();return false}var $el=$(oEvent.target);if($el.prop("tagName").toLowerCase()!==
+"a")$el=$el.closest("a");if($el.hasClass("_articleCloseBtn")){var nDirId=$el.data("dirId");var nDocId=$el.data("docId");var aCheckBoxGuide=$("input._checkGuide");if(aCheckBoxGuide&&aCheckBoxGuide.length>
+0){for(var i=0;i<aCheckBoxGuide.length;i++)if($(aCheckBoxGuide[i]).prop("checked")===false){alert("\uc804\ubd80 \uccb4\ud06c \ud558\uc168\ub294\uc9c0 \ud655\uc778\ud574\uc8fc\uc138\uc694.");oEvent.preventDefault();
+oEvent.stopPropagation();return}var oParam={dirId:nDirId,docId:nDocId};this._requestPostAjax(oParam,this._URL.ARTICLE_CLOSE_AJAX_URL)}}else if($el.hasClass("_layerCloseBtn")){this._closeDetailDimmedLayer();
+oEvent.preventDefault()}oEvent.stopPropagation();return},
+_onClickOpenNicknameLayer:function(oEvent){if(naver.kin.pc.common.checkRos()){oEvent.preventDefault();oEvent.stopPropagation();return false}var $el=$(oEvent.target);if($el.prop("tagName").toLowerCase()!==
+"a")$el=$el.closest("a");if($el.hasClass("_closeUserIdBtn")){var nDirId=$el.data("dirId");var nDocId=$el.data("docId");var nAnswerNo=0;var sListOut="N";if(this._$element["closeUserIdCheck"].prop("checked")===
+true)sListOut="Y";var oParam={dirId:nDirId,docId:nDocId,answerNo:nAnswerNo,listOut:sListOut};this._requestPostAjax(oParam,this._URL.CLOSE_USER_ID_URL)}else if($el.hasClass("_layerCloseBtn")){this._closeDetailDimmedLayer();
+oEvent.preventDefault()}oEvent.stopPropagation();return},
+_requestPostAjax:function(oParam,sAjaxUrl){var oOption={url:sAjaxUrl,data:oParam,method:"POST",timeout:3E3,success:function(oResponse){if(oResponse&&oResponse.isSuccess){location.reload();this._closeDetailDimmedLayer()}else alert(oResponse.errorMsg||
+naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR);this._closeDetailDimmedLayer()}.bind(this)};
+$.ajax(oOption)},
+_requestPostForm:function(oParam,sAjaxUrl){var $form=$("\x3cform\x3e\x3c/form\x3e");$form.attr("action",sAjaxUrl);$form.attr("method","post");$form.appendTo("body");for(var key in oParam){var param=document.createElement("input");
+param.setAttribute("type","hidden");param.setAttribute("name",key);param.setAttribute("value",oParam[key]);$form.append(param)}$form.submit()},
+_showDimmedLayer:function($elDimmedLayer){this._$element["body"].addClass("body_hidden");this._$element["detailDimmedLayer"].show();$elDimmedLayer.show()},
+_hideDimmedLayer:function($elDimmedLayer){this._$element["body"].removeClass("body_hidden");this._$element["detailDimmedLayer"].hide();$elDimmedLayer.hide()},
+_closeDetailDimmedLayer:function(){if(this._$element["articleOpenLayer"].existElements()&&this._$element["articleOpenLayer"].is(":visible"))this._hideDimmedLayer(this._$element["articleOpenLayer"]);if(this._$element["articleCloseLayer"].existElements()&&
+this._$element["articleCloseLayer"].is(":visible"))this._hideDimmedLayer(this._$element["articleCloseLayer"]);if(this._$element["openNicknameLayer"].existElements()&&this._$element["openNicknameLayer"].is(":visible"))this._hideDimmedLayer(this._$element["openNicknameLayer"])},
+destroy:function(){if(!this._$element)return;if(this._$element["profileArea"]){this._$element["profileArea"].off("mouseenter");this._$element["profileArea"].off("mouseleave")}if(this._$element["commentBtn"])this._$element["commentBtn"].off("click");
+if(this._$element["metooWonderBtn"])this._$element["metooWonderBtn"].off("click");if(this._$element["questionMenuBtn"])this._$element["questionMenuBtn"].off("click");this._$element=this._$templete=this._oOption=
+null}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.DirMove=eg.Class({_oOption:null,_$element:null,DIR_MOVE_PROCESS_URL:"/qna/editorDirMoveProcess.nhn",construct:function(htOption){this._oOption=htOption||{};this._setElement();this._setEvent()},
+_setElement:function(){this._$element={};this._$element["dirMoveBtn"]=$("a._dirMoveBtn");this._$element["moveDirId"]=$("#moveDirId")},
+_setEvent:function(){if(this._$element["dirMoveBtn"].existElements())this._$element["dirMoveBtn"].on("click",this._onDirMoveBtn.bind(this));$(document).on("changeMoveDirId",function(){this._onChangeMoveDirId()}.bind(this))},
+_onDirMoveBtn:function(oEvent){oEvent.preventDefault();var url="/qna/editorDirMoveForm.nhn?keyword\x3d\x26dirId\x3d"+this._oOption.dirId+"\x26docId\x3d"+this._oOption.docId;naver.kin.pc.common.popup(url,
+"editorDirMove",{width:770,height:400})},
+_onChangeMoveDirId:function(oEvent){if(naver.kin.pc.common.checkRos())return;var oParam={dirId:this._oOption.dirId,docId:this._oOption.docId,lUrl:naver.kin.pc.common.base64Encoding(document.referrer),moveDirId:this._$element["moveDirId"].val()};
+if(oParam.moveDirId==="")return;setTimeout(function(){this._requestPostForm(oParam,this.DIR_MOVE_PROCESS_URL)}.bind(this),500)},
+_requestPostForm:function(oParam,sAjaxUrl){var $form=$("\x3cform\x3e\x3c/form\x3e");$form.attr("action",sAjaxUrl);$form.attr("method","post");$form.appendTo("body");for(var key in oParam)if(oParam.hasOwnProperty(key)){var param=
+document.createElement("input");param.setAttribute("type","hidden");param.setAttribute("name",key);param.setAttribute("value",oParam[key]);$form.append(param)}$form.submit()},
+destroy:function(){if(!this._$element)return;if(this._$element["dirMoveBtn"].existElements())this._$element["dirMoveBtn"].off("click");if(this._$element["moveDirId"].existElements())this._$element["moveDirId"].off("click");
+this._$element=this._oOption=null}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.AsideMenu=eg.Class({_$element:null,_$template:null,_messageList:null,_noticeList:null,_oTimer:null,URL:{MESSAGE_LIST_AJAX_URL:"/ajax/user/getMessageList.nhn",NOTICE_LIST_AJAX_URL:"/ajax/common/getNoticeList.nhn",
+DELETE_MY_KIN_ACTIVITY:{PUBLIC:"/ajax/removePublicMessage.nhn",PRIVATE:"/ajax/removePrivateMessage.nhn",REALTIME:"/ajax/removeRealtimeMessage.nhn"}},MESSAGE:{NO_MY_MESSAGE:"\x3cdiv class\x3d'popup__nodata'\x3e\x3cp class\x3d'popup__nodata_text'\x3e\ucd5c\uadfc \ub0b4 \uc18c\uc2dd\uc774 \uc5c6\uc2b5\ub2c8\ub2e4.\x3c/p\x3e\x3c/div\x3e",
+NO_NOTICE_LIST:"\x3cdiv class\x3d'popup__nodata'\x3e\x3cp class\x3d'popup__nodata_text'\x3e\uacf5\uc9c0\uc0ac\ud56d\uc774 \uc5c6\uc2b5\ub2c8\ub2e4.\x3c/p\x3e\x3c/div\x3e"},INIT_FLAG:{NEW_MESSAGE:false,
+NOTICE:false},PAGE_NO:{MESSAGE:0,NOTICE:0},PAGE_PER_COUNT:{MESSAGE:10,NOTICE:10},DATE_FORMAT_LENGTH:11,construct:function(){this._setElement();this._attachEvent();this._loadNoticeList(false)},
+_setElement:function(){this._$element={};this._$template={};this._$element["asideMenu"]=$("#asideMenu");this._$element["myMessageButton"]=$.getSingle("a._my_message_button",this._$element["asideMenu"]);
+this._$element["noticeButton"]=$.getSingle("a._notice_button",this._$element["asideMenu"]);this._$element["spiButton"]=$.getSingle("a._spi",this._$element["asideMenu"]);this._$element["myMessageLayer"]=
+$.getSingle("div._my_message_layer",this._$element["asideMenu"]);this._$element["noticeLayer"]=$.getSingle("div._notice_layer",this._$element["asideMenu"]);this._$element["newNoticeIcon"]=$.getSingle("span._new_notice_icon",
+this._$element["asideMenu"]);this._$element["myMessageCount"]=$.getSingle("span._my_message_count",this._$element["asideMenu"]);if(this._$element["myMessageLayer"].existElements())this._$element["myMessageList"]=
+$.getSingle("ul._my_message_list",this._$element["myMessageLayer"]);if(this._$element["noticeLayer"].existElements())this._$element["noticeList"]=$.getSingle("ul._notice_list",this._$element["noticeLayer"]);
+this._$element["bounceAnimationBoundary"]=$.getSingle("div._bounceAnimationBoundary");this._$template["myMessageItemTpl"]=doT.template($("#myMessageItemTpl").html());this._$template["noticeItemTpl"]=doT.template($("#noticeItemTpl").html())},
+_attachEvent:function(){if(this._$element["myMessageButton"].existElements()){this._$element["myMessageButton"].on("click",this._clickMessageButton.bind(this));this._$element["myMessageButton"].on("keydown",
+this._keyDownMessageButton.bind(this))}if(this._$element["noticeButton"].existElements())this._$element["noticeButton"].on("click",this._clickNoticeButton.bind(this));if(this._$element["myMessageLayer"].existElements()){this._$element["myMessageLayer"].on("click",
+function(oEvent){oEvent.stopPropagation();oEvent.preventDefault()});
+this._$element["myMessageList"].on("click","a",this._onClickMyKinActivityArea.bind(this));this._$element["myMessageList"].on("scroll",this._scrollMyMessageList.bind(this))}if(this._$element["noticeLayer"].existElements())this._$element["noticeLayer"].on("click",
+this._clickNoticeLayer.bind(this));if(this._$element["spiButton"].existElements())this._$element["spiButton"].on("click",this._clickSpiButton.bind(this));$(document.body).on("click",this._closeAllLayer.bind(this));
+this._attachScrollEvent();$(document).on("showAsideMenu",this._onShowAsideMenu.bind(this));$(document).on("hideAsideMenu",this._onHideAsideMenu.bind(this))},
+_attachScrollEvent:function(){$(window).on("scroll.asideMenu",this._onScroll.bind(this))},
+_detachScrollEvent:function(){$(window).off("scroll.asideMenu")},
+_onShowAsideMenu:function(){this._$element["asideMenu"].show();this._attachScrollEvent()},
+_onHideAsideMenu:function(){this._$element["asideMenu"].hide();this._detachScrollEvent()},
+_scrollMyMessageList:function(oEvent){var el=oEvent.target;if(Math.round(el.scrollHeight-el.scrollTop)===Math.round(el.clientHeight))if(this._messageList&&this._messageList.length>this.PAGE_NO.MESSAGE*
+this.PAGE_PER_COUNT.MESSAGE){this._listMyMessage();this.PAGE_NO.MESSAGE++}},
+_listMyMessage:function(){var start=this.PAGE_NO.MESSAGE*this.PAGE_PER_COUNT.MESSAGE+1;var end=start+this.PAGE_PER_COUNT.MESSAGE-1;if(end>this._messageList.length)end=this._messageList.length;var html=
+this._$template["myMessageItemTpl"]({list:this._messageList.splice(start,end)});this._$element["myMessageList"].append(html);$("span._alarm_icon",this._$element["myMessageList"]).show()},
+_listNotice:function(){var start=this.PAGE_NO.NOTICE*this.PAGE_PER_COUNT.NOTICE+1;var end=start+this.PAGE_PER_COUNT.NOTICE-1;if(end>this._noticeList.length)end=this._noticeList.length;var html=this._$template["noticeItemTpl"]({list:this._noticeList.splice(start,
+end)});this._$element["noticeList"].append(html)},
+_clickNoticeLayer:function(oEvent){var target=oEvent.target;var $el=$(target);var url="";if(/(?:a)/i.test(target.tagName))url=$el.attr("href");if(/(?:span|div|p)/i.test(target.tagName)){var $elLink=$el.parents("a._notce_link");
+url=$elLink.attr("href")}if(url)window.open(url,"_blank");oEvent.stopPropagation();oEvent.preventDefault()},
+_closeAllLayer:function(oEvent){if(!this._$element["myMessageLayer"].existElements()||!this._$element["noticeLayer"].existElements())return;if(!this._$element["myMessageLayer"].is(":visible")&&!this._$element["noticeLayer"].is(":visible"))return;
+this._$element["myMessageLayer"].hide();this._$element["noticeLayer"].hide();oEvent.stopPropagation();oEvent.preventDefault()},
+_closeExceptSelectedLayer:function(layerType){if(layerType=="MESSAGE"){this._$element["noticeLayer"].hide();var $elSpiLayer=this._$element["asideMenu"].find("div._ly_spi");if($elSpiLayer.existElements())$elSpiLayer.hide()}else if(layerType==
+"NOTICE"){this._$element["myMessageLayer"].hide();this._$element["myMessageButton"].attr("aria-expanded","false");var $elSpiLayer=this._$element["asideMenu"].find("div._ly_spi");if($elSpiLayer.existElements())$elSpiLayer.hide()}else if(layerType==
+"SHARE"){this._$element["noticeLayer"].hide();this._$element["myMessageLayer"].hide();this._$element["myMessageButton"].attr("aria-expanded","false")}},
+_clickMessageButton:function(oEvent){naver.kin.pc.common.checkLoginAndRedirectToLoginForm();if(!naver.isLogin)return false;if(!this._$element["myMessageLayer"].existElements()||!this._$template["myMessageItemTpl"])return;
+if(this._$element["myMessageLayer"].is(":visible"))this._$element["myMessageButton"].attr("aria-expanded","false");else this._$element["myMessageButton"].attr("aria-expanded","true");if(!this.INIT_FLAG.NEW_MESSAGE)this._loadNewMessageList();
+else this._$element["myMessageLayer"].toggle();this._closeExceptSelectedLayer("MESSAGE");oEvent.stopPropagation();oEvent.preventDefault()},
+_keyDownMessageButton:function(oEvent){if(oEvent.key===naver.kin.pc.common.KEY.STRING.SPACE){this._clickMessageButton(oEvent);oEvent.preventDefault();oEvent.stopPropagation()}},
+_loadNewMessageList:function(){$.ajax(this.URL.MESSAGE_LIST_AJAX_URL,{method:"get",timeout:5E3,success:function(res){if(res.isSuccess){var result=res.result;var list=result.kinMessageList;var listSize=
+list.length;var html="";this._messageList=list;if(listSize>0){list.forEach(function(notice){if(typeof notice.startTime==="string"&&notice.startTime.length>=this.DATE_FORMAT_LENGTH)notice.startTime=notice.startTime.slice(0,
+this.DATE_FORMAT_LENGTH);else notice.startTime=""}.bind(this));
+if(listSize>this.PAGE_PER_COUNT.MESSAGE)html=this._$template["myMessageItemTpl"]({list:list.slice(0,this.PAGE_PER_COUNT.MESSAGE)});else html=this._$template["myMessageItemTpl"]({list:list});this._$element["myMessageList"].html(html);
+this.PAGE_NO.MESSAGE++}else{this._$element["myMessageList"].hide();this._$element["myMessageLayer"].append(this.MESSAGE.NO_MY_MESSAGE)}$("span._alarm_icon",this._$element["myMessageList"]).show();this._$element["myMessageLayer"].toggle();
+this.INIT_FLAG.NEW_MESSAGE=true}}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR);this._$element["myMessageButton"].attr("aria-expanded",
+"false")}.bind(this)})},
+_onClickMyKinActivityArea:function(oEvent){var el=oEvent.currentTarget;if(!el)return;oEvent.stopPropagation();if(el.tagName.toLowerCase()==="a"){var elSpan=$.getSingle("span",el);if(elSpan.existElements())el=
+elSpan.get(0)}var $el=$(el);naver.kin.pc.common.nClicks("end*l.myflist","","",oEvent,"");if($el.hasClass("_ros")&&naver.kin.pc.common.checkRos())return;if($el.hasClass("_btn_remove_alrimi_private")){var nMessageNo=
+$el.attr("no");var oParam={"no":nMessageNo};this._deleteMyKinActivity(oParam,$el,"PRIVATE")}else if($el.hasClass("_btn_remove_alrimi_public")){var nMessageNo=$el.attr("no");var oParam={"no":nMessageNo};
+this._deleteMyKinActivity(oParam,$el,"PUBLIC")}else if($el.hasClass("_btn_remove_one2one")){var nDirId=$el.attr("dirid");var nDocId=$el.attr("docid");var oParam={"category":"one2one","dirId":nDirId,"docId":nDocId};
+this._deleteMyKinActivity(oParam,$el,"REALTIME")}else if($el.hasClass("_btn_remove_one2one_return")){var nDirId=$el.attr("dirid");var nDocId=$el.attr("docid");var oParam={"category":"one2oneReturn","dirId":nDirId,
+"docId":nDocId};this._deleteMyKinActivity(oParam,$el,"REALTIME")}else if($el.hasClass("_btn_remove_change_activity")){var sRemoveType=$el.attr("removetype");var oParam={"category":"activity","type":sRemoveType};
+this._deleteMyKinActivity(oParam,$el,"REALTIME")}else if($el.hasClass("_btn_remove_editor_alrimi")){var nDocId=$el.attr("docid");var nNboardId=$el.attr("nboardid");var oParam={"category":"editorNotice",
+"docId":nDocId,"nboardId":nNboardId};this._deleteMyKinActivity(oParam,$el,"REALTIME")}},
+_deleteMyKinActivity:function(oParam,$elClicked,messageType){$.ajax(this.URL.DELETE_MY_KIN_ACTIVITY[messageType],{method:"post",timeout:3E3,data:oParam,success:function(oRes){if(oRes.result=="SUCCESS"){if(!$elClicked.existElements())return;
+var $elParentList=$elClicked.parents("li");if(!$elParentList.existElements()||$elParentList.length<1)return;var $elCurrentLi=$($elParentList[0]);if(!$elCurrentLi.existElements())return;$elCurrentLi.remove()}}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})},
+_clickNoticeButton:function(oEvent){if(!this._$element["noticeLayer"].existElements()||!this._$template["noticeItemTpl"])return;if(!this.INIT_FLAG.NOTICE)this._loadNoticeList(true);else this._$element["noticeLayer"].toggle();
+this._closeExceptSelectedLayer("NOTICE");oEvent.stopPropagation();oEvent.preventDefault()},
+_loadNoticeList:function(bShow){$.ajax(this.URL.NOTICE_LIST_AJAX_URL,{method:"get",timeout:5E3,success:function(res){if(res.isSuccess){var result=res.result;var list=result.result.noticeList;var hasNewNoticeExist=
+result.result.newNoticeExist;var listSize=list.length;var html="";this._noticeList=list;if(hasNewNoticeExist)this._$element["newNoticeIcon"].show();if(listSize>0){list.forEach(function(notice){if(typeof notice.startTime===
+"string"&&notice.startTime.length>=this.DATE_FORMAT_LENGTH)notice.startTime=notice.startTime.slice(0,this.DATE_FORMAT_LENGTH);else notice.startTime=""}.bind(this));
+html=this._$template["noticeItemTpl"]({list:list.slice(0,this.PAGE_PER_COUNT.NOTICE)});this._$element["noticeList"].html(html);this.PAGE_NO.NOTICE++}else{this._$element["noticeList"].hide();this._$element["noticeLayer"].append(this.MESSAGE.NO_NOTICE_LIST)}}if(bShow)this._$element["noticeLayer"].toggle();
+this.INIT_FLAG.NOTICE=true}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})},
+_clickSpiButton:function(oEvent){this._closeExceptSelectedLayer("SHARE");oEvent.stopPropagation();oEvent.preventDefault()},
+_onScroll:function(){if(this._oTimer)clearTimeout(this._oTimer);this._oTimer=setTimeout(function(){var nPadding=52;var nScrollTop=$(document).scrollTop();var nBoundary=this._$element["bounceAnimationBoundary"].offset().top-
+this._$element["asideMenu"].height()-nPadding;var nTop=Math.min(Math.max(nPadding,nScrollTop),nBoundary-nPadding);if(nBoundary<nScrollTop&&!this._$element["asideMenu"].hasClass("_bounceAnimation"))this._$element["asideMenu"].addClass("_bounceAnimation").addClass("bounce");
+else this._$element["asideMenu"].removeClass("_bounceAnimation").removeClass("bounce");this._$element["asideMenu"].stop().animate({top:nTop},100)}.bind(this),30)}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.BottomQnaList=eg.Class({_COUNT_PER_PAGE:4,_$element:null,_$template:null,_sDetailQnaListAreaId:null,_sDetailQnaListAjaxUrl:null,_oDetailQnaListAjaxData:null,_sDetailQnaListTemplateId:null,
+_fnGetProcessedResult:null,construct:function(oOption){if(!oOption)return;this._sDetailQnaListAreaId=oOption.sDetailQnaListAreaId;this._sDetailQnaListAjaxUrl=oOption.sDetailQnaListAjaxUrl;this._oDetailQnaListAjaxData=
+oOption.oDetailQnaListAjaxData||{};this._sDetailQnaListTemplateId=oOption.sDetailQnaListTemplateId;this._fnGetProcessedResult=oOption.fnGetProcessedResult||function(oResult){return oResult};
+if(!this._sDetailQnaListAreaId||!this._sDetailQnaListTemplateId||!this._sDetailQnaListAjaxUrl)return;this._initAjaxOption();this._setElement();this._setEvent();this._getDetailQnaList()},
+_initAjaxOption:function(){this._oAjaxOption={url:this._sDetailQnaListAjaxUrl,data:this._oDetailQnaListAjaxData,method:"get",timeout:5E3,dataType:"json",cache:false,success:function(oResponse){if(oResponse&&
+oResponse.isSuccess){var oResult=oResponse.result||{};oResult.countPerPage=this._COUNT_PER_PAGE;oResult.totalCount=(oResult.list||[]).length;if(oResult.totalCount<1){this._$element["detailQnaListComponent"].hide();
+return}oResult=this._fnGetProcessedResult(oResult);if(!oResult){this._$element["detailQnaListComponent"].hide();return}var sHtml=this._$template["detailQnaList"](oResult);if(!sHtml){this._$element["detailQnaListComponent"].hide();
+return}this._$element["detailQnaListArea"].append(sHtml);this._$element["detailQnaList"]=this._$element["detailQnaListArea"].find("div._detailQnaList");var paginatorSize=oResult.totalCount/oResult.countPerPage;
+var sPaginatorHtml="";for(var i=0;i<paginatorSize;i++)sPaginatorHtml+=this._$template["qnaListPaginatorTpl"]({index:i,elementId:this._sDetailQnaListAreaId});this._$element["qnaListPaginatorWrap"].find("._paginatorInner").append(sPaginatorHtml);
+this._$element["paginator"]=this._$element["qnaListPaginatorWrap"].find("._paginator");this._$element["paginator"].on("click",function(oEvent){var $elTarget=$(oEvent.target);var nIndex=$elTarget.data("index");
+var $elSelectedPaginator=$(this._$element["paginator"].get(nIndex));var $elSelectItem=$(this._$element["detailQnaList"].get(nIndex));this._$element["visibleDetailQnaList"].hide();this._$element["visibleDetailQnaList"]=
+$elSelectItem;$elSelectItem.show();this._addPaginatorActiveState($elSelectedPaginator);this._setPrevButtonAndNextButton();oEvent.stopPropagation();oEvent.preventDefault()}.bind(this));
+this._$element["detailQnaListAreaWrapper"].show();this._$element["qnaListPaginatorWrap"].show();this._$element["visibleDetailQnaList"]=this._$element["detailQnaListArea"].find("div._detailQnaList:visible");
+this._addPaginatorActiveState($(this._$element["paginator"].get(0)));this._setPrevButtonAndNextButton()}else this._$element["detailQnaListComponent"].hide()}.bind(this),
+error:function(){this._$element["detailQnaListComponent"].hide()}.bind(this)}},
+_setElement:function(){this._$element={};this._$element["detailQnaListComponent"]=$("._detailQnaListComponent");this._$element["detailQnaListAreaWrapper"]=$("#"+this._sDetailQnaListAreaId);this._$element["detailQnaListArea"]=
+$.getSingle("div._detailQnaListArea",this._$element["detailQnaListAreaWrapper"]);this._$element["prevButton"]=$.getSingle("a._prevButton",this._$element["detailQnaListAreaWrapper"]);this._$element["nextButton"]=
+$.getSingle("a._nextButton",this._$element["detailQnaListAreaWrapper"]);this._$element["qnaListPaginatorWrap"]=$.getSingle("div._qnaListPaginator",this._$element["detailQnaListAreaWrapper"]);this._$template=
+{};this._$template["detailQnaList"]=doT.template($("#"+this._sDetailQnaListTemplateId).html());this._$template["qnaListPaginatorTpl"]=doT.template($("#qnaListPaginatorTpl").html())},
+_setEvent:function(){this._$element["prevButton"].on("click",function(oEvent){var $elPrevDetailQnaList=this._$element["visibleDetailQnaList"].prev("div._detailQnaList");var $elPrevPaginator=this._$element["visiblePaginator"].prev("a._paginator");
+$elPrevDetailQnaList.show();this._$element["visibleDetailQnaList"].hide();this._$element["visibleDetailQnaList"]=$elPrevDetailQnaList;this._setPrevButtonAndNextButton();this._addPaginatorActiveState($elPrevPaginator);
+oEvent.preventDefault();oEvent.stopPropagation()}.bind(this));
+this._$element["nextButton"].on("click",function(oEvent){var $elNextDetailQnaList=this._$element["visibleDetailQnaList"].next("div._detailQnaList");var $elNextPaginator=this._$element["visiblePaginator"].next("a._paginator");
+$elNextDetailQnaList.show();this._$element["visibleDetailQnaList"].hide();this._$element["visibleDetailQnaList"]=$elNextDetailQnaList;this._setPrevButtonAndNextButton();this._addPaginatorActiveState($elNextPaginator);
+oEvent.preventDefault();oEvent.stopPropagation()}.bind(this))},
+_getDetailQnaList:function(){$.ajax(this._oAjaxOption)},
+_addPaginatorActiveState:function($elPaginator){this._$element["paginator"].removeClass("is_active");this._$element["paginator"].attr({"aria-selected":"false"});$elPaginator.addClass("is_active");$elPaginator.attr({"aria-selected":"true"});
+this._$element["visiblePaginator"]=$elPaginator},
+_setPrevButtonAndNextButton:function(){if(this._$element["visibleDetailQnaList"].next("div._detailQnaList").existElements())this._$element["nextButton"].show();else this._$element["nextButton"].hide();
+if(this._$element["visibleDetailQnaList"].prev("div._detailQnaList").existElements())this._$element["prevButton"].show();else this._$element["prevButton"].hide()}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.TicketLayer=eg.Class({_$element:null,_$template:null,construct:function(htOption){this._oOption=htOption||{};this._setElement();this._setEvent();if(this._oOption.showLayer&&this._$element["ticketCreationLayer"])this.showLayer();
+$(window).on("unload",this._destroy.bind(this))},
+_setElement:function(){this._$element={};this._$template={};this._$element["ticketCreationLayer"]=$("#ticketCreationLayer");if(this._$element["ticketCreationLayer"].existElements()){this._$element["todayNotShowCheckBox"]=
+$.getSingle("input._todayNotShow",this._$element["ticketCreationLayer"]);this._$element["closeBtn"]=$.getSingle("a._close",this._$element["ticketCreationLayer"]);this._$element["rouletteHomeBtn"]=$.getSingle("a._rouletteHome",
+this._$element["ticketCreationLayer"]);this._$element["wordChainHomeBtn"]=$.getSingle("a._wordChainHome",this._$element["ticketCreationLayer"]);this._$template["allTicketCreationLayer"]=doT.template($("#allTicketCreationLayerTpl").html());
+this._$template["rouletteTicketCreationLayer"]=doT.template($("#rouletteTicketCreationLayerTpl").html());this._$template["wordChainTicketCreationLayer"]=doT.template($("#wordChainTicketCreationLayerTpl").html())}},
+_setEvent:function(){if(this._$element["closeBtn"].existElements())this._$element["closeBtn"].on("click",this._onClickCloseBtn.bind(this));if(this._$element["rouletteHomeBtn"].existElements())this._$element["rouletteHomeBtn"].on("click",
+this._onClickRouletteHomeBtn.bind(this));if(this._$element["wordChainHomeBtn"].existElements())this._$element["wordChainHomeBtn"].on("click",this._onClickWordChainHomeBtn.bind(this))},
+showLayer:function(oResult){cookie.erase("detail_feedback");if(this._checkedLayerNotOpenToday())return;if(oResult){var sHtml="";if(oResult.rouletteTicketCreated&&oResult.wordChainTicketCreated)sHtml=this._$template["allTicketCreationLayer"]();
+else if(oResult.rouletteTicketCreated)sHtml=this._$template["rouletteTicketCreationLayer"]();else if(oResult.wordChainTicketCreated)sHtml=this._$template["wordChainTicketCreationLayer"]();if(sHtml){this._$element["ticketCreationLayer"].append(sHtml);
+this._$element["todayNotShowCheckBox"]=$.getSingle("input._todayNotShow",this._$element["ticketCreationLayer"]);this._$element["closeBtn"]=$.getSingle("a._close",this._$element["ticketCreationLayer"]);
+this._$element["rouletteHomeBtn"]=$.getSingle("a._rouletteHome",this._$element["ticketCreationLayer"]);this._$element["wordChainHomeBtn"]=$.getSingle("a._wordChainHome",this._$element["ticketCreationLayer"]);
+this._setEvent()}}$(document.body).addClass("body_hidden");this._$element["ticketCreationLayer"].show()},
+_onClickCloseBtn:function(){var elCheckBoxDoNotShowToday=this._$element["todayNotShowCheckBox"].get(0);if(elCheckBoxDoNotShowToday&&elCheckBoxDoNotShowToday.checked)this._setTimeLocalStorage();if(this._$element["ticketCreationLayer"]){this._$element["ticketCreationLayer"].hide();
+$(document.body).removeClass("body_hidden")}},
+_onClickRouletteHomeBtn:function(){var elCheckBoxDoNotShowToday=this._$element["todayNotShowCheckBox"].get(0);if(elCheckBoxDoNotShowToday&&elCheckBoxDoNotShowToday.checked)this._setTimeLocalStorage();location.href=
+"/roulette/home.nhn"},
+_onClickWordChainHomeBtn:function(){var elCheckBoxDoNotShowToday=this._$element["todayNotShowCheckBox"].get(0);if(elCheckBoxDoNotShowToday&&elCheckBoxDoNotShowToday.checked)this._setTimeLocalStorage();
+location.href=mobileDomainWithProtocol+"/mobile/wordchain/home.nhn"},
+_setTimeLocalStorage:function(){var oLocalStorage=naver.kin.pc.common.LocalStorage;if(oLocalStorage.isSupportLocalStorage())oLocalStorage.setItem(oLocalStorage.KEY.PCWEB_TICKET_LAYER_CLOSED_TIME,(new Date).getTime())},
+_checkedLayerNotOpenToday:function(){var oLocalStorage=naver.kin.pc.common.LocalStorage;var sItem=oLocalStorage.getItem(oLocalStorage.KEY.PCWEB_TICKET_LAYER_CLOSED_TIME);var nDiff=(new Date).getTime()-
+parseInt(sItem||0,10);return nDiff<864E5},
+_destroy:function(){if(this._$element["closeBtn"].existElements())this._$element["closeBtn"].off("click");if(this._$element["rouletteHomeBtn"].existElements())this._$element["rouletteHomeBtn"].on("click");
+if(this._$element["wordChainHomeBtn"].existElements())this._$element["wordChainHomeBtn"].on("click");$(document).off("kiniclose");this._$element=this._$template=null}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};naver.kin.pc.detail=naver.kin.pc.detail||{};
+naver.kin.pc.detail.DetailFeedbackLayer=eg.Class({_$element:null,_oOption:null,_nEliteVoteLayerDisableHour:72,_sEliteVoteUrl:"/people/elite/vote.nhn",construct:function(htOption){this._oOption=htOption||
+{};this._setElement();this._setEvent();this._checkAndShowDetailLayer()},
+_setElement:function(){this._$element={};this._$element["body"]=$("body");this._$element["detailFeedbackDimmedLayer"]=$("#detailFeedbackDimmedLayer");if(this._$element["detailFeedbackDimmedLayer"].existElements()){this._$element["promotionEliteVote"]=
+$.getSingle("._promotionEliteVote",this._$element["detailFeedbackDimmedLayer"]);this._$element["dimmedLayerCloseBtnList"]=this._$element["detailFeedbackDimmedLayer"].find("._dimmedLayerCloseBtn")}},
+_setEvent:function(){if(this._$element["dimmedLayerCloseBtnList"].existElements())this._$element["dimmedLayerCloseBtnList"].on("click",this._onClickDimmedLayerCloseBtn.bind(this))},
+_checkAndShowDetailLayer:function(){if(!this._$element["detailFeedbackDimmedLayer"].existElements())return;var sLayerIdForLocalStorage=this._$element["detailFeedbackDimmedLayer"].data("storeId");if(sLayerIdForLocalStorage&&
+naver.kin.pc.common.isExpiredLayerClosedTime(sLayerIdForLocalStorage,"today")===false){this._hideDetailFeedbackDimmedLayer();return}this._openDetailFeedbackDimmedLayer()},
+_onClickDimmedLayerCloseBtn:function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();var $el=$(oEvent.target);if($el.hasClass("_eliteVote")){var oLocalStorage=naver.kin.pc.common.LocalStorage.LocalStorage;
+if(oLocalStorage.isSupportLocalStorage)oLocalStorage.setItem(naver.kin.pc.common.LocalStorage.KEY.PCWEB_END_PROMOTION_LAYER_CLOSED,naver.kin.pc.common.getStringFromObject({flag:"Y",checkTime:(new Date).getTime(),
+hour:this._nEliteVoteLayerDisableHour}))}var sLayerIdForLocalStorage=this._$element["detailFeedbackDimmedLayer"].data("storeId");this._hideDetailFeedbackDimmedLayer(sLayerIdForLocalStorage);if($el.hasClass("_goPage"))location.href=
+this._sEliteVoteUrl},
+_openDetailFeedbackDimmedLayer:function(){if(!this._$element["detailFeedbackDimmedLayer"].existElements())return;this._$element["detailFeedbackDimmedLayer"].show();if(this._$element["body"].existElements())this._$element["body"].addClass("body_hidden");
+if(this._oOption.sEliteUserVoteShowFlag==="true"){var oLocalStorage=naver.kin.pc.common.LocalStorage;if(oLocalStorage.isSupportLocalStorage){var bShowPromotion=false;var sItem=oLocalStorage.getItem(naver.kin.pc.common.LocalStorage.KEY.PCWEB_END_PROMOTION_LAYER_CLOSED);
+if(sItem){var oInfo=naver.kin.pc.common.getObjectFromString(sItem);if(oInfo)if(oInfo.flag==="N"||oInfo.flag==="Y"&&(new Date).getTime()-parseInt(oInfo.checkTime||0,10)>parseInt(oInfo.hour||86400,10)*3600)bShowPromotion=
+true}else bShowPromotion=true;if(bShowPromotion)if(this._$element["promotionEliteVote"].existElements()){var $elItemList=$("._dimmedFeedbackItem",this._$element["detailFeedbackDimmedLayer"]);$elItemList.hide();
+this._$element["promotionEliteVote"].show()}}}},
+_hideDetailFeedbackDimmedLayer:function(sLayerIdForLocalStorage){if(!this._$element["detailFeedbackDimmedLayer"].existElements())return;this._$element["detailFeedbackDimmedLayer"].hide();var $elPreventLayerCheckbox=
+$.getSingle("input[name\x3dpreventDetailLayer]",this._$element["detailFeedbackDimmedLayer"]);if($elPreventLayerCheckbox.existElements()&&$elPreventLayerCheckbox[0].checked)naver.kin.pc.common.saveLayerClosedTime(sLayerIdForLocalStorage);
+if(this._$element["body"].existElements())this._$element["body"].removeClass("body_hidden")}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};
+naver.kin.pc.FriendAndBlockMenu=eg.Class({_oOption:null,_$element:null,_sFriendUserKey:null,_$elFriendBtn:null,_oBlockDocInfo:null,_$elBlockBtn:null,_USER_BLOCK_STATUS_AJAX_URL:"/ajax/detail/getBlockStatusAjax.nhn",
+_FOLLOW_FRIEND_AJAX_URL:"/ajax/detail/followFriendAjax.nhn",_FRIEND_STATUS_AJAX_URL:"/ajax/detail/getFriendStatusAjax.nhn",_USER_BLOCK_AJAX_URL:"/ajax/detail/blockUserAjax.nhn",_MESSAGE:{_FOLLOW_FRIEND_NOT_ALLOWED:"\ub2d8\uc774 \uce5c\uad6c\ucd94\uac00\ub97c \ud5c8\uc6a9\ud558\uace0 \uc788\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+_FRIEND_ALREADY_FOLLOWED:"\uc774\ubbf8 \uce5c\uad6c\ucd94\uac00\ub41c \uc0ac\uc6a9\uc790\uc785\ub2c8\ub2e4.",_USER_ALREADY_BLOCKED:"\uc774\ubbf8 \ucc28\ub2e8\ub41c \uc0ac\uc6a9\uc790\uc785\ub2c8\ub2e4.",
+_USER_BLOCK_SUCCESS:"\ucc28\ub2e8\uc774 \uc644\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.",_USER_BLOCK_FAIL_ARTICLE_OPEN_YN:"\uac8c\uc2dc\ubb3c\uc774 \ube44\uacf5\uac1c \ucc98\ub9ac\ub418\uc5b4 \ucc28\ub2e8\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.",
+_FOLLOW_EXPERT_FRIEND_NOT_ALLOWED:"\uce5c\uad6c\ucd94\uac00 \ubc0f 1:1\uc9c8\ubb38\uc744 \ud560 \uc218 \uc5c6\ub294 \uc0ac\uc6a9\uc790\uc785\ub2c8\ub2e4. \ub2e4\ub978 \uc0ac\uc6a9\uc790\ub97c \uce5c\uad6c\ucd94\uac00 \ud574\ubcf4\uc138\uc694.",
+_PLEASE_LOGIN_FIRST:"\ub85c\uadf8\uc778 \ud6c4 \uc774\uc6a9\ud574\uc8fc\uc2dc\uae30 \ubc14\ub78d\ub2c8\ub2e4.",_MAX_FRIEND_COUNT:"\uce5c\uad6c\ucd94\uac00 \uac1c\uc218\uac00 \ucd08\uacfc\ub418\uc5c8\uc2b5\ub2c8\ub2e4."},
+construct:function(htOption){this._oOption=htOption||{};this._$element={};this._$element["body"]=$(document.body);this._$element["elRoot"]=this._oOption.elRoot||$("#content");this._$element["friendAndBlockDimmedLayer"]=
+$("#friendAndBlockDimmedLayer");this._$element["friendBtn"]=$("a._friend_btn",this._$element["elRoot"]);this._$element["userBlockBtn"]=$("a._user_block_btn",this._$element["elRoot"]);this._$element["userBlockGuideLayer"]=
+$.getSingle("div._userBlockGuideLayer",this._$element["friendAndBlockDimmedLayer"]);this._$element["followFriendGuideLayer"]=$.getSingle("div._follow_friend_guide_layer",this._$element["friendAndBlockDimmedLayer"]);
+this._$element["friendDesc"]=$.getSingle("li._friend_desc",this._$element["userBlockGuideLayer"]);this._$element["blockUserDesc"]=$.getSingle("li._block_user_desc",this._$element["followFriendGuideLayer"]);
+this._$element["exceedNumberOfFriendLayer"]=$.getSingle("div._exceed_number_of_friend_layer",this._$element["friendAndBlockDimmedLayer"]);this._$element["addFriendCompleteLayer"]=$.getSingle("div._add_friend_complete_layer",
+this._$element["friendAndBlockDimmedLayer"]);this.setupEvent()},
+setupEvent:function(){if(this._$element["friendBtn"].existElements())this._$element["friendBtn"].on("click",this._onClickFriendBtn.bind(this));if(this._$element["userBlockBtn"].existElements())this._$element["userBlockBtn"].on("click",
+this._onClickUserBlockBtn.bind(this));if(this._$element["friendAndBlockDimmedLayer"].existElements())this._$element["friendAndBlockDimmedLayer"].on("click",this._onClickFriendAndBlockDimmedLayer.bind(this));
+$(document).on("addFriendButtonClickEvent",this._addFriendButtonClickEvent.bind(this));$(document).on("addUserBlockButtonClickEvent",this._addUserBlockButtonClickEvent.bind(this))},
+_addFriendButtonClickEvent:function(oCustomEvent){if(!oCustomEvent)return;var aWelAddedFriendButtonList=oCustomEvent.friendButtonList;if(!aWelAddedFriendButtonList||aWelAddedFriendButtonList.length<1)return;
+for(var i=0,len=aWelAddedFriendButtonList.length;i<len;i++){var $elFriendButton=aWelAddedFriendButtonList[i];if($elFriendButton&&$elFriendButton.existElements())$elFriendButton.on("click",this._onClickFriendBtn.bind(this))}},
+_addUserBlockButtonClickEvent:function(oCustomEvent){if(!oCustomEvent)return;var aWelAddedUserBlockButtonList=oCustomEvent.userBlockButtonList;if(!aWelAddedUserBlockButtonList||aWelAddedUserBlockButtonList.length<
+1)return;for(var i=0,len=aWelAddedUserBlockButtonList.length;i<len;i++){var $elUserBlockButton=aWelAddedUserBlockButtonList[i];if($elUserBlockButton&&$elUserBlockButton.existElements())$elUserBlockButton.on("click",
+this._onClickUserBlockBtn.bind(this))}},
+_onClickFriendBtn:function(oEvent){if(naver.kin.pc.common.checkRos()){oEvent.preventDefault();oEvent.stopPropagation();return false}if(!naver.isLogin){alert(this._MESSAGE._PLEASE_LOGIN_FIRST);oEvent.preventDefault();
+oEvent.stopPropagation();return false}var $el=$(oEvent.currentTarget);if($el.hasClass("_is_friend")){alert(this._MESSAGE._FRIEND_ALREADY_FOLLOWED);oEvent.preventDefault();oEvent.stopPropagation();return false}this._$elFriendBtn=
+$el;var sFriendUserKey=$el.data("u");var sFriendViewName=$el.data("friendViewName");var oParam={u:sFriendUserKey};var oOptions={url:this._USER_BLOCK_STATUS_AJAX_URL,data:oParam,method:"GET",timeout:5E3,
+success:function(oResponse){if(oResponse&&oResponse.isSuccess){var oResult=oResponse.result;if(oResult===null)return false;if(oResult.isExpertise){alert(this._MESSAGE._FOLLOW_EXPERT_FRIEND_NOT_ALLOWED);
+return false}if(oResult.isBlocked){alert(sFriendViewName+this._MESSAGE._FOLLOW_FRIEND_NOT_ALLOWED);return false}this._$element["blockUserDesc"].hide();this._$element["blockUserDesc"].removeClass("_isVisible");
+if(oResult.isOpenBlock){this._$element["blockUserDesc"].show();this._$element["blockUserDesc"].addClass("_isVisible")}this._sFriendUserKey=sFriendUserKey;this._openFriendAndBlockDimmedLayer(this._$element["followFriendGuideLayer"])}else alert(oResponse.errorMsg||
+naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}};
+$.ajax(oOptions);oEvent.preventDefault();oEvent.stopPropagation();return false},
+_followFriend:function(oEvent){if(naver.kin.pc.common.checkRos()){oEvent.preventDefault();oEvent.stopPropagation();return false}if(!naver.isLogin){oEvent.preventDefault();oEvent.stopPropagation();alert(this._MESSAGE._PLEASE_LOGIN_FIRST);
+return false}this._closeFriendAndBlockDimmedLayer();var sFriendUserKey=this._sFriendUserKey;var oParam={u:sFriendUserKey};var oOption={url:this._FOLLOW_FRIEND_AJAX_URL,method:"POST",timeout:5E3,data:oParam,
+success:function(oResponse){if(oResponse&&oResponse.isSuccess){this._openFriendAndBlockDimmedLayer(this._$element["addFriendCompleteLayer"]);if(this._oOption.isProfile){this._$elFriendBtn.addClass("c-button-friend is_active _is_friend");
+this._$elFriendBtn.html("\x3ci class\x3d'sp_common ico_friend'\x3e\x3c/i\x3e\uce5c\uad6c")}else{this._$elFriendBtn.addClass("is_active _is_friend");if(this._$element["blockUserDesc"].existElements()&&this._$element["blockUserDesc"].hasClass("_isVisible"))$.getSingle("._user_block_btn",
+this._$elFriendBtn.closest("div._contentWrap")).removeClass("_is_blocked")}}else if(oResponse.errorMsg===this._MESSAGE._MAX_FRIEND_COUNT)this._openFriendAndBlockDimmedLayer(this._$element["exceedNumberOfFriendLayer"]);
+else alert(oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}};
+$.ajax(oOption);oEvent.preventDefault();oEvent.stopPropagation()},
+_openFriendAndBlockDimmedLayer:function($elLayer){if(this._$element["friendAndBlockDimmedLayer"].existElements()){this._$element["body"].addClass("body_hidden");this._$element["friendAndBlockDimmedLayer"].show();
+$elLayer.show()}},
+_closeFriendAndBlockDimmedLayer:function(){this._$element["followFriendGuideLayer"].hide();this._$element["userBlockGuideLayer"].hide();this._$element["exceedNumberOfFriendLayer"].hide();this._$element["addFriendCompleteLayer"].hide();
+this._$element["friendAndBlockDimmedLayer"].hide();this._$element["body"].removeClass("body_hidden")},
+_onClickFriendAndBlockDimmedLayer:function(oEvent){var $el=$(oEvent.target);if($el.hasClass("_layer_close")){this._closeFriendAndBlockDimmedLayer();oEvent.preventDefault();oEvent.stopPropagation()}else if($el.hasClass("_follow_friend")){this._followFriend(oEvent);
+oEvent.preventDefault();oEvent.stopPropagation()}else if($el.hasClass("_user_block")){this._blockUser(oEvent);oEvent.preventDefault();oEvent.stopPropagation()}},
+_onClickUserBlockBtn:function(oEvent){if(naver.kin.pc.common.checkRos()){oEvent.preventDefault();oEvent.stopPropagation();return false}if(!naver.isLogin){alert(this._MESSAGE._PLEASE_LOGIN_FIRST);oEvent.preventDefault();
+oEvent.stopPropagation();return false}var $el=$(oEvent.currentTarget);if($el.hasClass("_is_blocked")){alert(this._MESSAGE._USER_ALREADY_BLOCKED);oEvent.preventDefault();oEvent.stopPropagation();return false}this._$elBlockBtn=
+$el;var sDirId=$el.data("dirId");var sDocId=$el.data("docId");var sAnswerNo=$el.data("answerNo");var sOpenFlag=$el.data("openFlag");var oParam={dirId:sDirId,docId:sDocId,answerNo:sAnswerNo};if(sOpenFlag&&
+sOpenFlag=="Y"){var oOption={url:this._FRIEND_STATUS_AJAX_URL,data:oParam,method:"GET",timeout:5E3,success:function(oResponse){if(oResponse&&oResponse.isSuccess){var oResult=oResponse.result;if(oResult===
+null)return false;this._$element["friendDesc"].hide();this._$element["friendDesc"].removeClass("_isVisible");var nAnswerNo=parseInt(sAnswerNo,10);if(nAnswerNo===0&&oResult.isUseNickName&&oResult.isBlockedUser){alert(this._MESSAGE._USER_ALREADY_BLOCKED);
+return false}if(oResult.isFriend){this._$element["friendDesc"].show();this._$element["friendDesc"].addClass("_isVisible")}this._oBlockDocInfo=oParam;this._openFriendAndBlockDimmedLayer(this._$element["userBlockGuideLayer"])}else alert(oResponse.errorMsg||
+naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}};
+$.ajax(oOption)}else{this._oBlockDocInfo=oParam;this._$element["friendDesc"].hide();this._openFriendAndBlockDimmedLayer(this._$element["userBlockGuideLayer"])}oEvent.preventDefault();oEvent.stopPropagation();
+return false},
+_blockUser:function(oEvent){if(naver.kin.pc.common.checkRos()){oEvent.preventDefault();oEvent.stopPropagation();return false}if(!naver.isLogin){oEvent.preventDefault();oEvent.stopPropagation();alert(this._MESSAGE._PLEASE_LOGIN_FIRST);
+return false}this._closeFriendAndBlockDimmedLayer();var oParam=this._oBlockDocInfo;var oOption={url:this._USER_BLOCK_AJAX_URL,data:oParam,method:"POST",timeout:5E3,success:function(oResponse){if(oResponse&&
+oResponse.isSuccess){alert(this._MESSAGE._USER_BLOCK_SUCCESS);this._$elBlockBtn.addClass("_is_blocked");if(this._$element["friendDesc"].existElements()&&this._$element["friendDesc"].hasClass("_isVisible"))$.getSingle("a._friend_btn",
+this._$elBlockBtn.closest("div._contentWrap")).removeClass("is_active _is_friend")}else alert(oResponse.errorMsg||naver.kin.pc.common.MESSAGE.ERROR)}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){if(textStatus==="timeout")alert(naver.kin.pc.common.MESSAGE.TIMEOUT);else alert(naver.kin.pc.common.MESSAGE.ERROR)}};
+$.ajax(oOption);oEvent.preventDefault();oEvent.stopPropagation()}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};
+naver.kin.pc.SocialPlugIn=eg.Class({_COUNT_PER_PAGE:4,_URL:{GET_ANSWER_LIKE_COUNT_AJAX:"/ajax/getAnswerLikeCountAjax.nhn",GET_ANSWER_LIKE_USER_LIST_AJAX:"/ajax/getAnswerLikeUserListAjax.nhn"},_MESSAGE:{WAIT_FOR_PROCESSING:"\uc9c4\ud589\uc911\uc778 \uc791\uc5c5\uc774 \uc788\uc2b5\ub2c8\ub2e4. \uc7a0\uc2dc\ud6c4 \ub2e4\uc2dc \uc2dc\ub3c4\ud574\uc8fc\uc138\uc694.",
+FAILED_TO_GET_LIKE_USER_LIST_UNKNOWN:"\uc608\uae30\uce58 \uc54a\uc740 \uc624\ub958\ub85c \ucee8\ud150\uce20\ub97c \uacf5\uac10\ud55c \ud68c\uc6d0 \ubaa9\ub85d \uc870\ud68c\uc5d0 \uc2e4\ud328\ud558\uc600\uc2b5\ub2c8\ub2e4.",
+FAILED_TO_GET_LIKE_USER_LIST_EMPTY:"\ud574\ub2f9 \ucee8\ud150\uce20\ub97c \uacf5\uac10\ud55c \ud68c\uc6d0\uc774 \uc5c6\uc2b5\ub2c8\ub2e4."},_DEFAULT_REACTION_INIT_OPTION:{type:"face",domain:"https://common.like.naver.com",
+staticDomain:null,dependentLibrary:"jquery",language:"ko",authType:"nid",cssId:null,moduleClassname:"_reactionModule",iconToggleClassname:["on","off"],contentCountPerOnceRequest:20,maxCount:9999,faceButtonMaxIconCount:2,
+isZeroFace:true,isMobile:false,isDuplication:false,isHiddenIcon:false,isHiddenCount:false,isHiddenZeroCount:false,isUsedLabelAsZeroCount:false,isDebugMode:false,callback:null,clicklog:null},_oOption:null,
+_$element:null,_$template:null,_sReactionModuleClassName:null,_sButtonClassToBeFocused:null,_bIsAjaxProcessing:false,construct:function(oOption){if(!oOption)return;this._oOption=oOption;this._oOption.linkUrl=
+this._oOption.linkUrl||location.href;this._oOption.likeItDomain=this._oOption.likeItDomain||"https://common.like.naver.com";this._oOption.socialPlugInDomain=this._oOption.socialPlugInDomain||"https://ssl.pstatic.net/spi";
+var oCurrentDate=new Date,yyyy=oCurrentDate.getFullYear(),mm=oCurrentDate.getMonth()+1,dd=oCurrentDate.getDate();this._oOption.sScriptVersion=yyyy+(mm<10?"0"+mm:mm)+(dd<10?"0"+dd:dd);this._setElement();
+this._setEvent();if(document.readyState===undefined||document.readyState==="complete")this._initializeOnLoad();else $(window).on("load",this._initializeOnLoad.bind(this))},
+_setElement:function(){this._$element={};this._$element["likeReactionModule"]=$("div._reactionModule");this._$element["likeUserListBtn"]=$("a._likeUserListBtn");this._$element["socialPluginArea"]=$("#socialPluginArea");
+this._$element["socialPlugInButton"]=$("._spi");this._$element["loadingIndicator"]=$("#loadingIndicator");this._$template={};this._$template["answerLikeUserLayerTpl"]=doT.template($("#answerLikeUserLayerTpl").html());
+this._$template["answerLikeCountAreaTpl"]=doT.template($("#answerLikeCountAreaTpl").html());this._$template["answerLikeUserListTpl"]=doT.template($("#answerLikeUserListTpl").html());this._$template["answerLikeUserListPagingTpl"]=
+doT.template($("#answerLikeUserListPagingTpl").html())},
+_setEvent:function(){if(this._$element["likeUserListBtn"]&&this._$element["likeUserListBtn"].existElements())this._$element["likeUserListBtn"].on("click",this._onClickLikeUserListButton.bind(this));$(document).on("refreshSocialPlugInEvent",
+function(){this.refresh()}.bind(this));
+$(document.body).on("click",this._onClickDocumentBody.bind(this));$(window).on("resize",this._onResizeWindow.bind(this))},
+_initializeOnLoad:function(){if(this._$element["likeReactionModule"].existElements())this._lazyLoadILikeItScript();if(this._$element["socialPluginArea"].existElements())this._lazyLoadSocialPlugInScript()},
+_lazyLoadILikeItScript:function(){if(this._$element["likeReactionModule"].existElements()){var sReactionScriptUrl=this._oOption.likeItDomain+"/static/js/reaction/dist/reaction.min.js?v\x3d"+this._oOption.sScriptVersion;
+if(this._oOption.reactionInitOption&&this._oOption.reactionInitOption.staticDomain)sReactionScriptUrl=this._oOption.reactionInitOption.staticDomain+"/js/reaction/dist/reaction.min.js?v\x3d"+this._oOption.sScriptVersion;
+$.cachedScript(sReactionScriptUrl).done(this._onLoadReactionScript.bind(this))}},
+_onLoadReactionScript:function(){if(typeof reaction==="undefined")return;var oReactionInitOption=this._DEFAULT_REACTION_INIT_OPTION;var oAdditionalReactionInitOption=this._oOption.reactionInitOption;if(typeof oAdditionalReactionInitOption===
+"object")for(var sKey in oAdditionalReactionInitOption)if(oAdditionalReactionInitOption.hasOwnProperty(sKey))oReactionInitOption[sKey]=oAdditionalReactionInitOption[sKey];this._sReactionModuleClassName=
+oReactionInitOption.moduleClassname;this._setLikeReactionCallback(oReactionInitOption);reaction.init(oReactionInitOption)},
+_setLikeReactionCallback:function(oReactionInitOption){if(!oReactionInitOption.callback)oReactionInitOption.callback={};if(typeof oReactionInitOption.callback.updated!=="function")oReactionInitOption.callback.updated=
+function(oParam){if(!oParam)return;var aLikeContentsList=oParam.contents||[];var aElLikeModuleList=oParam.targets||[];for(var i=0,len=aLikeContentsList.length;i<len;i++){var $elLikeModule=$(aElLikeModuleList[i]);
+if(!$elLikeModule.existElements())return;if(!$elLikeModule.is(":visible")){var sDisplay=$elLikeModule.data("display")||"inline-block";$elLikeModule.css("display",sDisplay)}var aReactions=aLikeContentsList[i].reactions||
+[];if(this._getTotalReactionCount(aReactions)>0){var $elLikeUserListBtn=$.getSingle("a._likeUserListBtn",$elLikeModule.parent());$elLikeUserListBtn.css("display","inline-block")}}}.bind(this);
+if(typeof oReactionInitOption.callback.updateParent!=="function")oReactionInitOption.callback.updateParent=function(oParam){}.bind(this);
+if(typeof oReactionInitOption.callback.clicked!=="function")oReactionInitOption.callback.clicked=function(oParam){if(!oParam)return;var aElTargets=oParam.targets;if(aElTargets&&aElTargets.length>0)this._refreshLikeCount($(aElTargets[0]));
+if(typeof this._oOption.fnReactionCallback!=="function")return;var oLikeContentsInfo=oParam.content;if(!oLikeContentsInfo)return;var sContentsId=oLikeContentsInfo.contentsId;var oLikeContentsIdInfo=naver.kin.pc.common.getLikeContentsInfo(sContentsId);
+if(!oLikeContentsIdInfo)return;var sReactionType=oLikeContentsInfo.reactionType;if(!sReactionType)return;var sActionEvent=oLikeContentsInfo.isReacted?"add":"delete";this._oOption.fnReactionCallback({contentsId:sContentsId,
+parentContentsId:oLikeContentsIdInfo.gdId,answerNo:oLikeContentsIdInfo.answerNo,reactionType:sReactionType,actionEvent:sActionEvent})}.bind(this);
+if(typeof oReactionInitOption.clicklog!=="function")oReactionInitOption.clicklog=function(elTarget,sNclicksCode,oEvent){if(!elTarget||!sNclicksCode)return;naver.kin.pc.common.nClicks(sNclicksCode,"","",
+oEvent)}.bind(this)},
+_getTotalReactionCount:function(aReaction){if(!aReaction||aReaction instanceof Array===false)return 0;var nTotalReactionCount=0;for(var i=0,len=aReaction.length;i<len;i++)nTotalReactionCount+=aReaction[i].count||
+0;return nTotalReactionCount},
+_refreshLikeCount:function($elAnswerLikeArea){if(!$elAnswerLikeArea.existElements())return;if(!$elAnswerLikeArea.hasClass("_answerLikeArea"))$elAnswerLikeArea=$elAnswerLikeArea.closest("._answerLikeArea");
+var $elLikeUserListBtn=$.getSingle("a._likeUserListBtn",$elAnswerLikeArea);if(!$elLikeUserListBtn.existElements())return;var $elReactionCount=$.getSingle("a._face span._count",$elAnswerLikeArea);if(!$elReactionCount.existElements())return;
+var nTotalReactionCount=parseInt($elReactionCount.text(),10)||0;if(nTotalReactionCount>0)$elLikeUserListBtn.css("display","inline-block");else $elLikeUserListBtn.hide()},
+_lazyLoadSocialPlugInScript:function(){var oServiceSetting=this._oOption.serviceSetting||{};var sLinkUrl=this._oOption.linkUrl;var sTitle=this._oOption.title||"Unknown";var sSourceTitle=this._oOption.sourceTitle||
+"Unknown";var sSourceContents=null;var oInitializeData={evKey:"kin",servicName:"\uc9c0\uc2ddiN",url:sLinkUrl,title:sTitle,me:{display:"off"},mail:{display:oServiceSetting["mail"]==="off"?"off":"on",url:sLinkUrl,
+title:sTitle,srvid:"social",srvurl:""},blog:{display:oServiceSetting["blog"]==="off"?"off":"on",url:sLinkUrl,title:sTitle,blogId:"naver",sourceType:"111",sourceTitle:sSourceTitle,sourceContents:sSourceContents,
+sourceForm:2},cafe:{display:oServiceSetting["cafe"]==="off"?"off":"on",url:sLinkUrl,title:sTitle,sourceType:"111",sourceTitle:sSourceTitle,sourceContents:sSourceContents,sourceForm:2},memo:{display:oServiceSetting["memo"]===
+"off"?"off":"on",url:sLinkUrl,title:sTitle},calendar:{display:oServiceSetting["calendar"]==="off"?"off":"on",url:sLinkUrl,title:sTitle},bookmark:{display:oServiceSetting["bookmark"]==="off"?"off":"on",
+url:sLinkUrl,title:sTitle},copyurl:{display:oServiceSetting["copyurl"]==="off"?"off":"on",url:sLinkUrl},twitter:{display:oServiceSetting["twitter"]==="off"?"off":"on",url:sLinkUrl,title:sTitle},facebook:{display:oServiceSetting["facebook"]===
+"off"?"off":"on",url:sLinkUrl,title:sTitle},band:{display:oServiceSetting["band"]==="off"?"off":"on",url:sLinkUrl,title:sTitle},line:{display:oServiceSetting["line"]==="off"?"off":"on",url:sLinkUrl,title:sTitle},
+kakaotalk:{display:oServiceSetting["kakaotalk"]==="off"?"off":"on",url:sLinkUrl,title:sTitle},kakaostory:{display:oServiceSetting["kakaostory"]==="off"?"off":"on",url:sLinkUrl,title:sTitle},score:{display:"off"}};
+if(typeof window.initializeSocialPlugin==="undefined")window.initializeSocialPlugin=oInitializeData||null;var sSocialPlugInScriptUrl=this._oOption.socialPlugInDomain+"/js/release/ko_KR/splugin.js?"+this._oOption.sScriptVersion;
+$.cachedScript(sSocialPlugInScriptUrl).done(this._onLoadSocialPlugInScript.bind(this))},
+_onLoadSocialPlugInScript:function(){if(typeof SocialPlugIn_Core=="undefined")return;window.__splugin=SocialPlugIn_Core({"evKey":"kin","serviceName":"\uc9c0\uc2ddiN","dimmed":"default","onClick":function(button){},
+"onShow":function(){},
+"onHide":function(){},
+"onResize":function(event){},
+"onRotate":function(event){}})},
+refresh:function(bIsForceUpdate){this._$element["likeUserListBtn"].off("click");this._$element["likeReactionModule"]=$("div._reactionModule");this._$element["likeUserListBtn"]=$("a._likeUserListBtn");this._$element["likeUserListBtn"].on("click",
+this._onClickLikeUserListButton.bind(this));if(window.__splugin)window.__splugin.init();if(typeof reaction!=="undefined"&&reaction.instance&&typeof reaction.instance.update==="function")if(bIsForceUpdate===
+true)reaction.instance.update(null,true);else reaction.instance.update()},
+_onClickLikeUserListLayer:function(oEvent){var $elTarget=$(oEvent.target);if($elTarget.get(0).tagName!=="a")$elTarget=$elTarget.closest("a");if(!$elTarget.existElements()){oEvent.stopPropagation();oEvent.preventDefault();
+return}var $elLikeUserListLayer=$(oEvent.currentTarget);var nLikeAnswerNo=parseInt($elLikeUserListLayer.data("answerNo"),10);if($elTarget.hasClass("_closeBtn")){if($elLikeUserListLayer.existElements())this._closeLikeUserListLayer(nLikeAnswerNo,
+$elLikeUserListLayer);oEvent.stopPropagation();oEvent.preventDefault()}else if($elTarget.hasClass("_reactionTypeBtn")){if(nLikeAnswerNo>0){var sReactionType=$elTarget.data("reactionType")||null;this._initLikeUserListLayer(nLikeAnswerNo,
+sReactionType)}oEvent.stopPropagation();oEvent.preventDefault()}else if($elTarget.hasClass("_prevPageBtn")){if(nLikeAnswerNo>0){var sReactionType=$elTarget.data("reactionType")||null;var nPage=$elTarget.data("page")||
+1;this._sButtonClassToBeFocused="._prevPageBtn";this._likeUserListAjax($elLikeUserListLayer,"prev",sReactionType,nLikeAnswerNo,nPage)}oEvent.stopPropagation();oEvent.preventDefault()}else if($elTarget.hasClass("_nextPageBtn")){if(nLikeAnswerNo>
+0){var sReactionType=$elTarget.data("reactionType")||null;var nPage=$elTarget.data("page")||1;this._sButtonClassToBeFocused="._nextPageBtn";this._likeUserListAjax($elLikeUserListLayer,"next",sReactionType,
+nLikeAnswerNo,nPage)}oEvent.stopPropagation();oEvent.preventDefault()}},
+_closeLikeUserListLayer:function(nLikeAnswerNo,$elLikeUserListLayer){$elLikeUserListLayer.hide();$elLikeUserListLayer.prop("aria-hidden","true");var $elLikeUserListBtn=$.getSingle("#answerLikeArea_"+nLikeAnswerNo+
+" a._likeUserListBtn");$elLikeUserListBtn.focus();$elLikeUserListBtn.prop("aria-pressed","false")},
+_onKeydownLikeUserListLayer:function(oEvent){var $elLikeUserListLayer=$(oEvent.currentTarget);if(!$elLikeUserListLayer.existElements())return;var $elTarget=$(oEvent.target);var nKeyCode=oEvent.keyCode||
+oEvent.which;if($elTarget.hasClass("_firstReactionBtn")&&oEvent.shiftkey&&nKeyCode===9){$.getSingle("._closeBtn",$elLikeUserListLayer).focus();oEvent.stopPropagation();oEvent.preventDefault()}else if($elTarget.hasClass("_closeBtn"))if(!oEvent.shiftkey&&
+nKeyCode===9){var $elFirstReactionBtn=$.getSingle("a._firstReactionBtn",$elLikeUserListLayer);$elFirstReactionBtn.focus();oEvent.stopPropagation();oEvent.preventDefault()}else if(nKeyCode===13){var nLikeAnswerNo=
+$elLikeUserListLayer.data("answerNo")||0;this._closeLikeUserListLayer(nLikeAnswerNo,$elLikeUserListLayer);oEvent.stopPropagation();oEvent.preventDefault()}},
+_onClickDocumentBody:function(oEvent){var $elTarget=$(oEvent.target);if($elTarget.hasClass("_likeUserListBtn")||$elTarget.hasClass("_likeUserListLayer"))return;var $elSkipEventArea=$elTarget.closest("._likeUserListBtn",
+"._likeUserListLayer");if($elSkipEventArea.existElements())return;this._closeAllLikeUserListLayer()},
+_onResizeWindow:function(oEvent){var $elLikeUserListLayers=this._$element["likeUserListLayer"];if(!$elLikeUserListLayers||!$elLikeUserListLayers.existElements())return;for(var i=0,len=$elLikeUserListLayers.length;i<
+len;i++){var $elLikeUserListLayer=$($elLikeUserListLayers.get(i));if(!$elLikeUserListLayer.is(":visible"))continue;var nLikeAnswerNo=$elLikeUserListLayer.data("answerNo")||0;this._adjustPositionOfLikeUserListLayer(nLikeAnswerNo,
+$elLikeUserListLayer)}},
+_onClickLikeUserListButton:function(oEvent){var $elLikeUserListBtn=$(oEvent.currentTarget);var $elAnswerListArea=$elLikeUserListBtn.closest("._answerLikeArea");if(!$elAnswerListArea.existElements())return;
+var nLikeAnswerNo=$elAnswerListArea.data("answerNo")||0;var $elLikeUserListLayer=$("#answerLikeUserLayer_"+nLikeAnswerNo);if($elLikeUserListLayer.is(":visible"))this._closeLikeUserListLayer(nLikeAnswerNo,
+$elLikeUserListLayer);else{this._closeAllLikeUserListLayer();this._initLikeUserListLayer(nLikeAnswerNo);$elLikeUserListBtn.prop("aria-pressed","true")}},
+_closeAllLikeUserListLayer:function(){var $elLikeUserListLayers=this._$element["likeUserListLayer"];if(!$elLikeUserListLayers||!$elLikeUserListLayers.existElements())return;$elLikeUserListLayers.hide();
+$elLikeUserListLayers.prop("aria-hidden","true");if(!this._$element["likeUserListBtn"].existElements())return;this._$element["likeUserListBtn"].prop("aria-pressed","false")},
+_initLikeUserListLayer:function(nLikeAnswerNo,sReactionType){if(!nLikeAnswerNo){alert(this._MESSAGE.FAILED_TO_GET_LIKE_USER_LIST_UNKNOWN);return}if(this._bIsAjaxProcessing)return;$.ajax({url:this._URL.GET_ANSWER_LIKE_COUNT_AJAX,
+method:"post",timeout:3E3,data:{docId:this._oOption.docId||0,gdId:this._oOption.gdId||null,answerNo:nLikeAnswerNo},dataType:"json",cache:false,beforeSend:function(){this._bIsAjaxProcessing=true}.bind(this),
+complete:function(){this._bIsAjaxProcessing=false}.bind(this),
+success:this._onSucceedInAnswerLikeCountAjax.bind(this,nLikeAnswerNo,sReactionType),error:function(jqXHR,sTextStatus,sErrorThrown){alert(sTextStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})},
+_onSucceedInAnswerLikeCountAjax:function(nLikeAnswerNo,sReactionType,oResponse){if(nLikeAnswerNo<1){alert(this._MESSAGE.FAILED_TO_GET_LIKE_USER_LIST_UNKNOWN);return}if(oResponse&&oResponse.isSuccess){var oAnswerLikeCountStat=
+oResponse.stat;if(!oAnswerLikeCountStat){alert(this._MESSAGE.FAILED_TO_GET_LIKE_USER_LIST_UNKNOWN);return}if(oAnswerLikeCountStat.kinupCnt<1){alert(this._MESSAGE.FAILED_TO_GET_LIKE_USER_LIST_EMPTY);return}sReactionType=
+sReactionType||oResponse.maxReactionType||"like";var $elLikeUserListLayer=$("#answerLikeUserLayer_"+nLikeAnswerNo);var bLayerOpened=$elLikeUserListLayer.is(":visible");if(!$elLikeUserListLayer||!$elLikeUserListLayer.existElements()){$elLikeUserListLayer=
+$(this._$template["answerLikeUserLayerTpl"]({answerNo:nLikeAnswerNo,reactionType:sReactionType,stat:oAnswerLikeCountStat}));$(document.body).append($elLikeUserListLayer);this._refreshAnswerLikeCountOfLayer($elLikeUserListLayer,
+sReactionType,oAnswerLikeCountStat);this._refreshLikeUserListLayer()}else{$.getSingle("em._kinupCnt",$elLikeUserListLayer).text(oAnswerLikeCountStat.kinupCnt);this._refreshAnswerLikeCountOfLayer($elLikeUserListLayer,
+sReactionType,oAnswerLikeCountStat);$elLikeUserListLayer.show();$elLikeUserListLayer.prop("aria-hidden","false")}this._adjustPositionOfLikeUserListLayer(nLikeAnswerNo,$elLikeUserListLayer);var $elReactionButtonList=
+$elLikeUserListLayer.find("a._reactionTypeBtn");$elReactionButtonList.prop("aria-checked","false");for(var i=0,len=$elReactionButtonList.length;i<len;i++){var $elReactionButton=$($elReactionButtonList.get(i));
+if($elReactionButton.data("reactionType")===sReactionType){$elReactionButton.prop("aria-checked","true");if(!bLayerOpened)$($elReactionButtonList.get(0)).focus();else $elReactionButton.focus();break}}this._likeUserListAjax($elLikeUserListLayer,
+"init",sReactionType,nLikeAnswerNo,1)}else{var sErrorMsg=oResponse&&oResponse.errorMsg||this._MESSAGE.FAILED_TO_GET_LIKE_USER_LIST_UNKNOWN;alert(sErrorMsg)}},
+_refreshAnswerLikeCountOfLayer:function($elLikeUserListLayer,sReactionType,oAnswerLikeCountStat){if(!$elLikeUserListLayer||!$elLikeUserListLayer.existElements()||!sReactionType||!oAnswerLikeCountStat)return;
+var $elAnswerLikeCountArea=$.getSingle("div._answerLikeCountArea",$elLikeUserListLayer);if(!$elAnswerLikeCountArea.existElements())return;$elAnswerLikeCountArea.html(this._$template["answerLikeCountAreaTpl"]({reactionType:sReactionType,
+stat:oAnswerLikeCountStat}))},
+_refreshLikeUserListLayer:function(){if(this._$element["likeUserListLayer"]&&this._$element["likeUserListLayer"].existElements()){this._$element["likeUserListLayer"].off("click");this._$element["likeUserListLayer"]=
+null}this._$element["likeUserListLayer"]=$("div._likeUserListLayer");if(this._$element["likeUserListLayer"].existElements())this._$element["likeUserListLayer"].on("click",this._onClickLikeUserListLayer.bind(this)).on("keydown",
+this._onKeydownLikeUserListLayer.bind(this))},
+_adjustPositionOfLikeUserListLayer:function(nLikeAnswerNo,$elLikeUserListLayer){if(!nLikeAnswerNo||!$elLikeUserListLayer||!$elLikeUserListLayer.existElements())return;var $elLikeUserListBtn=$.getSingle("#answerLikeArea_"+
+nLikeAnswerNo+" a._likeUserListBtn");if(!$elLikeUserListBtn.existElements())return;var oLikeUserListBtnOffset=$elLikeUserListBtn.offset();if(!oLikeUserListBtnOffset)return;var nPaddingOfLikeUserListButton=
+20;var nRevisedTopOfLayer=Math.max(Math.ceil(oLikeUserListBtnOffset.top-$elLikeUserListLayer.height()+1),0);var nRevisedLeftOfLayer=Math.ceil(oLikeUserListBtnOffset.left+$elLikeUserListBtn.width()+nPaddingOfLikeUserListButton);
+$elLikeUserListLayer.css({"top":nRevisedTopOfLayer+"px","left":nRevisedLeftOfLayer+"px"})},
+_likeUserListAjax:function($elLikeUserListLayer,sMode,sReactionType,nLikeAnswerNo,nPage){if(sMode!=="init"&&this._bIsAjaxProcessing){alert(this._MESSAGE.WAIT_FOR_PROCESSING);return}if(sMode==="init"){this._hideAnswerLikeUserList($elLikeUserListLayer);
+this._showInnerLayerLoadingIndicator($elLikeUserListLayer)}$.ajax({url:this._URL.GET_ANSWER_LIKE_USER_LIST_AJAX,method:"post",timeout:3E3,data:{reactionType:sReactionType||null,dirId:this._oOption.dirId||
+0,docId:this._oOption.docId||0,answerNo:nLikeAnswerNo||0,page:nPage,count:this._COUNT_PER_PAGE},dataType:"json",cache:false,beforeSend:function(){this._bIsAjaxProcessing=true}.bind(this),
+complete:function(){this._bIsAjaxProcessing=false}.bind(this),
+success:this._onSucceedInAnswerLikeUserListAjax.bind(this,$elLikeUserListLayer,sMode,sReactionType,nLikeAnswerNo,nPage),error:function(jqXHR,sTextStatus,sErrorThrown){alert(sTextStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:
+naver.kin.pc.common.MESSAGE.ERROR)}.bind(this)})},
+_hideAnswerLikeUserList:function($elLikeUserListLayer){if(!$elLikeUserListLayer||!$elLikeUserListLayer.existElements())return;var $elLikeUserList=$.getSingle("._likeUserList",$elLikeUserListLayer);$elLikeUserList.hide();
+var $elNoLikeUserList=$.getSingle("._noLikeUserList",$elLikeUserListLayer);$elNoLikeUserList.hide()},
+_onSucceedInAnswerLikeUserListAjax:function($elLikeUserListLayer,sMode,sReactionType,nLikeAnswerNo,nPage,oResponse){if(!$elLikeUserListLayer||!$elLikeUserListLayer.existElements()||nLikeAnswerNo<1||nPage<
+1){alert(this._MESSAGE.FAILED_TO_GET_LIKE_USER_LIST_UNKNOWN);return}if(sMode==="init")this._hideInnerLayerLoadingIndicator($elLikeUserListLayer);if(oResponse&&oResponse.isSuccess){var $elLikeUserList=$.getSingle("._likeUserList",
+$elLikeUserListLayer);var $elNoLikeUserList=$.getSingle("._noLikeUserList",$elLikeUserListLayer);if(!$elLikeUserList.existElements()||!$elNoLikeUserList.existElements()){alert(this._MESSAGE.FAILED_TO_GET_LIKE_USER_LIST_UNKNOWN);
+return}var aLikeUserList=oResponse.list||[];var nResultCount=aLikeUserList.length;if(nResultCount>0){$elLikeUserList.html(this._$template["answerLikeUserListTpl"]({list:aLikeUserList}));$elLikeUserList.show()}else $elNoLikeUserList.show();
+this._refreshLikeUserListPagingBtn($elLikeUserListLayer,sReactionType,nPage,nResultCount)}else{var sErrorMsg=oResponse&&oResponse.errorMsg||this._MESSAGE.FAILED_TO_GET_LIKE_USER_LIST_UNKNOWN;alert(sErrorMsg)}},
+_refreshLikeUserListPagingBtn:function($elLikeUserListLayer,sReactionType,nPage,nResultCount){if(!$elLikeUserListLayer||!$elLikeUserListLayer.existElements())return;var $elPagingBtnArea=$.getSingle("div._pagingBtnArea",
+$elLikeUserListLayer);if(!$elPagingBtnArea.existElements())return;var nPrevPage=0;if(nPage>1)nPrevPage=nPage-1;var $elCurrentReactionCount=$.getSingle("span._count._"+sReactionType,$elLikeUserListLayer);
+var nCurrentReactionCount=parseInt($elCurrentReactionCount.text(),10)||0;var nNextPage=0;if(nResultCount>=this._COUNT_PER_PAGE&&nCurrentReactionCount>nPage*this._COUNT_PER_PAGE)nNextPage=nPage+1;if(!nPrevPage&&
+!nNextPage){$elPagingBtnArea.hide();return}$elPagingBtnArea.html(this._$template["answerLikeUserListPagingTpl"]({reactionType:sReactionType,prevPage:nPrevPage,nextPage:nNextPage}));$elPagingBtnArea.show();
+if(this._sButtonClassToBeFocused){this._focusButtonBeSelected(this._sButtonClassToBeFocused,$elPagingBtnArea);this._sButtonClassToBeFocused=null}},
+_focusButtonBeSelected:function(className,$elPagingBtnArea){var $elButton=$.getSingle(className,$elPagingBtnArea);if($elButton.existElements())$elButton.focus();else $.getSingle("a",$elPagingBtnArea).focus()},
+_showInnerLayerLoadingIndicator:function($elLikeUserListLayer){if(!$elLikeUserListLayer||!$elLikeUserListLayer.existElements())return;var $elLoadingImage=$.getSingle("div._loadingImage",$elLikeUserListLayer);
+$elLoadingImage.show()},
+_hideInnerLayerLoadingIndicator:function($elLikeUserListLayer){if(!$elLikeUserListLayer||!$elLikeUserListLayer.existElements())return;var $elLoadingImage=$.getSingle("div._loadingImage",$elLikeUserListLayer);
+$elLoadingImage.hide()},
+destroy:function(){if(this._$element){this._$element["likeUserListBtn"].off();this._$element["likeUserListLayer"].off()}this._oOption=this._$element=this._$template=this._sReactionModuleClassName=this._sButtonClassToBeFocused=
+null;this._bIsAjaxProcessing=null}});
+window.naver=window.naver||{};naver.kin=naver.kin||{};naver.kin.pc=naver.kin.pc||{};
+naver.kin.pc.LikeLayer=eg.Class({_URL:{GET_LAST_LEGEND_QNA_URL:"/ajax/getLastLegendQnaUrlAjax.nhn"},_$element:null,_oTemplate:null,_bIsLikeReaction:false,_bIsUsefulReaction:false,_bIsHahaReaction:false,
+construct:function(){this._setElement()},
+_setElement:function(){this._$element={};this._$element["body"]=$.getSingle("body");this._oTemplate={};this._oTemplate["firstLikeLayerTemplate"]=doT.template($("#tplLikeLayer").html());this._oTemplate["firstUsefulLayerTemplate"]=
+doT.template($("#tplUsefulLayer").html());this._oTemplate["firstHahaLayerTemplate"]=doT.template($("#tplHahaLayer").html());this._oTemplate["likeEventLayer"]=doT.template($("#tplLikeEventLayer").html())},
+setReaction:function(isLikeReaction,isUsefulReaction,isHahaReaction){this._bIsLikeReaction=isLikeReaction;this._bIsUsefulReaction=isUsefulReaction;this._bIsHahaReaction=isHahaReaction},
+showLayer:function(){if(this._$element["likeLayer"]&&this._$element["likeLayer"].existElements())this._$element["likeLayer"].remove();var sHtml="";if(this._bIsLikeReaction)sHtml=this._oTemplate["firstLikeLayerTemplate"]();
+else if(this._bIsUsefulReaction)sHtml=this._oTemplate["firstUsefulLayerTemplate"]();else if(this._bIsHahaReaction)$.ajax({url:this._URL.GET_LAST_LEGEND_QNA_URL,method:"POST",timeout:5E3,async:false,success:function(oResponse){sHtml=
+this._oTemplate["firstHahaLayerTemplate"]({legendQnaUrl:oResponse.legendQnaUrl})}.bind(this),
+error:function(jqXHR,textStatus,errorThrown){alert(textStatus==="timeout"?naver.kin.pc.common.MESSAGE.TIMEOUT:naver.kin.pc.common.MESSAGE.ERROR)}});
+else sHtml=this._oTemplate["likeEventLayer"]();this._$element["body"].append(sHtml);this._$element["likeLayer"]=$("#likeLayer");if(this._$element["likeLayer"].existElements()&&(this._bIsLikeReaction||this._bIsUsefulReaction||
+this._bIsHahaReaction))this._$element["likeLayer"].css({"top":window.pageYOffset+(document.documentElement.clientHeight-this._$element["likeLayer"].height())/2+"px"});this._$element["likeLayer"].find("a._like_layer_close").on("click",
+function(oEvent){oEvent.preventDefault();oEvent.stopPropagation();this._$element["likeLayer"].remove()}.bind(this))}});

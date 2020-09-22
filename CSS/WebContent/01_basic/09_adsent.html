@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+
+h1 ~ ul{
+	border :2px dotted orange;
+} 
+/* h1뒤에 나오는 모든 ul 태그를 선택합니다. */
+
+h1+ul{	border:2px dotted purple;
+}
+/* h1+ul은 h1 태그 바로 다음에 나오는 첫번째 ul을 선택합니다.*/
+</style>
+</head>
+<body>
+<h1> 장기과정 커리큘럼</h1>
+
+
+	<h1>Java</h1>
+	<ul>
+		<li>자바의 특징 </li>
+		<li>연산자</li>
+		<li>제어문(조건반복)</li>
+	</ul>
+	
+	<h2>SQL</h2>
+	<ul>
+		<li>select</li>
+		<li>insert</li>
+		<li>update</li>
+		<li>delete</li>
+	</ul>
+	<ul>
+	<li>JDBC</li>
+	<li>HTML</li>
+	<li>Servlet&JSP</li>
+	<li>CSS</li>
+	</ul>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	table{
+	width:300px;
+	table-layout:fixed;
+	height:auto;
+	word-break:break-all;
+	/* word-break : break-all 을 사용하면 셀 너비보다 긴 내용도 셀안에 표시가 가능합니다.*/
+	
+	
+	}
+	/*table-layout를 사용하게 되면 셀안의 내용이 양에 따라 셀너비를
+	변하게 할지 고정 시킬지 결정할수 있습니다. fixed의 경우 셀너비를 고정합니다.
+	셀의 내용에 따라 셀의 너비가 달라지지 않습니다.*/
+	td{width:150px;}
+
+</style>
+</head>
+<body>
+<h1>Table Layout</h1>
+<table border="1" class="table1">
+	<tr>
+		<td>
+		한글로띄어쓰기없게길게붙여쓰기
+		</td>
+		<td>
+		long_description_without_space
+		</td>
+		</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+</script>
+<script>
+$(document).ready(function() {
+	$("h1:lt(2)").css("background", "purple");
+	// lt->Less Than 지정한 인덱스 보다 작은 것을 선택 
+	$("h1:gt(2)").css("background", "gray");
+	// gt -> Greater Than 지정한 인덱스보다 큰 것을 선택 
+	$("h1:eq(2)").css("background", "red");
+	//eq -> equal  지정한 인덱스와 같은 것을 선택 
+	$("h1:first").css("background", "orange");
+	$("h1:last").css("background", "green");
+	
+	//$("h1:nth-child(2n+1)").css("background","blue");
+	//$("h1:nth-child(2n)").css("background", "orange");
+	//$("h1:nth-child(3n+1)").css("background","blue");
+	//$("h1:nth-child(3n+2)").css("background","gray");
+	//$("h1:nth-child(3n)").css("background","orange");
+});
+</script>
+</head>
+<body>
+
+<h1>1번</h1>
+<h1>2번</h1>
+<h1>3번</h1>
+<h1>4번</h1>
+<h1>5번</h1>
+<h1>6번</h1>
+<h1>7번</h1>
+<h1>8번</h1>
+<h1>9번</h1>
+<h1>10번</h1>
+
+</body>
+</html>

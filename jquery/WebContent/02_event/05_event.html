@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/
+1.12.4/jquery.min.js">
+</script>
+<script>
+/*
+ * trigger() 메소드는 이벤트가 발생할때 실행될 함수나 on()함수의 이벤트
+ 	핸들러를 강제로 실행시킵니다.
+ 	사용자가 실행시키는 이벤트의 순서를 지정해서 실행할수 있습니다.
+	파라미터 값은 이벤트 핸들러에 전달하기 위한 데이터로 생략 가능합니다.
+	
+	대상태그.trigger("이벤트","파라미터");
+ */
+
+
+
+
+$(document).ready(function () {
+	$("h1").click(function() {
+		$(this).html($(this).html()+"+");
+	});
+	
+	setInterval(function () {
+		$("h1:last").trigger("click"); 
+	},500);
+	
+});
+
+
+
+</script>
+
+
+</head>
+<body>
+<h1>test -1-</h1>
+<h1>test -2-</h1>
+<h1>test -3-</h1>
+<h1>test -4-</h1>
+
+
+</body>
+</html>

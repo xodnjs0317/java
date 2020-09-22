@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/
+1.12.4/jquery.min.js">
+</script>
+<script>
+$(function(){
+	/*$.ajax({
+		type: "POST",
+		url: "data/test.html"
+	}).done(function (data){	//실행후 결과를 처리할 함수
+		alert("올바르게 성공");
+		$("#resultDiv").html(data);
+		
+	});
+	$.ajax({
+		type: "POST",
+		url: "data/test.html",
+		dataType: "html"
+	}).done(function (data){	//실행후 결과를 처리할 함수
+		alert("올바르게 성공2");
+		$("#resultDiv").html(data);
+	}).fail(function (){
+		alertt("오류발생")
+	});
+	
+	$.ajax({
+		type: "POST",
+		url: "data/resJSON.jsp",
+		dataType: "JSON"
+	}).done(function (data){	//실행후 결과를 처리할 함수
+		$("#resultDiv").append("이름 : "+data.name+" ");
+		$("#resultDiv").append("나이 : "+data.age+" ");
+		$("#resultDiv").append("주소 : "+data.addr+" ");
+	}).fail(function (){
+		alertt("오류발생")	//데이터 타입이 다를때는 오류x
+	});*/
+	$("#ajaxBtn").click(function(){
+		$.ajax({
+			type: "POST",
+			url: "data/param.jsp",
+			data: {id:"tester",name:"테스터"},
+			dataType: "html"
+		}).done(function (data){	//실행후 결과를 처리할 함수
+			$("#resultDiv").append(data);
+		}).fail(function (){
+			alert("오류발생")	//데이터 타입이 다를때는 오류x
+		});
+	});
+	
+});
+</script>
+</head>
+<body>
+	<input type="button" id="ajaxBtn" value="호출">
+	<div id="resultDiv"></div>
+</body>
+</html>

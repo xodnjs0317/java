@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+</script>
+<script>
+//$.extend(대상,객체1,객체2,...) 는 다수의 객체를 하나의 객체로 합치는
+//merge 기능을 수행합니다. 
+
+$(document).ready(function() {
+	var member = {"id":"hong"};
+	$.extend(member, {"name":"홍길동"},{"email":"test@a.com"});
+	console.log(JSON.stringify(member));
+});
+
+</script>
+
+</head>
+<body>
+<h1>객체 확장 : $.extend()</h1>
+</body>
+</html>

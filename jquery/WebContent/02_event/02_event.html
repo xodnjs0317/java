@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/
+1.12.4/jquery.min.js">
+</script>
+<script>
+$(document).ready(function() {
+	$("div").click(function() { //이벤트 사용하는 또 다른 방법 
+		alert("쿨럭");
+	});
+	
+	$("div").hover(function () {
+		$(this).addClass("reverse");
+	}, function () {
+		$(this).removeClass("reverse");
+	
+	}
+		
+	);
+	
+	
+});
+
+
+</script>
+
+<style>
+div{
+	font-size:40px;
+	border: 5px solid balck;
+}
+
+.reverse {
+	background: black;
+	color: white;
+}
+</style>
+
+
+</head>
+<body>
+<div>이벤트 테스트</div>
+
+</body>
+</html>

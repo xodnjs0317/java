@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+</script>
+<script>
+$(document).ready(function() {
+	//alert($(":disabled").attr("name")); //비활성화된 엘리먼트 선택 
+	alert($("input:checked").attr("value")); // checked 된 엘리먼트 선택
+	
+	alert($(":selected").attr("value"));//selected 된 엘리먼트 선택 
+});
+
+</script>
+
+</head>
+<body>
+<input type="text" name="name"><br>
+<input type="text" name="id" disabled="disabled"><br>
+
+<input type="checkbox" name="ch1" value="1번">1번<br>
+<input type="checkbox" name="ch1" value="2번">2번<br>
+<input type="checkbox" name="ch1" value="3번" checked="checked">3번<br>
+
+<select name="selBox">
+<option value="1번">1번 </option>
+<option value="2번" selected="selected">2번 </option>
+<option value="3번">3번 </option>
+
+
+</select>
+
+</body>
+</html>

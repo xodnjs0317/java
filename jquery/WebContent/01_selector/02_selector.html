@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 
+	http://jquery.com/download/
+	http://cdnjs.com/libraries/jquery
+
+ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+</script>
+<script>
+$(document).ready(function() {
+	//$("*").css("color" ,"orange"); $("*") 은 모든 엘리먼트 선택
+	$("#h1").css("color","orange"); //id가 h1인 태그 선택
+	//$("body > h1").css("color","orange"); //자식 태그중 h1을 선택
+	$("body h1").css("color","orange") //자식 태그중에 h1을 선택 
+	
+	
+	//속성으로 선택할 경우는 []를 사용합니다.
+	$("h1[id=h1]").css("color","red"); 
+	$("h1[id^=h]").css("background","black"); // 아이디가 h로 시작할때 
+	$("[class]").css("background", "red"); //class 속성을 가지는 엘리먼트
+	$("[id$=1]").css("fontSize","30px"); //id 속성이 1로 끝나는 엘리먼트 선택
+		
+	
+});
+
+
+
+</script>
+
+
+
+</head>
+<body>
+<h1 id = "h1" class="hsize1">H1 hi~</h1>
+<div id = "div1">DIV hi~~~</div>
+<p id="p1">P hi~~~</p>
+<h1 id="h2">H1(id=h2) hi~~</h1>
+<div id =" test">JQuery 연습</div>
+
+</body>
+</html>

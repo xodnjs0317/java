@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+</script>
+<script>
+$(document).ready(function() {
+	var arr = ["a","b","c"];
+	
+	//$.each는 배열에 저장된 문서 객체 만큼 메소드가 반복 실행 됩니다. 
+	//배열에 저장된 객체의 인덱스 순서대로 하나씩 접근하여 객체를 선택하고 인덱스를 구합니다. 
+	$.each(arr,function (index, item){ //index는 배열의 인덱스   
+		console.log(index+"-"+item);//item은 해당인덱스의 배열 값입니다.
+		console.log(index+"-"+this);//this도 해당 인덱스의 배열 값입니다.
+	});
+	
+
+	$("h1").each(function(index, item) {
+			var color = "";
+			switch (index) {
+			case 0:
+				color = "purple";
+				break;
+			case 1:
+				color = "blue";
+				break;
+			case 2:
+				color = "green";
+				break;
+			case 3:
+				color = "yellow";
+				break;
+			case 4:
+				color = "navy";
+				break;
+			}
+			$(this).css("background",color);
+		});
+
+	});
+</script>
+
+</head>
+<body>
+<h1>1번</h1>
+<h1>2번</h1>
+<h1>3번</h1>
+<h1>4번</h1>
+<h1>5번</h1>
+</body>
+</html>

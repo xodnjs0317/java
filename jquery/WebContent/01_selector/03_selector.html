@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+</script>
+<script>
+//javascript 방식
+window.onload = function () {
+	alert("로딩완료후 1");
+};
+
+//jQuery 방식1
+$(document).ready(function () {
+	alert("로딩완료후 2");
+});
+
+//jQuery 방식2
+//$(document).ready(function) ->  $(fucntion)
+$(function () {
+	alert("로딩완료후 3")
+});
+
+</script>
+
+
+</head>
+<body>
+
+<h1 id = "h1" class="hsize1">H1 hi~</h1>
+<div id = "div1">DIV hi~~~</div>
+<p id="p1">P hi~~~</p>
+<h1 id="h2">H1(id=h2) hi~~</h1>
+<div id =" test">JQuery 연습</div>
+
+</body>
+</html>

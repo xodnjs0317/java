@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js">
+</script>
+<script>
+$(document).ready(function() {
+	$("#tSelect > tbody > tr:odd").css("background","orange");
+	$("#tSelect tr:even").css("background","green")
+	$("#tSelect tr:first").css("background","gray");
+	$("#tSelect tr:last").css("background","white");
+});
+
+</script>
+
+
+</head>
+<body>
+<table id ="tSelect">
+
+<tr>
+<td>번호 </td>
+<td>글쓴이</td>
+<td>제목</td>
+<td>조회수</td>
+</tr>
+<tr>
+<td>5</td>
+<td>작가</td>
+<td>웹툰제목</td>
+<td>5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+
+</table>
+
+
+</body>
+</html>

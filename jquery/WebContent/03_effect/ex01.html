@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/
+1.12.4/jquery.min.js">
+</script>
+<script>
+$(function(){
+	$("#btn").on("click",function(){
+		$("h1").fadeTo(1000,0)
+	});
+});
+</script>
+</head>
+
+<body>
+<!--  01. 버튼을 눌렀을 때 효과 메소드를 이용하여 <h1>이점점 투명해지면서 사라지도록 만들어보세요.
+
+02.버튼을 누를때마다 애니메이션 메소드를 이용하여<p>태그가 50px단위로 오른쪽으로 이동되도록 만들어보세요.
+단 이동속도는 0.5초입니다.
+-->
+
+<button id="btn">버튼</button>
+<h1>내용</h1>
+
+</body>
+</html>

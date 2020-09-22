@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+div {
+	width: 100%;
+	height: 300px;
+	border: 1px solid tomato;
+}
+</style>
+</head>
+<body>
+<input id="attachFile" type="file" multiple="multiple">
+<div id="fInfo"></div>
+
+<script>
+var attachFile = document.getElementById("attachFile");
+attachFile.onchange = function() {
+	//alert("파일이 변경되었습니다.");
+	
+	var files = this.files;
+	console.log(files);
+	var html ="";
+	for(var i=0; i<files.length;i++){
+		var file = files[i];
+		html += "<p>name : " +file.name+"</p>";
+		html += "<p>type : " +file.type+"</p>";
+		html += "<p>size : " +file.size+"</p>";
+	}
+	
+	document.getElementById("fInfo").innerHTML += html;
+	
+}
+
+
+</script>
+
+</body>
+</html>

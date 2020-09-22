@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+li{
+	float: left;
+    margin-top: 0px;
+    margin-left: 10%;
+    margin-bottom: 11px;
+    list-style-type: none
+}
+nav ul li a{
+	text-decoration: none;
+	color:black;
+	font-family: "맑은고딕";
+	font-weight:bold; 
+}
+aside#left{
+	width: 18%;
+	height: 600px;
+	float: left;
+}
+
+
+aside#left ul{
+	padding: 0;
+	color: white;
+	background-color:gray;
+}
+
+aside#left a{
+	display: block;
+	padding: 8px 16px;
+	color: white;
+	border: 1px solid white;
+}
+
+section{
+	width:25%;
+	height:400px;
+	float:left;
+	margin:5px;
+	padding:5px;
+	border:1px solid red;
+}
+aside{
+	width:25%;
+	height:650px;
+	margin:5px;
+	float:left;
+	}
+
+td{
+	border:1px solid black;
+	padding:5px;
+}
+
+</style>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body bgcolor="#e1eff2">
+<header>
+<img src="picture.jpg" width="150" height="80">
+<nav>
+		<hr width="100%" color="red" size="2px">
+		<ul>
+			<li><a href="">HOME</a></li>
+			<li><a href="">ABOUT US</a></li>
+			<li><a href="">NEWS</a></li>
+			<li><a href="">MY ACCOUNT</a></li>
+			<li><a href="">CONTACTS</a></li>
+		</ul>
+		<hr width="100%" color="red" size="2px"><br>
+	</nav>
+</header>
+
+<aside id="left">
+
+<h3 class='menu'>카테고리</h3>
+		<ul>
+			<div><a href="01_exam.html">컴퓨터</a></div>
+			<div><a>의류</a></div>
+			<div><a>음악</a></div>
+			<div><a href="04_exam.html">영화</a></div>
+			<div><a href="06_exam.html">스포츠/레저</a></div>
+			<div><a>가구/인테리어</a></div>
+			<div><a href="05_exam.html">식품</a></div>
+		</ul>
+</aside>
+<section class="content">
+		<img src="sport.jpg" width="100%"height="200" class= "left-img">
+<article>
+올 해 최고의 스포츠!!<br><br><br><br><br><br><br><br>
+<input type="button" value= "쇼핑카트에 추가하기" >
+</article>
+</section>
+<section class="content2">
+	<img src="sport2.jpg" width="100%"height="200" class= "left-img">
+<article>
+올 해 최고의 스포츠@@<br><br><br><br><br><br><br><br>
+<input  type="button" value= "쇼핑카트에 추가하기">
+</article>
+</section>
+
+<aside id =right>
+<form>
+
+<h3>Shopping Cart</h3>
+현재 쇼핑카트에 물픔이 없습니다.<br>
+<a href="http://localhost:8080/HTML5/08_exam/03_exam.html">쇼핑카트 보기</a>
+<br><br><br><br>
+<h3>Login</h3>
+	<label for="id">아 이 디 </label>
+	<input type="text" id="id"><br>
+	<label for="pwd">패스워드       </label>
+	<input type="text" id="pwd"><br>
+	<input type="button" value="로그인">
+	<input type="button" value="초기화"><br>
+	<a href="http://localhost:8080/HTML5/08_exam/02_exam.html">회원가입</a>
+	<a href="http://localhost:8080/HTML5/08_exam/02_exam.html">비밀번호 분실</a>
+	
+
+</form>
+</aside>
+
+	<footer>
+		<p>Copyright ⓒ 2018 W - MALL</p>
+	</footer>
+</body>
+</html>

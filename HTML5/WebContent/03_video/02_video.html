@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var video;
+window.onload = function() {
+	video = document.getElementById("myVideo");
+};
+function playVideo() {
+	var play = document.getElementById("play");
+	if(video.paused){
+		video.play();
+		play.innerHTML = "일시정지";
+	}else {
+		video.pause();
+		play.innerHTML = "재생"
+	}
+}
+function backwardVideo() {
+	video.currentTime -= 10;
+}
+function forwardVideo() {
+	video.currentTime += 10;
+}
+function restartVideo() {
+	video.currentTime = 0;
+}
+
+
+</script>
+</head>
+<body>
+<video id ="myVideo" controls width="720px" height="480px" poster="pic2.jpg">
+<source src ="OnePiece.mp4">
+</video>
+
+<p> 
+<button id ="play" onclick="playVideo()">시작 </button>
+<button id ="backward" onclick="backwardVideo()">뒤로 감기</button>
+<button id ="forward" onclick="forwardVideo()">앞으로 감기</button>
+<button id ="restart" onclick="restartVideo()">다시시작</button>
+</p>
+
+
+</body>
+</html>

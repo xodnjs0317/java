@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var count =0;
+function test(){
+	console.log(++count);
+}
+var id = setInterval(test, 1000);
+//test 함수를 1초마다 호출합니다.
+function stop() {
+	clearInterval(id);
+	//setINterval로 설정된 함수를 중지하는 function
+}
+</script>
+</head>
+<body>
+	<input type="button" value="정지" onclick="stop()">
+	 
+</body>
+</html>

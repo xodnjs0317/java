@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function toggle(val){
+	var form = document.InputForm;
+	var hobby= form.hobby;
+	
+	for(var i=0;i<hobby.length;i++){
+		hobby[i].checked=val;
+		
+	}
+	form.all.checked=true;
+	
+	
+	/* 체크박스개체.checked =true; 체크
+	       체크박스개체.checked=false; 체크 해제*/
+	
+	
+	
+}
+function selectAll(){
+	toggle(true);
+}
+function deselectAll(){
+	toggle(false);
+}
+
+function showInfo(){
+	var count=0;
+	var info="";
+	var form = document.InputForm;
+	var hobby = form.hobby;
+	for(var i=0; i<hobby.length;i++){
+		if(hobby[i].checked){
+			count++;
+			info += hobby[i].value+"\n";
+		}
+	}
+	alert(count+"개가 선택되었습니다.");    
+	alert("선택된 항목 값 \n"+info);
+	
+
+}
+
+</script>
+
+
+
+</head>
+<body>
+	<form method="get" name="InputForm">
+	당신의 취미는?? <br>
+	<input type="checkbox" name="all" onclick="toggle(this.checked)">
+	전체<br>
+	<input type="checkbox" name="hobby" value = "movie">영화감상 &nbsp;
+	<input type="checkbox" name="hobby" value = "music">음악감상 &nbsp;
+	<input type="checkbox" name="hobby" value = "game">게임 &nbsp;
+	<input type="checkbox" name="hobby" value = "reading">독서&nbsp;
+	<br>
+	<input type="button" value="전체선택" onclick="selectAll()">
+	<input type="button" value="전체해제" onclick="deselectAll()">
+	<input type="button" value="선택정보보기" onclick="showInfo()">
+	</form>
+</body>
+</html>

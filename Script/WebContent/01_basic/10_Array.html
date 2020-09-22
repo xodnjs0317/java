@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var arr = [1,2,3];
+console.log("arr : " + typeof(arr));
+
+var sum = 0;
+for(var i = 0; i<arr.length;i++){
+	sum +=arr[i];
+}
+document.write("배열의 합 : " + sum, "<br>" );
+
+arr[arr.length] = 4;
+/* 자바와는 다르게 인덱스를 벗어난 값에서도 예외없이 값이 추가가능 */
+console.log(arr[arr.length-1]);
+
+arr.push(5);
+console.log("arr : " + arr);
+
+sum = 0;
+for(var i in arr){
+	sum += arr[i];
+}
+
+console.log("arr sum : " + sum);
+
+var member = {
+		id: "tester", name : "테스터"};
+console.log(member.id+"-" + member["name"]);
+
+for(var key in member){
+//키 값을 몰라도 값을 뽑아낼 수 있습니다.
+	console.log(member[key]);
+}
+
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

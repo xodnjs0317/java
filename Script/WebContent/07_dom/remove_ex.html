@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var count=0;
+function add(){
+	var html ='<h1 class="hTag">추가추가</h1>'+'<input class ="hTag" type="button" value="del" onclick="del()">';
+	var div = document.getElementById("b");
+	//div.innerHTML+= html;
+	
+}
+function add2(){
+	
+		var html='<div class="hTag">추가추가'+(++count)+'<input class ="hTag" type="button" value="del" onclick="del()">'+'</div>';
+		var div = document.getElementById("b");
+		div.innerHTML +=html;
+}
+function del2(){
+	var div = document.getElementById("b");
+	b.innerHTML = "";
+}
+
+function del(){
+		var div = document.querySelector(".hTag");
+		var parent = div.parentNode;
+		parent.removeChild(div);
+		var div = document.querySelector(".hTag");
+		var parent = div.parentNode;
+		parent.removeChild(div);
+}
+</script>
+</head>
+<body>
+<input type="button" value="add2" onclick="add2()">
+<input type="button" value="add" onclick="add()">
+<input type="button" value="del" onclick="del()">
+<input type="button" value="del2" onclick="del2()">
+<div id="a" class="myDiv">
+a DIV
+</div><div id ="b" >
+</div>
+</body>
+</html>

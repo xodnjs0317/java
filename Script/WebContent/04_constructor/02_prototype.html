@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+/*자바스크립트 프로토 타입이란?
+-모든 객체는 프로토 타입이라는 또 다른 객체를 내부적으로 참조 할 수 있다.
+-모든 생성자 함수에는 prototype이라는 객체가 자동 생성된다.
+-prototype 객체에 추가한 속성들은 생성자를 사용해서 생성된 모든 객체의 속성으로 사용할수있다.
+-생성자로 생성된 객체일 경우 prototype에 정의된 속성들을 공통으로 사용하게 됩니다. */
+	function Member(id,name,age){
+		this.id=id;
+		this.name=name;
+		this.age =age;
+	}
+	Member.prototype.info =function(){
+		return this.id +"-"+this.name+"-"+this.age;
+	}; 
+	var mem = new Member("iloveyou","나",90);
+	var mem2 = new Member("youloveyou","너",90);
+	var mem3 = new Member("mugak","무각대사",80);
+	
+	document.writeln("mem1: "+mem.info()+"<br>");
+	document.writeln("mem2: "+mem2.info()+"<br>");
+	document.writeln("mem3: "+mem3.info()+"<br>");
+</script>
+</head>
+<body>
+
+</body>
+</html>

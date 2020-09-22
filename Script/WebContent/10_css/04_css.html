@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+div {
+	margin-top: 20px;
+	width: 400px;
+	height: 300px;
+	font-size: 30px;
+	border: 3px solid black;
+}
+</style>
+<script>
+window.onload = function() {
+	var movie = document.getElementById("movie");
+	var music = document.getElementById("music");
+	movie.style.display = "block";
+	music.style.display = "none";
+}
+
+function show(divId) {
+	var movie = document.getElementById("movie");
+	var music = document.getElementById("music");
+	movie.style.display = "none";
+	music.style.display = "none";
+	if(divId=="movie") {
+		movie.style.display = "block";
+	}else{
+		music.style.display = "block";
+	}
+}
+</script>
+</head>
+<body>
+<a href ="#" onclick ="show('movie')">영화</a>
+<a href ="#" onclick ="show('music')">음악</a>
+<div id ="movie">
+영화정보</div>
+<div id="music">
+음악정보</div>
+</body>
+</html>

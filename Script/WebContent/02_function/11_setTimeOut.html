@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function call(){
+	alert("호출됨...");
+}
+alert("3초 뒤에 call 함수를 호출할 예정임");
+
+var id = setTimeout(call,3000);
+if(confirm("타임 아웃을 취소하시겠습니까?")){
+	clearTimeout(id);
+}
+</script>
+</head>
+<body>
+
+</body>
+</html>

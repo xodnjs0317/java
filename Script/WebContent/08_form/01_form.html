@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function chkForm(){
+	var mForm = document.mForm;
+	var name = mForm.name.value;
+	var pass = mForm.pass.value;
+	var pass2 = mForm.passCheck.value;
+	
+	if(!name){
+		alert("이름을 입력해주세요.");
+		mForm.name.focus();
+		return false;
+	}
+	if(!pass){
+		alert("비밀번호를 입력해주세요.");
+		mForm.pass.focus();
+		return false;
+	}else if(!pass2){
+		mForm.passCheck.focus();
+		alert("비밀번호를 입력해주세요.");
+		return false;
+	}else if(pass==pass2){
+		return true;
+	}else{
+		mForm.pass.focus();
+		mForm.pass.select();
+		
+		alert("비밀번호가 서로 다릅니다.");
+		return false;
+	}
+	
+	
+}
+
+</script>
+</head>
+<body>
+<form name = "mForm" onsubmit="return chkForm()">
+이름 : <input type ="text" name ="name"><br>
+비밀번호 : <input type ="password" name ="pass"><br>
+비밀번호 확인 : <input type ="password" name ="passCheck"><br>
+<input type ="submit" value ="등록"><br>
+</form>
+</body>
+</html>

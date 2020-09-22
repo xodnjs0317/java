@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+test(1,2);
+function test() {
+	var len = arguments.length;
+	console.log("호출된 매개변수의 갯수 : " +len);
+	if(len==0){
+		return 0;
+	}else if(len==1){
+		return arguments[0];
+	}else if(len==2){
+		return arguments[0] + arguments[1];
+	}else {
+		var sum =0;
+		for(var i =0;i<arguments.length;i++){
+			sum +=arguments[i];
+		}		
+		return sum;
+	}
+}
+var sum = 0;
+sum = test();
+console.log("합 : " + sum);
+sum = test(1);
+console.log("합 : " +sum);
+sum = test(1,2);
+console.log("합 : "  +sum);
+sum = test(1,2,3);
+console.log("합 : " +sum);
+//가변적으로 매개변수를 받습니다. 
+//arguments는 가변적으로 매개변수를 받기 위해서 자체적으로 제공되고 있습니다. 
+
+
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

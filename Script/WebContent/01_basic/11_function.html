@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+/* 함수
+ 1. 익명 함수 
+ function (매개변수, ..){ 
+	{return};
+ } 
+ 
+ 2.선언 함수 
+ function 함수명 (매개변수, ..) {
+	 {return 값};
+ }
+ 
+ 선언적 함수 : 컴파일시에 함수 정보를 등록, 함수 선언 이전에 사용가능(static 선언과 유사)
+ 익명 함수 : 실행시에 함수 정보를 등록, 함수 선언 이전에 사용 불가능 
+ 		  익명함수는 변수와 함께 사용해야합니다. 변수 없이 사용시 오류 발생 
+ */
+sum(100,200); //선언적 함수로 실행됩니다.
+
+var sum2 = function (num1, num2) {
+	 alert("익명 함수 두 수의 합 : " + (Number(num1) + Number(num2)));
+}
+ 
+sum2(100,200);// 익명함수는 함수 선언이 되고 난 후에 사용이 가능합니다. 
+
+
+
+
+ 
+ function sum (num1, num2) {
+	 alert("선언적 함수 두 수의 합 : " + (Number(num1) + Number(num2)));
+}
+ 
+ 
+ 
+ 
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

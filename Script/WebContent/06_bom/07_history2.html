@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+/*hisory 객체는 사용자가 방무한 사이트의 기록을 남기고 이전 방문 사이트의 
+ * 다음 방문 사이트로 다시 돌아갈 수 있는 속성과 메소드를 제공합니다.
+ */
+	function movePage(){
+	location.href="07_history.html";
+}
+	function previousPage(){
+	history.back();
+	//history.back() 이전페이지로 이동합니다.
+	}
+	function nextPage(){
+	history.foward();
+	//history.foward() 다음페이지로 이동합니다.
+	}
+ alert(history.length);
+ //history.length는 방문기록에 저장된 목록의 갯수를 반환합니다.
+ 
+</script>
+</head>
+<body>
+<input type="button" value="history로 이동" onclick="movePage();">
+<input type="button" value="이전페이지로 이동" onclick="previousPage();">
+<input type="button" value="다음페이지로 이동" onclick="nextPage();">
+</body>
+</html>

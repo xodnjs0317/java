@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	function chkform(){
+		var mform =document.mform;
+		var name =mform.name.value;
+		var id = mform.id.value;
+		var pass = mform.pass.value;
+		var pass2 = mform.passCheck.value;
+		var email = mform.email.value;
+		var chk = mform.career;
+		var chk2 = mform.work;
+		var search = mform.searchType;
+		var opts = search.options;
+		var index = search.selectedIndex;
+		var mail= mform.mail;
+	if(!name){
+		alert("이름을 입력해주세요.");
+		mform.name.focus();
+		return false;
+	}
+	if(!id){
+		alert("아이디를 입력해주세요.");
+		mform.id.focus();
+		return false;
+	}else if(id.length<4||id.length>9){
+		alert("4자이상8자이하")
+		return false;
+	}
+	if(!pass){
+		alert("비밀번호를 입력해주세요.");
+		mform.pass.focus();
+		return false;
+	}else if(!pass2){
+		mform.passCheck.focus();
+		alert("비밀번호를 입력해주세요.");
+		return false;
+	}else if(pass==pass2){
+		
+	}else{
+		mform.pass.focus();
+		mform.pass.select();
+		
+		alert("비밀번호가 서로 다릅니다.");
+		return false;
+	}
+	if(chk.checked==chk2.checked){
+		alert("경력여부를 선택해주세요.");
+		mform.career.focus();
+		return false;
+	}else if(chk2.checked&&index==0 ){
+		alert("경력을 선택해주세요.");
+		return false;
+		
+	}else if(mail.checked&&!email){
+		alert("메일을 다시 입력해주세요.");
+		return false;
+	}
+}  
+	
+function select1(val){
+	var selBox=document.mform.searchType;
+	selBox.disabled=!val;
+	document.mform.work.checked=!val;	
+}
+function choice(val){
+	var selBox=document.mform.searchType;
+	selBox.disabled=!val;
+	document.mform.career.checked=!val;	
+	
+}
+
+</script>
+</head>
+<body>
+<form name ="mform" onsubmit= "return chkform()">
+  이름 : <input type ="text" name ="name"><br>
+아이디 : <input type ="text" name ="id"><br>
+비밀번호 : <input type ="password" name ="pass">
+비밀번호 확인 : <input type ="password" name ="passCheck"><br>
+경력여부 :
+<input type="checkbox" name="career" value="신입" onclick="select1(this.checked)">신입
+<input type="checkbox" name="work" value="경력" onclick="choice(this.checked)">경력
+<select name= "searchType">
+<option value="">선택</option>
+<option value="">3개월미만</option>
+<option value="">3개월이상</option>
+<option value="">6개월이상</option>
+<option value="">1년이상</option>
+<option value="">2년이상</option>
+<option value="">3년이상</option>
+</select><br>
+이메일 : <input type ="text" name ="email">
+<input type="checkbox" name="mail" value="메일수신">메일수신<br>
+
+<input type="submit" value="확인">
+</form>
+<div>
+
+
+</div>
+</body>
+</html>

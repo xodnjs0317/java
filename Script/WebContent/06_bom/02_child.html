@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function closePop(){
+	self.close();
+	var msg =document.getElementById("msg");
+	
+	opener.childCall(msg.value);
+	//opener 는 자식창이 부모창에 접근할때 부모창을 자칭하는 객체 입니다.
+	//부모창에 정보를 전달하는 방법
+
+}
+	
+</script>
+</head>
+<body>
+<h1>자식창 호출 됨...</h1>
+<input type="button" value ="닫기" onclick="closePop();">
+<input type="text" id="msg">
+
+</body>
+</html>

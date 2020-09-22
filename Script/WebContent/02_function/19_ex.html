@@ -1,0 +1,30 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var i= 0;
+function next(){
+	var arrImage = ["images/1.jpg","images/2.jpg","images/3.jpg","images/pic1.jpg","images/pic2.jpg"];
+	var bodyTag= document.getElementById("theImage");
+	bodyTag.setAttribute("src",arrImage[++i]);
+}
+function back(){
+	var arrImage = ["images/1.jpg","images/2.jpg","images/3.jpg","images/pic1.jpg","images/pic2.jpg"];
+	var bodyTag= document.getElementById("theImage");
+	bodyTag.setAttribute("src",arrImage[--i]);
+}
+
+
+</script>
+</head>
+<body>
+<img width="300" height="300" src="images/1.jpg" id ="theImage">
+<input type="button" value="이전" onclick="back()">
+<input type="button" value="다음" onclick="next()">
+
+</body>
+</html>

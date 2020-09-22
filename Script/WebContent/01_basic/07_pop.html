@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var str = "경고창";
+alert(str);
+
+var isDel = confirm("삭제하시겠습니까?");
+//confirm()을 사용하면 확인버튼과 취소버튼이 있습니다.
+//확인 버튼 사용시 true 반환, 나머지 false 반환 
+
+if(isDel) {
+	alert("삭제 작업진행");
+}else{
+	alert("삭제 취소하였습니다.");
+}
+
+var input = prompt("점심메뉴 고르기", "오늘 점심은?");
+alert("선택한 점심 메뉴 : " +input);
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

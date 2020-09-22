@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var count =0;
+function add(){
+	var div2 = document.querySelector("#g"+count)
+	//alert(div2);
+	if(div2){
+		var parent = div2.parentNode;
+		parent.removeChild(div2);
+	}
+		var html="<span id = 'g"+(++count)+"'>"+(count)+"번";
+		var div = document.getElementById("listDiv");
+		div.innerHTML +=html;
+	
+}
+function del1(){
+	for(var i =1;i<=count;i++){
+		var div = document.querySelector("#g"+i);
+		if(div){
+			var parent = div.parentNode;
+			parent.removeChild(div);
+		}
+	}
+}
+function add2(){
+	var numSpan = document.getElementById("numSpan");
+	numSpan.innerHTML = parseInt(numSpan.innerHTML)+1;
+	
+}
+function del2(){
+	var numSpan = document.getElementById("numSpan");
+	numSpan.innerHTML = 0;
+}
+</script>
+</head>
+<body>
+<span id="listDiv" class="myDiv">
+</span>
+
+<input type="button" value="add" onclick="add()">
+<span id ="numSpan">
+0
+</span>
+<input type="button" value="add2" onclick="add2()">
+<input type="button" value="del" onclick="del1()">
+<input type="button" value="del2" onclick="del2()">
+</body>
+</html>

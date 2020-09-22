@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var msg1 ="전역변수1";
+msg2 = "전역변수2";
+
+function func01(){
+	var msg3 = "지역변수1";
+		alert(msg3);
+		
+		msg4 = "전역변수 3"; // 함수 내부에 var가 없으면 전역 변수로 선언됩니다.
+}
+function func02(){
+	alert("func02 : "+msg4);
+	
+}
+
+</script>
+</head>
+<body>
+<script>
+alert(msg1);
+alert(msg2);
+func01();
+func02();
+</script>
+</body>
+</html>

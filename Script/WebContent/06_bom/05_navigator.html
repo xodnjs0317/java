@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+/* navigator 객체는 현재 방문자가 사용하는 브라우저의 정보와 운영체제의 정보를 제공하는 객체입니다.*/
+
+var agent = navigator.userAgent;
+//navigator.userAgent 브라우저와 운영체제의 종합 정보를 제공합니다.
+
+console.log(agent);
+
+var lan = navigator.language;
+console.log(lan);
+
+var msg="";
+if(agent.indexOf("iPhone")>=0){
+	msg="iPhone";
+}else if(agent.indexOf("iPad")>=0){
+	msg="iPad";	
+}else if(agent.indexOf("galaxy")>=0){
+	msg="galaxy";
+}else if(agent.indexOf("Chrome")>=0){
+	msg="Chrome";
+}
+alert("당신은"+msg+"를 통해서 들어왔습니다.");
+</script>
+</head>
+<body>
+
+</body>
+</html>

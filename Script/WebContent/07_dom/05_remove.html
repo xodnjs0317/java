@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function add(){
+	var html ='<h1 class="hTag">추가추가</h1> ';
+	var div = document.getElementById("b");
+	
+	div.innerHTML+= html;
+	
+}
+function del(){
+	var div= document.querySelector(".hTag");
+	var parent = div.parentNode;
+	//parentNode는 부모태그를 선택할 수 있습니다.
+	parent.removeChild(div);
+	//removeChild()는 매개변수의 자식태그를 해당 태그에서 삭제할 수 있습니다.
+}
+</script>
+</head>
+<body>
+<input type="button" value="add" onclick="add()">
+<input type="button" value="del" onclick="del()">
+<div id="a" class="myDiv">
+a DIV
+</div>
+<div id ="b" >
+
+</div>
+</body>
+</html>

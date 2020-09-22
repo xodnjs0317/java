@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var scope="전역변수";
+function test() {
+	alert(scope);
+	//함수내에 이미 지역변수 scope가 있다는 것을 미리 인식을 하고 있기 때문에
+	//전역변수 대신에 아직 값의 할당이 일어 나지 않은 지역변수 scope를 부르게 됩니다.
+	//그래서 아직 값이 할당되지 않은 scope의 값이 undefned가 호출
+	var scope = "지역변수";
+	alert(scope);
+}
+test();
+alert(scope);
+</script>
+</head>
+<body>
+
+</body>
+</html>

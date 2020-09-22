@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var member = {
+		id: "abc",
+		name:"hong"
+};
+
+var bool = member.hasOwnProperty("id");
+document.writeln("bool :"+bool+"<br>");
+bool = member.hasOwnProperty("email");
+document.writeln("bool:"+ bool +"<br>");
+
+var num=100;
+var num2 = new Number(100);
+if(num.constructor==Number){
+	alert(1);
+}
+if(num2.constructor==Number){
+	alert(2);
+}
+document.writeln(num.constructor+"--"+num2.constructor);
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

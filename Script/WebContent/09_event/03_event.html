@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+/*이벤트 버블링이란?
+		이벤트 버블링은 특정 화면요소에서 이벤트가 발생했을때 해당 이벤트가
+		부모 화면요소들로 전달되어 최상위까지 이벤트가 전달되는 것입니다.
+		브라우저는 이벤트를 감지할때 하나의 요소에서 이벤트가 발생하면 이벤트를
+		최상위 요소까지 전파합니다. 이러한 이벤트 감지 방식을 이벤트 버블링이라고 합니다.
+		*/
+window.onload=function(){
+	var hObj = document.getElementById("hobj");
+	/* hObj.onclick = function (e){
+		//고전이벤트 방식
+		alert(0);
+		e.stopPropagation();
+		//e.stopPropagation()을 사용하면 버블링을 취소할 수가 있습니다.
+	};*/
+	
+	hObj.addEventListener("click",function(e){
+		//표준이벤트모델방식
+		alert(0);
+		e.stopPropagation();
+		
+	});
+};
+
+
+</script>
+</head>
+<body>
+<div onclick ="alert(3)">
+	<div onclick ="alert(2)">
+	<div onclick ="alert(1)">
+	<h1 id ="hobj" onclick ="alert(0)">클릭하세요.</h1>
+	</div>
+	</div>
+</div>
+</body>
+</html>

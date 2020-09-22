@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var divs = ["div1","div2","div3","div4"];
+var x = -430;
+var cPos = 0;
+
+function nextSlide() {
+	x += 5;
+	var slide = document.getElementById(divs[cPos]);
+	slide.style.top = x+"px";
+	if(x<100){
+		setTimeout(nextSlide,1);
+	}else {
+		cPos++;
+		x=-430;
+	}
+	
+}
+</script>
+<style>
+a {text-decoration: none;}
+div {
+	width: 600px;
+	height: 400px;
+	font-size: 40px;
+	font-weight: bold;
+	padding: 10px;
+	color: white;
+	border: 5px solid black;
+	position: absolute;
+	top: -430px;
+	left: 200px;
+}
+
+#div1 {background-color: #00f;}
+#div2 {background-color: #ff0;}
+#div3 {background-color: #f0f;}
+#div4 {background-color: #0ff;}
+</style>
+</head>
+<body>
+<p><a href= "#" onclick= "nextSlide()">다음 슬라이드</a></p>
+<div id ="div1">1번 슬라이드</div>
+<div id ="div2">2번 슬라이드</div>
+<div id ="div3">3번 슬라이드</div>
+<div id ="div4">4번 슬라이드</div>
+
+</body>
+</html>

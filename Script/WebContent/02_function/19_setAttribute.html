@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function change(){
+	var arrColor = [ "#ff0","#6c0","#fcf","#cf0","#39f"];
+	var arrNum = parseInt(Math.random()*arrColor.length);
+	var bodyTag= document.getElementById("theBody");
+	bodyTag.setAttribute("style","background-color: "+arrColor[arrNum]+"");
+	
+}
+</script>
+
+</head>
+<body	id ="theBody" style= "background-color:black">
+<input type="button" value="배경색바꾸기" onclick ="change()">
+
+</body>
+</html>

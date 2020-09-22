@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var info = navigator.userAgent.toLowerCase();
+var aslmg = null;
+
+if(info.indexOf("windows")>=0){
+	msg="window";
+}else if(info.indexOf("iPhone")>=0){
+	msg="iPhone";
+}else if(info.indexOf("android")>=0){
+	msg="android";
+}
+var width = screen.width;
+var height = screen.height;
+
+document.writeln("당신은"+msg+"로 접속하셨습니다.<br>");
+document.writeln("모니터 해상도 너비 :"+width+"px<br>")
+document.writeln("모니터 해상도 높이 :"+height+"px<br>")
+</script>
+</head>
+<body>
+
+</body>
+</html>

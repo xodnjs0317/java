@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function chkAge(){
+	var age = document.getElementById("age");
+	
+	if(isNaN(age.value)){
+		alert("숫자를 입력해주세요");
+	}
+	
+}
+</script>
+</head>
+<body>
+나이 : <input type="text" id ="age">
+<input type="button" value="확인" onclick="chkAge()">
+</body>
+</html>

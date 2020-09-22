@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	/*function cal(){
+		this.result= 0;
+	};
+	
+	cal.prototype.add= function(num){this.result +=num;}
+	cal.prototype.sub= function(num){this.result -=num;}
+	cal.prototype.mul= function(num){this.result *=num;}
+	cal.prototype.div= function(num){this.result /=num;}
+	var ca = new cal();
+	ca.add(2);
+	ca.add(2);
+	ca.add(2);
+	
+	document.writeln(ca.result);*/
+	
+	function cal(){
+	var result= 0; 		//function 안에서 var로 생성하게 되면 지역변수로 생성됩니다.
+						//생성자에는 var로 생성하게 되면 private개념으로 해석이가능합니다.					
+	this.getResult= function(){
+		return result;
+		};
+	};
+	
+	cal.prototype.add= function(num){this.result +=num;}
+	cal.prototype.sub= function(num){this.result -=num;}
+	cal.prototype.mul= function(num){this.result *=num;}
+	cal.prototype.div= function(num){this.result /=num;}
+	
+	var ca =new cal();
+	ca.add(3);
+	ca.add(3);
+	ca.add(3);
+	
+	document.writeln("result:"+ca.getResult()+"<br>");
+
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

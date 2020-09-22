@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	var cal = {
+			add : function(num1, num2){return num1+num2;}};
+	
+	cal.sub = function(num1,num2){return num1-num2;};
+	with(cal){
+		cal.mul = function(num1,num2){return num1*num2;}
+		
+		document.writeln("add(10,2):"+add(10,2)+"<br>");
+		document.writeln("sub(10,2):"+sub(10,2)+"<br>");
+		document.writeln("mul(10,2):"+mul(10,2)+"<br>");
+		
+	} document.writeln("<br><br>");
+//with문에서 객체를 생략하고 새로 만든 값은 with 블럭을 빠져나가면 더이상 존재하지 않습니다.
+//with 문은 function 처럼 지역변수가 존재할 수 있습니다.
+//지역변수가 블럭단위로 존재하지 않지만 function과 with 그리고 cath 구문에서는 지역변수가 존재할수있습니다.
+		delete(cal.add);
+//cal 객체에 등록된 add 기능을 삭제
+		document.writeln("sub(10,2):"+cal.sub(10,2)+"<br>");
+		document.writeln("mul(10,2):"+cal.mul(10,2)+"<br>");
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

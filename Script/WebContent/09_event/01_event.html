@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+/*이벤트란?
+		브라우저에서 방문객이 취하는 모든 동작을 이벤트라고 합니다. 가령, 웹사이트에서 
+		마우스를 특정요소를 클릭하거나, 마우스를올리는 행위 등 모든 동작이 이벤트라고 합니다.
+		이벤트가 발생했을시에 자바 스크립트 실행문을 실행하는 것을 이벤트 핸들리라고 합니다.
+		즉, 이벤트 발생시에 자바스크립트가 실행됩니다.*/
+window.onload=function(){
+	//window.onload는 웹사이트가 모두 로딩이 완료된 후에 실행되는 함수입니다.
+	//이벤트의 경우 미완성으로<body>태그가 모두 실행이 되기 전에 실행되어 실행이 불가할수
+	//있으므로 window.onload를 통해서 사용해주는 것이 좋습니다.
+	
+	var theBtn = document.getElementById("btn");
+	var s = document.getElementById("img_src");
+	
+	theBtn.onmouseover =function() {
+		document.getElementById("title").innerHTML="마우스 오버";
+		
+		theBtn.firstChild.src ="../images/pic2.jpg";
+		s.innerHTML = theBtn.firstChild.src;
+	};
+	theBtn.onmouseout = function() {
+		document.getElementById("title").innerHTML ="마우스 아웃";
+		document.getElementById("img1").src="../images/pic1.jpg";
+		s.innerHTML = document.getElementById("img1").src;
+	};
+	
+}
+</script>
+</head>
+<body>
+<h1 id ="title">마우스 아웃</h1>
+<a href="#" id="btn"><img id="img1" src="../images/pic1.jpg" alt="버튼"></a>
+<p id="img_src"></p>
+<script>
+	var theBtn = document.getElementById("btn");
+	var s = document.getElementById("img_src");
+	
+	theBtn.onmouseover =function() {
+		document.getElementById("title").innerHTML="마우스 오버";
+		
+		theBtn.firstChild.src ="../images/pic2.jpg";
+		s.innerHTML = theBtn.firstChild.src;
+	};
+	theBtn.onmouseout = function() {
+		document.getElementById("title").innerHTML ="마우스 아웃";
+		document.getElementById("img1").src="../images/pic1.jpg";
+		s.innerHTML = document.getElementById("img1").src;
+	};
+	</script>
+</body>
+</html>

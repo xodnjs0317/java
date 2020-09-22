@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	function change() {
+		var divs = document.getElementsByTagName("div");
+		alert(divs.length);
+		
+		for(var i =0;i<divs.length;i++){
+			var div = divs[i];
+			
+			if(div.id =='c'){
+				div.innerHTML= "C 헤헤헤헤헤헤헤";
+			}else if(div.id =='a'){
+				div.innerHTML= "A 하하하하하하";
+			}
+		}
+	}
+
+</script>
+<style type="text/css">
+div {
+	font-size:30px;
+}
+</style>
+</head>
+<body>
+<input type="button" name="myDiv" value="변경" onclick="change()">
+<div id ="a"> a DIV</div>
+
+<div id ="b"> 
+
+<div id ="c"> 
+c DIV
+</div>
+
+</div>
+
+</body>
+</html>

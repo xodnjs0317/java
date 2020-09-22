@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function pop(type){
+	switch(type){
+	case 1:
+		window.open("http://www.naver.com","naverPop","width=600, height=300, scrollbars=yes");
+		break;
+	
+	case 2 :
+		window.open("02_child.html", "cPop2", "width=600, height=300");
+		break;
+	}
+}
+function childCall(val){
+	var div = document.getElementById("infoDiv");
+	div.innerHTML = val;
+}
+
+</script>
+<style>
+
+</style>
+</head>
+<body>
+<input type="button" value="팝업창1" onclick="pop(1)">
+<input type="button" value="팝업창2" onclick="pop(2)">
+
+<div id="infoDiv"> 자식에게 넘겨 받은 것을 표시함</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function fnTest(){
+	return function() {return "함수가 리턴됨";};
+	
+}
+var result = fnTest();
+
+function call(val){
+	var result = val();
+	alert("함수 실행결과 : "+result);
+	
+}
+var fn = function(){
+	return "fn call";	
+}
+
+call(fn);
+/* 자바스크립트에서는 function의 매개변수로 function을 받는 것이 가능합니다. */
+alert(fn);
+//function을 실행 시킬때 function으로가 아니고 function 값 자체를 실행시켜 출력할수도 있습니ㅏㄷ.
+alert(fn());
+
+ 
+
+ 
+</script>
+</head>
+<body>
+
+</body>
+</html>

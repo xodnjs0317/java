@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var d = new Date();
+document.writeln("현재시간 :"+d+"<br>");
+document.writeln("d.toLocaleTimeString() :"+d.toLocaleTimeString()+"<br>");
+//d.toLocaleTimeString()을 사용하면 date 객체를 간결한 문자열로 변환합니다.
+
+var year = d.getFullYear();
+//getFullYear()는 연도 정보를 가져오는 메소드입니다.
+
+var month = d.getMonth()+1;
+var date = d.getDate();
+var day = d.getDay();
+//getDay()는 요일 정보를 가지고 옵니다.(일: 0~토 :6)
+var hour = d.getHours();
+var min = d.getMinutes();
+var sec = d.getSeconds();
+
+document.writeln("년 :"+year+"<br>");
+document.writeln("월 :"+month+"<br>");
+document.writeln("일 :"+date+"<br>");
+document.writeln("요일 :"+day+"<br>");
+document.writeln("시 :"+hour+"<br>");
+document.writeln("분 :"+min+"<br>");
+document.writeln("초 :"+sec+"<br>");
+
+var sDate="20140906";
+var year=sDate.slice(0,4);
+var month=sDate.slice(4,6)-1;
+var day=sDate.slice(6);
+
+var inputDate = new Date(year,month,day);
+document.writeln("inputDate :" +inputDate+"<br>");
+
+var now = new Date();
+var nTime = now.getTime();
+//getTime() 1970년 1월 1일 부터 경과된 시간을 밀리초로 표시합니다.
+document.writeln("now.getTime():"+now.getTime()+"<br>");
+
+var before = new Date(2010,10,10);
+var bTime = before.getTime();
+
+var gap = nTime-bTime;
+result =Math.floor(gap/(1000*60*60*24));
+
+document.writeln("gap :"+ result+"일<br>");
+
+Date.prototype.getInterval = function(otherDate){
+	var gap =0;
+	if(this>otherDate){
+		gap= this.getTime() - otherDate.getTime();
+	}else{
+		gap = otherDate.getTime() - this.getTime();
+	}
+	var result=Math.floor(gap/(60*60*24*1000));
+	return result;
+}
+var date = new Date();
+var date2 = new Date(2030,11,20);
+
+document.writeln("date와 date2와의 일수 차이는 :"+date.getInterval(date2)+"일 입니다.");
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

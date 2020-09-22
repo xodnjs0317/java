@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+window.alert(1);
+//alert()의 경우 원래 window 밑에 위치해 있습니다.
+
+var win = window.open("URL","새창 이름","width=300, height=200,"+"left=50, top=10, scrollbars=no");
+//open() 메소드를 사용하면 지정한 URL 페이지를 새 브라우저 창에 나타낼수 있습니다.
+//window.open의 속성
+//width - 새창의 너비
+//height - 새창의 높이
+//left - 새창의 수평위치
+//top - 새창의 수직위치
+//scrollbars - 새창의 스크롤바의 숨김/노출을 설정합니다.
+//location - 새창의URL 주소 입력 영어의 숨김 / 노출
+//status - 새창의 상태 표시줄 영역 숨김/노출
+//toolbars - 새창의 도구 상자 영역의숨김 /노출
+
+//prompt("질문","답변")
+//confirm("질문내용")
+//setInterval(), setTimeout() 또한 window 객체의 메소드 입니다.
+
+var width = screen.width;
+var height = screen.height;
+//screen 객체는 사용자의 모니터 정보를 제공하는 객체입니다.
+win.moveTo(0,0);
+//moveTo()는 지정한 새창의 위치를 이동합니다.
+win.resizeTo(width,height);
+	
+		
+		
+		
+		
+	})
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

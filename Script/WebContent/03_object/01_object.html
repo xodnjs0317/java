@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+var obj ={};
+	alert("obj:"+typeof(obj));
+var board={
+		no:1,
+		title : "오늘은 객체 다루는 날",
+		writer : "홍길동",
+		regDate : "2015-09-02",
+		info : function() {
+			alert(this.no+"-"+this.title);
+		}
+}
+alert("번호 : "+board.no);
+alert("제목 : "+board.title);
+alert("지은이 : "+board.writer);
+board.info();
+for(var key in board){
+	document.writeln("key : "+key+"<br>");
+	document.writeln(key+":"+board[key]+"<br>");
+}
+</script>
+</head>
+<body>
+
+</body>
+</html>

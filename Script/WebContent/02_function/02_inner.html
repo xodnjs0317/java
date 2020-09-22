@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function outerFn(){
+	alert("outerFn call");
+	innerFn();
+	function innerFn(){
+		alert("innerFn call");
+		innerFn2();
+		function innerFn2() { alert("innerFn2 call");}
+	}
+}
+outerFn();
+
+innerFn();
+
+//innerFn(); function 안에 있는 function은 밖에서 사용이 불가능합니다.
+//오직 자신이 사용하기 위해서만 사용하는가능 합니다.
+</script>
+</head>
+<body>
+
+</body>
+</html>

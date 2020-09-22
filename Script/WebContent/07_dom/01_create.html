@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+/* 1.Dom(문서 객체 모델)이란?
+		웹문서의 모든 요소를 자바스크립트로 조작할 수 있도록 객체를 사용해 문서를 해석하는
+		방법입니다.document Object Model의 줄임말로 돔이라고 불립니다.
+		텍스트 뿐만 아니라 이미지, 표 등 모든 요소들은 객체이기 때문에 자바스크립트에서 조작하는것이가능합니다.
+*/
+function addH1() {
+	var hlobj = document.createElement("h1");
+	//document.createElement()를 통해서 태그를 생성 할 수 있습니다.
+	var tnode = document.createTextNode("추가됨");
+	//document.createTextNode()를 통해서 태그와 태그 사이에 있는
+	//text를 넣을 수 있습니다.
+	
+	hlobj.appendChild(tnode);
+	//appendChild()를 통해서 태그와 태그를 연결 시킬수 있습니다.
+	//태그와 태그말고도 텍스트를 연결할수있습니다.
+	var divobj = document.getElementById("appendDiv");
+	divobj.appendChild(hlobj);
+}
+function addButton(){
+	var inObj = document.createElement("input");
+	inObj.type = "button";
+	inObj.value= "버튼";
+	
+	var divobj = document.getElementById("appendDiv");
+	//만들어진 태그를 body안에 넣기 위해서는 존재하는 태그의 자식 태그로
+	//연결을 해야 body안의 태그로 사용이 가능합니다.
+	divobj.appendChild(inObj);
+}
+function addImage(){
+	var imgobj =document.createElement("img");
+	/*imgobj.setAttribute("src","pic1.jpg");
+	imgobj.setAttribute("width","300");
+	imgobj.setAttribute("height","200");
+	imgobj.setAttribute("test","user add");*/
+	
+	imgobj.src ="pic1.jpg";
+	imgobj.width=300;
+	imgobj.height=200;
+	imgobj.test="user add";
+	
+	var divobj = document.getElementById("appendDiv");
+	divobj.appendChild(imgobj);
+}
+</script>
+</head>
+<body>
+<input type="button" value="h1추가" onclick="addH1();">
+<input type="button" value="버튼추가" onclick="addButton();">
+<input type="button" value="사진추가" onclick="addImage();">
+	<div id ="appendDiv">
+	버튼을 누르면 아래에 추가됩니다.
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	var url ="http://localhost:8080/script/test";
+	var param = +"id=abc&name="+encodeURIComponent("홍길동");
+	//자바 스크립트에서의 인코딩 encodeURIComponent("내용")을 통해서
+	//UTF-8 방식으로 인코딩 할수 있습니다.
+	
+	document.writeln(url+"?"+param);
+</script>
+</head>
+<body>
+
+</body>
+</html>

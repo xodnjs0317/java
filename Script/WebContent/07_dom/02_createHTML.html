@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function addH1(){
+	var html ="<h1>h1태그 추가됨</h1>";
+	
+	var divobj = document.getElementById("appendDiv");
+	divobj.innerHTML+= html;
+}
+function addButton(){
+	var html= '<input type="button" value="버튼">';
+	
+	var divobj= document.getElementById("appendDiv");
+	divobj.innerHTML+= html;
+}
+function addImage(){
+	var html = '<img src="pic1.jpg" width="300" height="200" test="user add">'
+	
+	var divobj= document.getElementById("appendDiv");
+	divobj.innerHTML+= html;
+}
+
+</script>
+</head>
+<body>
+<input type="button" value="h1추가" onclick="addH1();">
+<input type="button" value="버튼추가" onclick="addButton();">
+<input type="button" value="사진추가" onclick="addImage();">
+	<div id ="appendDiv">
+	버튼을 누르면 아래에 추가됩니다.
+	</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function makeId() {
+	var lastId = 0;
+	return function() {
+		return ++lastId;
+	};
+	
+}
+
+//함수안의 지역변수를 밖에서 사용하기 위해 만든 개념인 closer
+	var id = makeId();
+	alert(id());
+	alert(makeId()()); //id()d와 makeId()는 전혀 다른 지역변수 lastId를 참조
+	aler(id());
+	aler(id());
+</script>
+</head>
+<body>
+
+</body>
+</html>

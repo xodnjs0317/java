@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+
+
+true || alert(1);
+true || alert(1);
+
+var i = prompt("과목수 입력하기" , "과목의 수를 입력하세요");
+
+var num;
+var sum = 0;
+for(var j =0;j<i;j++){
+num = Number(prompt("점수 입력하기" , "점수를 입력하세요"));
+sum = sum +  num;
+}
+var avr = sum/i;
+console.log("과목들의 수는 "+i+"입니다.");
+console.log(typeof(i));
+console.log("합은 "+sum+"입니다.");
+console.log(typeof(sum));
+console.log("평균은 "+avr+"입니다.");
+console.log(typeof(avr));
+
+
+
+if(avr>=0){
+	console.log("양수입니다.");
+	
+}else{
+	console.log("음수입니다.");
+}
+if(avr%2==0){
+	console.log("짝수입니다.");
+	
+}else{
+	console.log("홀수입니다.");
+	
+}
+if(avr>=90){
+	
+	console.log("수입니다.");
+}else if(avr>=80){
+	console.log("우입니다.");
+	
+	
+}else if(avr>=70){
+	console.log("미입니다.");
+	
+	
+}else if(avr>=60){
+	console.log("양입니다.");
+	
+	
+}else {
+	console.log("가입니다.");
+}
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

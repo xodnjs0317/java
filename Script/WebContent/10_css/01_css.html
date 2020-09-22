@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function changeStyle(){
+	var div1 = document.getElementById("div1");
+	div1.innerHTML = "스타일 변경 후";
+	div1.style.width = "300px";
+	div1.style.height = "300px";
+	div1.style.backgroundColor ="#000";
+	div1.style.color ="#fff";
+	
+	div1.style.paddingTop="50px";
+	div1.style.paddingLeft="50px";
+	div1.style.fontSize ="30px";
+	div1.style.border="5px solid orange";
+}
+</script>
+</head>
+<body>
+<input type="button" value="스타일 변경" onclick="changeStyle()">
+<div id ="div1">스타일 변경 전...</div>
+</body>
+</html>

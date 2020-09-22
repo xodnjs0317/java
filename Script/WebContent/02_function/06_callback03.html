@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function arrayProc(arr,fn){
+	for(var i in arr){
+		fn(i,arr[i]);
+	}
+}
+
+var result =0;
+
+var arr = [10,20,30,40,50];
+
+function sumArr(i, val){
+	result += val;
+	
+}
+
+arrayProc(arr, sumArr);
+alert("배열의합 :"+result);
+
+function arrayPrint(i, val){
+	document.writeln(i + ":"+val+"<br>");
+	
+}
+arrayProc(arr,arrayPrint);
+</script>
+</head>
+<body>
+
+</body>
+</html>

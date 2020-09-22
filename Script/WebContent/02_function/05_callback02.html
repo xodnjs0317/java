@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function test(){
+	var no =1;
+	return function () {
+		return no;
+	};
+}
+
+var fn =test();
+alert(fn());
+//alert(no);
+//함수안에 지역변수를 밖에서 사용하기 위해 만든 개념인 closer
+alert(test()());
+</script>
+</head>
+<body>
+
+</body>
+</html>

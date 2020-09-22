@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+	/* location 객체는 사용자 브라우저와 관련된 속성과 메소드를 제공하는 객체입니다.
+	현재 URL에 대한 정보와 새로고침 같은 메소드를 제공합니다.*/
+	
+	function movePage(){
+		location.href = "http://www.daum.net";
+		//href = hypertext Reference 
+		//location.href 사용자 브라우저의 URL경로를 지정한 URL로 변경합니다.
+}
+	alert(location.href);
+	
+	alert("0.5초 후 네이버로 이동합니다.");
+	setTimeout(function (){
+		location.replace("http://www.naver.com");
+		//location.replace의 기능은 location.href와 비슷하지만 이전페이지로
+		//돌아가수 없습니다.
+	},5000);
+	
+	function reloadPage() {
+		location.reload();
+		//location.reload()는 브라우저를 새로고침합니다.(F5와 동일)
+		
+	}
+		
+	
+</script>
+
+</head>
+<body>
+<input type="button" value="이동" onclick="movePage();">
+<input type="button" value="새로고침" onclick="reloadPage();">
+</body>
+</html>

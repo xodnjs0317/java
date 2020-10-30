@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+ <configuration>
+ 	<properties resource="config/mybatis/db.properties"/>
+ 	
+ 	<typeAliases>
+ 		<typeAlias type="kr.kedu.java01.spms.vo.MemberVO" alias="member"/>
+ 		
+ 	</typeAliases>
+ <!-- mybatis config 꼭 수정 -->
+ 
+ <!-- 
+ 	프레임워크에서 사용할 데이터베이스 정보를 입력
+ 	(트랜잭션관리자,드라이버,아이디,비밀번호 등등)
+  -->
+ 
+ <!-- 
+ transactionManager태그에서 type 설정은 
+ JDBC - 직접 JDBC의 커밋과 롤백 기능을 사용하여 mybatis 자체에서
+ 		트랜잭션을 관리
+ MANAGED - 서버의 트랜잭션 관리기능을 이용합니다. 
+ 			서블릿컨테이너(톰캣)이나 javaEE 애플리케이션 서버에서
+ 			트랜잭션을 관리
+ 			
+ dataSoruce type 설정
+ POOLED - 미리 DB 커넥션 객체를 생성해두고, 요청하면 즉시 반환합니다. 
+ 			데이터베이스에 연결하는 과정, 연결을 초기화하고 사용자 인증하는
+ 			과정이 없기 때문에 속도가 빠르다. 
+ UNPOOLED - DB커넥션 요청을 할때 마다 매번 커넥션 객체를 생성합니다. 높은 성능을
+ 			요구하지 않는 단순한 애플리케이션에서 사용합니다. 
+ JNDI - Java EE 애플리케이션이나 서버 컨테이너(톰캣등)에서 제공하는 데이터소스
+ 		사용 									
+ 
+  --> 
+  
+ <environments default="development">
+  	<environment id="development">
+  		<transactionManager type="JDBC"></transactionManager>
+  		<dataSource type="POOLED">
+  		<property name="driver" value="${oracle.driver}"/>
+  		<property name="url" value="${oracle.url}"/>
+  		<property name="username" value="${oracle.username}"/>
+  		<property name="password" value="${oracle.password}"/>
+  		</dataSource>
+  </environment>
+ </environments>
+ 
+ <mappers>
+ 	<mapper resource="config/sqlmap/Sql-mapper.xml"/>
+ </mappers>
+ 
+ 
+ </configuration>

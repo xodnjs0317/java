@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns=
+"http://www.springframework.org/schema/beans"
+xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:c="http://www.springframework.org/schema/c"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 스태틱이 아닌 tirefactory는 인스턴스 객체를 만들어야 사용할 수 있습니다. -->
+	<bean id="tireFactory" class="test12.TireFactory"/>
+	
+	<bean id = "hankookTire" factory-bean="tireFactory" factory-method="createTire">
+		<constructor-arg value="Hankook"/>
+	</bean>
+	<bean id = "kumhoTire" factory-bean="tireFactory" factory-method="createTire">
+		<constructor-arg value="Kumho"/>
+	</bean>
+</beans>
+
+
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns=
+"http://www.springframework.org/schema/beans"
+xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:c="http://www.springframework.org/schema/c"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+<!-- @Autowired 에노테이션을 처리할 빈(AutowiredAnnotationBeanPostPorcessor)을 선언힙니다.
+이 객체는 빈 컨테이너에 등록된 모든 빈을 조사하여  @Autowired가 붙은 셋터 메서드가 있다면 호출 합니다.
+이 때 셋터 메서드에 넘기는 매개변수 값은 빈 컨테이너에 매개변수 타입으로 찾은 객체 입니다.
+만약에 빈 컨테이너에 매개변수에 타입에 해당하는 객체가 없다면 예외가 발생합니다.
+@Autowired가 붙은 프로퍼티는 반드시 값을 설정해야 합니다. 
+혹은 매개변수에 해당하는 객체가 두개 이상 있어도 예외가 발생합니다.-->
+
+
+<bean id="car1" class="test18.Car"> 
+	<property name="model" value="Sonata"></property>
+</bean>
+
+
+</beans>
+
+
+

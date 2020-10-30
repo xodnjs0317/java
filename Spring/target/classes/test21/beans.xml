@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns=
+"http://www.springframework.org/schema/beans"
+xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:c="http://www.springframework.org/schema/c"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+	
+<context:component-scan base-package="test21"/>
+<!-- 
+context:component-scan를 사용하면 @component, @repository를 빈 
+생성 표시자가 붙은 클래스를 검색하게됩니다. 그리고 context:annotation-config이 자동으로 활성화됩니다.
+
+-->
+
+</beans>
+
+
+

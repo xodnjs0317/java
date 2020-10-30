@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns=
+"http://www.springframework.org/schema/beans"
+xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:c="http://www.springframework.org/schema/c"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	
+	<bean id="hyundaiEngine" class="test14.Engine"
+		p:maker="Hyundai" p:cc="1997"/>
+	
+	<bean id="kiaEngine" class="test14.Engine"
+		p:maker="kia" p:cc="3000" scope="prototype"/>
+	
+	<!-- 
+	빈의 범위 설정
+	singleton - 오직 하나의 빈만 생성한다.(기본설정)
+	prototype - getBean()을 호출할 때마다 빈을 새로 생성한다.
+	request - http 요청이 발생할때마다 생성되며, 웹애플리케이션에서만 이범위를 설정 할 수 있습니다.
+	session - Http 세션 생성될때마다 빈이 생성되고, 웹 애플리케이션에서만
+	이 범위를 설정할 수 있습니다.
+	globalsession - 전역 세션이 준비될때 빈이 생성됩니다. 웹애플리케이션에서만 이 범위를 설정할 수 있습니다.	 -->
+	
+	
+	</beans>
+
+
+

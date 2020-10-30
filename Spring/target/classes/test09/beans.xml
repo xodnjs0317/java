@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns=
+"http://www.springframework.org/schema/beans"
+xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:c="http://www.springframework.org/schema/c"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="car1" class="test09.Car">
+		<constructor-arg value="Avante"/>
+		<constructor-arg>
+			<bean class="test09.Engine" 
+			p:maker ="Hyundai" p:cc="1945"/>
+		</constructor-arg>
+		<!-- 
+			배열이나 List 타입의 프로퍼티 값을 설정할 때는
+			list 태그를 사용하게 됩니다.
+			배열에 들어갈 값을 <list>의 자식 태그로 선언합니다.
+			
+			<list>
+				<value>간단한 상수</value>
+				<ref bean="빈 참조값">
+				<null/>
+				<bean class="클래스"/>
+			</list>
+			
+			<set>
+				<value>간단한 상수</value>
+				<ref bean="빈 참조값">
+				<null/>
+				<bean class="클래스"/>
+			</set>
+			
+			으로 셋방식도 사용 가능
+			
+		 -->
+		
+		<property name="tires">
+			<list>
+				<bean class="test09.Tire" 
+				p:maker="Kumho" p:spec="P185/65R14"/>
+				<bean class="test09.Tire" 
+				p:maker="Kumho" p:spec="P185/65R14"/>
+				<bean class="test09.Tire"
+				p:maker="Kumho" p:spec="P205/65R14"/>
+				<bean class="test09.Tire" 
+				p:maker="Kumho" p:spec="P205/65R14"/>
+			</list>
+		</property>
+		
+	</bean>
+	
+			
+</beans>
+
+
+

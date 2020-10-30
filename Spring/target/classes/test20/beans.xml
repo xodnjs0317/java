@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns=
+"http://www.springframework.org/schema/beans"
+xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:c="http://www.springframework.org/schema/c"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+	
+<context:annotation-config/>
+
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+<!-- 
+context:annotation-config는
+<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+와 같은 어노테이션 후처리기를 한꺼번에 등록할  수 있는 태그 입니다.
+
+@resource = @autowired +@qualifier -@autowired(required=false)
+
+@resource 는 @autowired +@qualifier의 기능을 하지만 매개변수에 해당하는 빈이 없을경우 예외를 없앨수 없습니다.
+그래서 해당 빈에 주입할 의존 객체가 없을 경우에는 @autowired를 사용해야 합니다.
+ 
+
+ -->
+ <bean id="hyundaiEngine" class="test20.Engine">
+ 	<constructor-arg value="Hyundai"/>
+ 	<constructor-arg value="0"/>
+ </bean>
+ 
+ <bean id="kiaEngine" class="test20.Engine">
+ 	<constructor-arg value="Kia"/>
+ 	<constructor-arg value="1000"/>
+ </bean>
+ <bean id="car1" class="test20.Car">
+ 	<property name="model" value="Sonata"/>
+ 	
+ </bean>
+
+</beans>
+
+
+

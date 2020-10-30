@@ -3,6 +3,7 @@ package MiniProject;
 public class ProductVO {
 	int no;
 	String name;
+	
 	public int getNo() {
 		return no;
 	}

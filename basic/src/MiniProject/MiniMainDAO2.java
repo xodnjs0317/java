@@ -8,23 +8,26 @@ import java.util.Scanner;
 
 import util.ConnectionFactory;
 
-public class MiniMainDAO {
+public class MiniMainDAO2 {
 	Scanner scanner = new Scanner(System.in);
 	boolean run = true;
-	//Connection con = null;
-	//PreparedStatement pstmt =null;
+	
 	void select() {//조회
-		try {
+		int i = 1;
+		int j = 0;
+		while(run){
+			try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			String url = "jdbc:oracle:thin:@localhost:1521:xe";
 			Connection con = DriverManager.getConnection(url,"hr","hr");
 			//2.드라이버 매니저를 통한 연결 객체 설정
 			
-			String sql = "select no, name, location, tel ";
-			sql += "from MiniMain ";
-			sql += "where rownum between 1 and 10";
-			sql += "order by no asc ";
+			String sql = "select * from (select no, name, location, tel, rownum as rnum from "
+					+ "(select * from minimain order by no asc)) "; 
+			
+			System.out.println("1.이전 	2.다음 	3.종료");
+			
 			
 			
 			PreparedStatement pstnt = con.prepareStatement(sql);
@@ -36,7 +39,21 @@ public class MiniMainDAO {
 					String location = rs.getString("location");
 					String tel = rs.getString("tel");
 					System.out.println(num+"\t"+name+"\t"+location+"\t"+tel);
+					i++;
+			}int no = scanner.nextInt();
+			switch(no) {
+			case 1 :  sql += "where rnum between i and 10 ";
+						
+						break;
+			case 2 :  sql += "where rnum between i-10 and i-1 ";
+						
+						break;
+						
+			case 3 :  sql +="where rnum between 21 and 30 ";
+						 
+						break;
 			}
+			
 					rs.close();
 					pstnt.close();
 					con.close();
@@ -45,6 +62,8 @@ public class MiniMainDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+		
 	}
 	public void insert() {
 		 
